@@ -28,7 +28,7 @@ namespace Player
         {
             if (RightMouseButtonDown())
             {
-                MoveUnits();
+                ControlUnits();
             }
 
             if (LeftMouseButtonDown())
@@ -55,26 +55,26 @@ namespace Player
 
         public void ArtificialFixedUpdate() { }
 
-        private void MoveUnits()
+        private void ControlUnits()
         {
             if (!Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f)) return;
-        
+
             _unitManager.StopCoroutinesInUnits();
             Vector3 moveTo = hit.point;
-            
+
             if (hit.transform.TryGetComponent(out Resource resource))
             {
                 AssignWorkToSelectedUnits(resource);
             }
             else if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                moveTo = damageable.Position;                
+                moveTo = damageable.Position;
             }
 
             MoveSelectedUnits(moveTo);
         }
 
-        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.WorkUnits(resource.AssignWork(), resource.UnitDesired());
+        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.WorkUnits(resource, resource.UnitDesired());
         private void MoveSelectedUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
 
         private void GetUnitInSelectionBox()

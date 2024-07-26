@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Units;
 using Units.Formations;
+using Units.Resources;
+using Units.Villagers;
 using Units.Work;
 using UnityEngine;
 using Utilities;
@@ -33,13 +35,16 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
-        public void WorkUnits(IWorkable work, UnitType unitDesired)
+        public void WorkUnits(Resource work, UnitType unitDesired)
         {
             IEnumerable<Unit> unitsDesired = _selectedUnits.Where(unit => unit.GetUnitType() != unitDesired);
             
             foreach (Unit selectedUnit in unitsDesired)
             {
-                selectedUnit.DoWork(work);
+                if (selectedUnit is Villager villager)
+                {
+                    villager.SetResource(work);
+                }
             }
         }
         

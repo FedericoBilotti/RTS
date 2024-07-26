@@ -1,4 +1,5 @@
 using Player;
+using StateMachine;
 using Units.Work;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +14,7 @@ namespace Units
         private NavMeshAgent _agent;
 
         public UnitVisual UnitVisual { get; private set; }
+        protected FiniteStateMachine fsm;
 
         protected virtual void Awake()
         {
@@ -33,9 +35,6 @@ namespace Units
         }
 
         public UnitType GetUnitType() => _unitType;
-
-        // Con click izquierdo va a hacer su trabajo
-        public abstract void DoWork(IWorkable work);
     }
 
     public enum UnitType
