@@ -6,7 +6,7 @@ namespace Units
     {
         public override void DoWork(IWorkable work)
         {
-            StartCoroutine(work.Working(this));
+            StartCoroutine(work.PlayAnimation(this));
         }
     }
 }

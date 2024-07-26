@@ -14,7 +14,7 @@ namespace Units.Work
 
         public WoodWork(Resource resource) => _resource = resource;
 
-        public IEnumerator Working(Unit unit)
+        public IEnumerator PlayAnimation(Unit unit)
         {
             bool savingResource = false;
             Transform centerTransform = GameManager.Instance.NearCenter(unit).transform;
@@ -37,7 +37,7 @@ namespace Units.Work
 
                     savingResource = false;
                     desiredTransform = _resource.transform;
-                    ResourcesManager.Instance.AddWoodAmount(amountToGive);
+                    ResourcesManager.Instance.AddResource(ResourcesManager.ResourceType.Gold, amountToGive);
 
                     LookTree(unit);
                 }

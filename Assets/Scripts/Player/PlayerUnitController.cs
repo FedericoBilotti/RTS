@@ -1,7 +1,6 @@
 using Manager;
 using Units;
 using Units.Resources;
-using Units.Work;
 using UnityEngine;
 using Utilities;
 
@@ -59,19 +58,23 @@ namespace Player
         private void MoveUnits()
         {
             if (!Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f)) return;
-
+        
             _unitManager.StopCoroutinesInUnits();
+            Vector3 moveTo = hit.point;
             
-            if (hit.transform.TryGetComponent(out IResource clickable))
+            if (hit.transform.TryGetComponent(out Resource resource))
             {
-                Debug.Log("Clickable");
-                AssignWorkToSelectedUnits(clickable);
+                AssignWorkToSelectedUnits(resource);
+            }
+            else if (hit.transform.TryGetComponent(out IDamageable damageable))
+            {
+                moveTo = damageable.Position;                
             }
 
-            MoveSelectedUnits(hit.point);
+            MoveSelectedUnits(moveTo);
         }
 
-        private void AssignWorkToSelectedUnits(IResource resource) => _unitManager.WorkUnits(resource.AssignWork(), resource.UnitDesired());
+        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.WorkUnits(resource.AssignWork(), resource.UnitDesired());
         private void MoveSelectedUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
 
         private void GetUnitInSelectionBox()

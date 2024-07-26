@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Units;
 using Units.Formations;
-using Units.Resources;
 using Units.Work;
 using UnityEngine;
 using Utilities;
@@ -36,13 +35,7 @@ namespace Player
 
         public void WorkUnits(IWorkable work, UnitType unitDesired)
         {
-            IEnumerable<Unit> unitsDesired = _selectedUnits;
-
-            // Si el trabajo requiere un tipo de unidad específico.
-            if (unitDesired != UnitType.None)
-            {
-                unitsDesired = _selectedUnits.Where(unit => unit.GetUnitType() != unitDesired);
-            }
+            IEnumerable<Unit> unitsDesired = _selectedUnits.Where(unit => unit.GetUnitType() != unitDesired);
             
             foreach (Unit selectedUnit in unitsDesired)
             {

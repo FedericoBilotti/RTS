@@ -5,6 +5,12 @@ namespace Units.Work
     public interface IWorkable
     {
         bool IsWorking { get; }
-        IEnumerator Working(Unit unit);
+        
+        /// <summary>
+        /// Animation to play
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <returns></returns>
+        IEnumerator PlayAnimation(Unit unit);
     }
 }
