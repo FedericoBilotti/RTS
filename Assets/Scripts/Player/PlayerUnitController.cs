@@ -60,7 +60,7 @@ namespace Player
             if (!Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f)) return;
 
             _unitManager.StopCoroutinesInUnits();
-            Vector3 moveTo = hit.point;
+            Vector3 destination = hit.point;
 
             if (hit.transform.TryGetComponent(out Resource resource))
             {
@@ -68,14 +68,18 @@ namespace Player
             }
             else if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
-                moveTo = damageable.Position;
+                destination = damageable.Position;
+                MoveUnits(destination);
             }
-
-            MoveSelectedUnits(moveTo);
+            else
+            {
+                MoveUnitsInFormation(destination);
+            }
         }
 
-        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.WorkUnits(resource, resource.UnitDesired());
-        private void MoveSelectedUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
+        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.SetResourceToWorkUnits(resource, resource.GetUnitDesired());
+        private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
+        private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
 
         private void GetUnitInSelectionBox()
         {

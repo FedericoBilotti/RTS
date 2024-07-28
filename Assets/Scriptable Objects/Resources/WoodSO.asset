@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a880ea2a3d54ab299543bbe60f42bc0, type: 3}
   m_Name: WoodSO
   m_EditorClassIdentifier: 
-  _totalAmountOfResource: 200
-  _amountToGive: 100
+  _totalAmountOfResource: 20
+  _amountToGive: 5
   _timeToGiveResource: 1
   _resourceType: 0
+  _desiredUnitType: 1

@@ -6,21 +6,18 @@ namespace Units.Villagers.States
     {
         private readonly Villager _villager;
 
-        public MoveToResource(Villager villager)
-        {
-            _villager = villager;
-        }
+        public MoveToResource(Villager villager) => _villager = villager;
 
-        public override void OnFixedUpdate()
+        public override void OnEnter()
         {
-            MoveToActualResource();
-        }
-
-        private void MoveToActualResource()
-        {
-            Vector3 destination = _villager.GetResource().transform.position;
+            ToResource(_villager, _villager.GetResource().transform);
             
-            _villager.SetDestination(destination);
+            _villager.SetName("Move To Resource");
+        }
+
+        private static void ToResource(Villager villager, Transform resourceTransform)
+        {
+            villager.SetDestination(resourceTransform.position);
         }
     }
 }

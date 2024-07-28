@@ -1,19 +1,18 @@
-using System.Collections;
-using Utilities;
-
 namespace Units.Resources
 {
     public class Wood : Resource
     {
-        public override IEnumerator ProvideResource()
+        public override int ProvideResource()
         {
-            yield return Helper.GetWaitForSeconds(resource.TimeToGiveResource);
-            
-            actualAmountOfResource -= GetResourceAmountToGive();
+            int amount = resource.AmountToGive;
+            actualAmountOfResource -= amount;
 
-            if (actualAmountOfResource > 0) yield break;
-            
-            gameObject.SetActive(false);
+            if (actualAmountOfResource <= 0)
+            {
+                gameObject.SetActive(false);
+            }
+
+            return amount;
         }
     }
 }

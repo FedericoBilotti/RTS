@@ -15,6 +15,8 @@ namespace Units.Villagers.States
         public override void OnEnter()
         {
             _actualCenter = GameManager.Instance.NearCenter(_villager);
+            
+            _villager.SetName("MoveToStorage");
         }
 
         public override void OnFixedUpdate()
@@ -25,9 +27,8 @@ namespace Units.Villagers.States
             MoveToNearStorage(destination);
 
             if (distance.magnitude > 5f) return;
-            
-            ResourcesManager.Instance.AddResource(ResourcesManager.ResourceType.Gold, _villager.GetResource().GetResourceAmountToGive());
-            _villager.SetAmountResource(0);
+
+            _villager.AddResourceToStorage();
         }
 
         private void MoveToNearStorage(Vector3 destination)
@@ -36,4 +37,4 @@ namespace Units.Villagers.States
             _villager.SetDestination(destination);
         }
     }
-}
+    }

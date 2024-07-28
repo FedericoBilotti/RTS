@@ -4,7 +4,6 @@ using Units;
 using Units.Formations;
 using Units.Resources;
 using Units.Villagers;
-using Units.Work;
 using UnityEngine;
 using Utilities;
 
@@ -35,10 +34,10 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
-        public void WorkUnits(Resource work, UnitType unitDesired)
+        public void SetResourceToWorkUnits(Resource work, UnitType unitDesired)
         {
-            IEnumerable<Unit> unitsDesired = _selectedUnits.Where(unit => unit.GetUnitType() != unitDesired);
-            
+            IEnumerable<Unit> unitsDesired = _selectedUnits.Where(unit => unit.GetUnitType() == unitDesired);
+
             foreach (Unit selectedUnit in unitsDesired)
             {
                 if (selectedUnit is Villager villager)
@@ -47,8 +46,8 @@ namespace Player
                 }
             }
         }
-        
-        public void MoveUnits(Vector3 desiredPosition)
+
+        public void MoveUnitsInFormation(Vector3 desiredPosition)
         {
             List<Vector3> positions = _formationManager.GetActualFormation(desiredPosition, _selectedUnits.ToList());
 
@@ -58,6 +57,14 @@ namespace Player
                 Vector3 position = positions[i];
                 selectedUnit.SetDestination(position);
                 i = (i + 1) % positions.Count;
+            }
+        }
+
+        public void MoveUnits(Vector3 desiredPosition)
+        {
+            foreach (Unit selectedUnit in _selectedUnits)
+            {
+                selectedUnit.SetDestination(desiredPosition);
             }
         }
 
