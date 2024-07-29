@@ -19,7 +19,6 @@ namespace Player
         private FormationManager _formationManager;
         private UnitManagerVisual _unitManagerVisual;
         private readonly HashSet<Unit> _selectedUnits = new();
-        private readonly List<Unit> _totalUnits = new();
 
         protected override void InitializeSingleton()
         {
@@ -97,10 +96,6 @@ namespace Player
             _selectedUnits.ForEach(unit => unit.UnitVisual.DeselectUnit());
             _selectedUnits.Clear();
         }
-
-        public void AddAvailableUnit(Unit unit) => _totalUnits.Add(unit);
-        public void RemoveAvailableUnit(Unit unit) => _totalUnits.Remove(unit);
-        public List<Unit> GetTotalUnits() => _totalUnits;
 
         private void OnDrawGizmos()
         {

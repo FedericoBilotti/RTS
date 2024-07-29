@@ -23,9 +23,6 @@ namespace Units
             UnitVisual = new UnitVisual(_selector);
         }
 
-        private void OnEnable() => UnitManager.Instance.AddAvailableUnit(this);
-        private void OnDisable() => UnitManager.Instance.RemoveAvailableUnit(this);
-
         public void StopMovement() => agent.isStopped = true;
         
         public void SetDestination(Vector3 destination)

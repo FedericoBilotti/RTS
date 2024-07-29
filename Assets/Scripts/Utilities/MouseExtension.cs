@@ -1,3 +1,4 @@
+using Manager;
 using UnityEngine;
 
 namespace Utilities
@@ -9,7 +10,7 @@ namespace Utilities
         {
             Vector3 position = Vector3.zero;
 
-            return Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit info, 100) ? info.point : position;
+            return Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit info, 300, GameManager.Instance.GetGroundLayer()) ? info.point : position;
         }
         
         // ReSharper disable Unity.PerformanceAnalysis
