@@ -6,7 +6,5 @@ namespace StateMachine
         void OnUpdate();
         void OnFixedUpdate();
         void OnExit();
-        void OnTriggerEnter(UnityEngine.Collider other);
-        void OnTriggerExit(UnityEngine.Collider other);
     }
 }

@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Units.Formations
 {
-    [CreateAssetMenu(fileName = "FactoryFormation", menuName = "Formations/FactoryFormation")]
+    [CreateAssetMenu(fileName = "FactoryFormation", menuName = "Units/Formation/FactoryFormation")]
     public class FactoryFormation : ScriptableObject
     {
         [Header("Circle")]

@@ -19,9 +19,6 @@ namespace StateMachine
         }
 
         public void FixedUpdate() => _current.State?.OnFixedUpdate();
-        
-        public void OnTriggerEnter(UnityEngine.Collider other) => _current.State?.OnTriggerEnter(other);
-        public void OnTriggerExit(UnityEngine.Collider other) => _current.State?.OnTriggerExit(other);
 
         public void SetState(IState state)
         {

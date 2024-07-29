@@ -1,5 +1,6 @@
 using Player;
 using StateMachine;
+using Units.SO;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +10,7 @@ namespace Units
     public abstract class Unit : MonoBehaviour
     {
         [SerializeField] private GameObject _selector;
-        [SerializeField] private UnitType _unitType;
+        [SerializeField] protected UnitSO unitSo;
         protected NavMeshAgent agent;
 
         public UnitVisual UnitVisual { get; private set; }
@@ -33,16 +34,16 @@ namespace Units
             agent.SetDestination(destination);
         }
 
-        public UnitType GetUnitType() => _unitType;
-    }
+        public UnitType GetUnitType() => unitSo.UnitType;
 
-    public enum UnitType
-    {
-        None,
-        Villager,
-        Padawan,
-        Jedi,
-        JediMaster,
-        StormTrooper,
+        public enum UnitType
+        {
+            None,
+            Villager,
+            Padawan,
+            Jedi,
+            JediMaster,
+            StormTrooper,
+        }
     }
 }

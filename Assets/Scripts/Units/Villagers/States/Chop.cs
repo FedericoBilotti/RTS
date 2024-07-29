@@ -47,12 +47,6 @@ namespace Units.Villagers.States
 
         private void SetResource() => _villager.SetResource(_resource.GetActualAmount() <= 0 ? null : _resource);
         private void AddResource() => _villager.AddResourceToInventory(_resourceType, _resource.ProvideResource());
-        
-        private void StartTimer()
-        {
-            if (_villager.GetResource() == null) return;
-
-            _timer.Start();
-        }
+        private void StartTimer() => _villager.GetResource().IsNotNull(() => _timer.Start());
     }
 }

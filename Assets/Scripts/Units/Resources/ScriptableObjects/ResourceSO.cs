@@ -9,12 +9,12 @@ namespace Units.Resources.ScriptableObjects
         [SerializeField] private int _amountToGive = 20;
         [SerializeField] private float _timeToGiveResource;
         [SerializeField] private ResourcesManager.ResourceType _resourceType;
-        [SerializeField] private UnitType _desiredUnitType = UnitType.Villager;
+        [SerializeField] private Unit.UnitType _desiredUnitType = Unit.UnitType.Villager;
 
         public int TotalAmountOfResource => _totalAmountOfResource;
         public int AmountToGive => _amountToGive;
         public float TimeToGiveResource => _timeToGiveResource;
         public ResourcesManager.ResourceType ResourceType => _resourceType;
-        public UnitType DesiredUnitType => _desiredUnitType;
+        public Unit.UnitType DesiredUnitType => _desiredUnitType;
     }
 }

@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Manager;
 using StateMachine;
 using Units.Resources;
+using Units.SO;
 using Units.Villagers.States;
 using UnityEngine;
 using Utilities;
@@ -11,13 +11,12 @@ namespace Units.Villagers
 {
     public class Villager : Unit
     {
-        [SerializeField] private int _maxAmountResourceToCarryOn = 20;
-        [SerializeField] private Resource _actualResource;
+        [SerializeField] private string _actualState; // Para saber el estado en que me encuentro
+
+        private Resource _actualResource;
         private Transform _resourceTransform;
         private ResourcesManager.ResourceType _actualResourceType;
 
-        [SerializeField] private string _actualState;
-        
         private readonly Dictionary<ResourcesManager.ResourceType, int> _inventoryResources = new();
 
         private void Start()
@@ -26,7 +25,7 @@ namespace Units.Villagers
             {
                 _inventoryResources[item] = 0;
             }
-            
+
             CreateFSM();
         }
 
@@ -44,44 +43,42 @@ namespace Units.Villagers
 
             var idle = new Idle(this);
             var mining = new Mining(this);
-            var chopping = new Chop(this);  
+            var chopping = new Chop(this);
             var moveToResource = new MoveToResource(this);
             var moveToStorage = new MoveToStorage(this);
             var searchNewResource = new SearchNewResource(this);
-            var moving = new Moving(this);
-            
+
             // from idle
             fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => _actualResource != null && _actualResource.GetActualAmount() > 0));
             
-            // from moving
-            // fsm.AddAnyTransition(moving, new FuncPredicate(() => !agent.isStopped));
-            
             // from moveToResource
-            fsm.AddTransition(moveToResource, chopping, new FuncPredicate(MoveToChopping)); 
-            fsm.AddTransition(moveToResource, mining, new FuncPredicate(MoveToMining));
-            
+            fsm.AddTransition(moveToResource, chopping, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Wood)));
+            fsm.AddTransition(moveToResource, mining, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Gold)));
+            // fsm.AddTransition(moveToResource, food, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Food)));
+
             // from mining
-            fsm.AddTransition(mining, moveToStorage, new FuncPredicate(IsInventoryFull));
-            fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull()));
-            
+            fsm.AddTransition(mining, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Gold)));
+            fsm.AddTransition(mining, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(ResourcesManager.ResourceType.Gold)));
+
             // from chop
-            fsm.AddTransition(chopping, moveToStorage, new FuncPredicate(IsInventoryFull));
-            fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull()));
-            
+            fsm.AddTransition(chopping, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Wood)));
+            fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(ResourcesManager.ResourceType.Wood)));
+
             // from moveToStorage
-            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => _actualResource != null && _actualResource.GetActualAmount() > 0 && !IsInventoryFull()));
-            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull()));
-            
+            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => _actualResource != null && !ResourceIsEmpty() && !IsInventoryFull(_actualResourceType)));
+            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(_actualResourceType)));
+
             // from searchNewResource
-            fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => _actualResource != null && _actualResource.GetActualAmount() > 0));
+            fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => _actualResource != null && !ResourceIsEmpty()));
             fsm.AddTransition(searchNewResource, idle, new FuncPredicate(() => _actualResource == null));
-            
+
             fsm.SetState(idle);
         }
 
-        private bool MoveToChopping() => _actualResource.GetResourceType() == ResourcesManager.ResourceType.Wood && IsNearResource();
-        private bool MoveToMining() => _actualResource.GetResourceType() == ResourcesManager.ResourceType.Gold && IsNearResource();
+        private bool MoveToResource(ResourcesManager.ResourceType resourceType) => _actualResource.GetResourceType() == resourceType && IsNearResource();
         private bool IsNearResource() => Vector3.Distance(transform.position, _actualResource.transform.position) < 3f;
+
+        private bool ResourceIsEmpty() => _actualResource.GetActualAmount() <= 0;
 
         public void SetResource(Resource resource)
         {
@@ -93,7 +90,7 @@ namespace Units.Villagers
         public Resource GetResource() => _actualResource;
         public Transform GetResourceTransform() => _resourceTransform;
         public ResourcesManager.ResourceType GetResourceType() => _actualResourceType;
-        
+
         // Para aceptar un tipo especifico de recurso, tengo que chequear a q storage estoy yendo y que recurso estaba sacando.
         public void AddResourceToStorage()
         {
@@ -107,19 +104,13 @@ namespace Units.Villagers
         public void AddResourceToInventory(ResourcesManager.ResourceType resourceType, int amount)
         {
             _inventoryResources[resourceType] += amount;
-            Debug.Log(_inventoryResources[resourceType]);
         }
 
-        private bool IsInventoryFull()
+        private bool IsInventoryFull(ResourcesManager.ResourceType resourceType)
         {
-            var total = 0;
-            
-            foreach (ResourcesManager.ResourceType item in System.Enum.GetValues(typeof(ResourcesManager.ResourceType)))
-            {
-                total += _inventoryResources[item];
-            }
-            
-            return total >= _maxAmountResourceToCarryOn;
+            if (unitSo is VillagerSO villagerSo) return villagerSo.IsInventoryFull(resourceType, _inventoryResources);
+
+            return false;
         }
     }
 }

@@ -1,5 +1,4 @@
 using StateMachine;
-using UnityEngine;
 
 namespace Units
 {
@@ -12,9 +11,5 @@ namespace Units
         public virtual void OnFixedUpdate() { }
 
         public virtual void OnExit() { }
-
-        public virtual void OnTriggerEnter(Collider other) { }
-
-        public virtual void OnTriggerExit(Collider other) { }
     }
 }

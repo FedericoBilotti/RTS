@@ -1,6 +1,6 @@
 namespace Units.Resources
 {
-    public class Wood : Resource
+    public class Gold : Resource
     {
     }
 }
