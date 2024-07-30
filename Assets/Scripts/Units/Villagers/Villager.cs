@@ -104,6 +104,11 @@ namespace Units.Villagers
 
         #endregion
 
+        public void SetCenter(Center center)
+        {
+            _center = center;
+        }
+
         public void SetResource(Resource resource)
         {
             _actualResource = resource;

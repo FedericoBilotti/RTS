@@ -1,4 +1,5 @@
 using Manager;
+using Structures;
 using Units;
 using Units.Resources;
 using UnityEngine;
@@ -6,24 +7,23 @@ using Utilities;
 
 namespace Player
 {
-    public class PlayerUnitController : IController
+    public class UnitController : IController
     {
         private readonly UnitManager _unitManager;
         private readonly UnitManagerVisual _unitManagerVisual;
-        private readonly GameObject _selectionArea;
 
+        private Vector3 _firstPosition = Vector3.zero;
         private Vector3 _startPosition = Vector3.zero;
         private Vector3 _endPosition = Vector3.zero;
 
         private float _mouseDownTime;
         private const float DELAY_TO_SELECT_UNITS = .1f;
 
-        public PlayerUnitController(UnitManager unitManager, UnitManagerVisual unitManagerVisual, GameObject selectionArea)
+        public UnitController(UnitManager unitManager, UnitManagerVisual unitManagerVisual)
         {
             _unitManager = unitManager;
             _unitManagerVisual = unitManagerVisual;
-            _selectionArea = selectionArea;
-            _selectionArea.SetActive(false);
+            _unitManagerVisual.SetActiveBox(false);
         }
 
         public void ArtificialUpdate()
@@ -35,6 +35,7 @@ namespace Player
 
             if (LeftMouseButtonDown())
             {
+                _firstPosition = Input.mousePosition;
                 _startPosition = MouseExtension.GetMouseInWorldPosition();
                 _endPosition = _startPosition;
 
@@ -46,18 +47,19 @@ namespace Player
 
                 if (Vector3.Distance(_startPosition, _endPosition) < 1) return;
 
-                _selectionArea.SetActive(true);
+                //_selectionArea.SetActive(true);
                 Vector3 dragCenter = (_startPosition + _endPosition) / 2;
                 Vector3 dragSize = _endPosition - _startPosition;
                 dragSize.y = 1;
 
-                ScaleBox(dragCenter, dragSize);
+                //ScaleBox(dragCenter, dragSize);
+                _unitManagerVisual.SetActiveBox(true);
+                _unitManagerVisual.ResizeSelectionBox(_firstPosition);
                 GetUnitInArea(dragCenter, dragSize);
             }
             else if (LeftMouseButtonUp())
             {
-                _selectionArea.SetActive(false);
-
+                _unitManagerVisual.SetActiveBox(false);
                 AddSingleUnit(_mouseDownTime);
                 _mouseDownTime = 0;
             }
@@ -81,6 +83,10 @@ namespace Player
                 destination = damageable.Position;
                 MoveUnits(destination);
             }
+            else if (hit.transform.TryGetComponent(out Center center))
+            {
+                MoveToCenter(center);
+            }
             else
             {
                 AssignWorkToSelectedUnits(null);
@@ -88,27 +94,22 @@ namespace Player
             }
         }
 
+        private void MoveToCenter(Center center) => _unitManager.MoveToCenter(center);
         private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.SetResourceToWorkUnits(resource);
         private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
 
-        private void ScaleBox(Vector3 center, Vector3 size)
-        {
-            _selectionArea.transform.position = center;
-            _selectionArea.transform.localScale = size + Vector3.up;
-        }
-
         private void GetUnitInArea(Vector3 center, Vector3 size)
         {
             size.Set(Mathf.Abs(size.x / 2), 1, Mathf.Abs(size.z / 2));
-            var collisions = Physics.OverlapBox(center, size, Quaternion.identity, GameManager.Instance.GetUnitLayer());
+            Collider[] collisions = Physics.OverlapBox(center, size, Quaternion.identity, GameManager.Instance.GetUnitLayer());
 
             if (!LeftShiftButton())
             {
                 _unitManager.ClearUnits();
             }
 
-            foreach (var hit in collisions)
+            foreach (Collider hit in collisions)
             {
                 if (!hit.transform.TryGetComponent(out Unit unit)) continue;
 

@@ -21,6 +21,5 @@ namespace Player
         }
         
         public void SetActiveBox(bool enabled) => _selectionBox.gameObject.SetActive(enabled);
-        public void SetSizeBox(Vector2 size) => _selectionBox.sizeDelta = size;
     }
 }

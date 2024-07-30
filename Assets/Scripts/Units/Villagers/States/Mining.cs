@@ -27,7 +27,7 @@ namespace Units.Villagers.States
             _timer.onTimerStop += StartTimer;
             _timer.Start();
 
-            _villager.SetStateName("Chop");
+            _villager.SetStateName("Mining");
         }
 
         // Play mining animation
