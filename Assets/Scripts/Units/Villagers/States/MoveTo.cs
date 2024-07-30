@@ -3,24 +3,23 @@ using UnityEngine.AI;
 
 namespace Units.Villagers.States
 {
-    public class Idle : BaseState
+    public class MoveTo : BaseState
     {
         private readonly Villager _villager;
         private readonly NavMeshAgent _agent;
         private readonly UnitSO _unitSO;
 
-        public Idle(Villager villager, NavMeshAgent agent, UnitSO unitSo)
+        public MoveTo(Villager villager, NavMeshAgent agent, UnitSO villagerSo)
         {
             _villager = villager;
             _agent = agent;
-            _unitSO = unitSo;
+            _unitSO = villagerSo;
         }
-        
+
         public override void OnEnter()
         {
-            _villager.SetStateName("Idle");
-            _agent.stoppingDistance = _unitSO.StoppingDistanceToAttack;
+            _villager.SetStateName("Move To");
+            _agent.stoppingDistance = _unitSO.StoppingDistanceToIdle;
         }
-        // Play Idle Animation
     }
 }

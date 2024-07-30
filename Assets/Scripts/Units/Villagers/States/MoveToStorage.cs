@@ -16,7 +16,7 @@ namespace Units.Villagers.States
         {
             _actualCenter = GameManager.Instance.NearCenter(_villager);
             
-            _villager.SetName("MoveToStorage");
+            _villager.SetStateName("MoveToStorage");
         }
 
         public override void OnFixedUpdate()

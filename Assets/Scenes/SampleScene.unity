@@ -763,12 +763,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 9092827534324999098, guid: d935c47f458097a44a5454cc9d5248d5,
-        type: 3}
-      propertyPath: unitSo
-      value: 
-      objectReference: {fileID: 11400000, guid: 8525b432097349344a183cb171c37aeb,
-        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3390,12 +3384,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager
       objectReference: {fileID: 0}
-    - target: {fileID: 9092827534324999098, guid: d935c47f458097a44a5454cc9d5248d5,
-        type: 3}
-      propertyPath: unitSo
-      value: 
-      objectReference: {fileID: 11400000, guid: 8525b432097349344a183cb171c37aeb,
-        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

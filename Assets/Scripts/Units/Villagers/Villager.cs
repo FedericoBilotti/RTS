@@ -28,14 +28,11 @@ namespace Units.Villagers
 
             CreateFSM();
         }
-
+    
         private void Update() => fsm?.Update();
         private void FixedUpdate() => fsm?.FixedUpdate();
 
-        public void SetName(string state)
-        {
-            _actualState = state;
-        }
+        public void SetStateName(string state) => _actualState = state;
 
         #region FSM
 
@@ -43,51 +40,57 @@ namespace Units.Villagers
         {
             fsm = new FiniteStateMachine();
 
-            var idle = new Idle(this);
+            var idle = new Idle(this, agent, unitSo);
+            var moveTo = new MoveTo(this, agent, unitSo);
+            var moveToResource = new MoveToResource(this);
             var mining = new Mining(this);
             var chopping = new Chop(this);
-            var moveToResource = new MoveToResource(this);
             var moveToStorage = new MoveToStorage(this);
             var searchNewResource = new SearchNewResource(this);
 
-            Transitions(idle, moveToResource, chopping, mining, moveToStorage, searchNewResource);
+            Transitions(idle, moveToResource, chopping, mining, moveToStorage, searchNewResource, moveTo);
 
             fsm.SetState(idle);
         }
 
-        private void Transitions(Idle idle, MoveToResource moveToResource, Chop chopping, Mining mining, MoveToStorage moveToStorage, SearchNewResource searchNewResource)
+        private void Transitions(Idle idle, MoveToResource moveToResource, Chop chopping, Mining mining, MoveToStorage moveToStorage, SearchNewResource searchNewResource, MoveTo moveTo)
         {
             // from idle
-            fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => _actualResource != null && _actualResource.GetActualAmount() > 0));
+            fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
+            fsm.AddTransition(idle, moveTo, new FuncPredicate(() => !_actualResource && agent.hasPath));
+            
+            // from moveTo 
+            fsm.AddTransition(moveTo, idle, new FuncPredicate(() => !_actualResource && !agent.hasPath));
+            fsm.AddTransition(moveTo, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
 
             // from moveToResource
-            fsm.AddTransition(moveToResource, idle, new FuncPredicate(() => _actualResource == null));
+            fsm.AddTransition(moveToResource, moveTo, new FuncPredicate(() => !_actualResource));
             fsm.AddTransition(moveToResource, chopping, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Wood)));
             fsm.AddTransition(moveToResource, mining, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Gold)));
             // fsm.AddTransition(moveToResource, food, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Food)));
 
             // from mining
+            fsm.AddTransition(mining, moveTo, new FuncPredicate(() => !_actualResource));
+            fsm.AddTransition(mining, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Gold)));
             fsm.AddTransition(mining, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Gold)));
-            fsm.AddTransition(mining, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(ResourcesManager.ResourceType.Gold)));
-            fsm.AddTransition(mining, idle, new FuncPredicate(() => _actualResource == null && agent.hasPath));
 
             // from chop
+            fsm.AddTransition(chopping, moveTo, new FuncPredicate(() => !_actualResource));
+            fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Wood)));
             fsm.AddTransition(chopping, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Wood)));
-            fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(ResourcesManager.ResourceType.Wood)));
-            fsm.AddTransition(chopping, idle, new FuncPredicate(() => _actualResource == null && agent.hasPath));
             
             // from food
+            // fsm.AddTransition(food, searchNewResource, new FuncPredicate(() => _actualResource.GetActualAmount() <= 0 && !IsInventoryFull(ResourcesManager.ResourceType.Food)));
             // fsm.AddTransition(food, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Food)));
-            // fsm.AddTransition(food, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(ResourcesManager.ResourceType.Food)));
-            // fsm.AddTransition(food, idle, new FuncPredicate(() => _actualResource == null));
+            // fsm.AddTransition(chopping, moveTo, new FuncPredicate(() => !_actualResource));
 
             // from moveToStorage
-            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => _actualResource != null && !ResourceIsEmpty() && !IsInventoryFull(_previousResourceType)));
-            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => _actualResource == null && !IsInventoryFull(_previousResourceType)));
+            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty() && !IsInventoryFull(_previousResourceType)));
+            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => !_actualResource && !IsInventoryFull(_previousResourceType)));
 
             // from searchNewResource
-            fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => _actualResource != null && !ResourceIsEmpty()));
-            fsm.AddTransition(searchNewResource, idle, new FuncPredicate(() => _actualResource == null));
+            fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
+            fsm.AddTransition(searchNewResource, idle, new FuncPredicate(() => !_actualResource));
         }
 
         private bool MoveToResource(ResourcesManager.ResourceType resourceType) => _actualResource.GetResourceType() == resourceType && IsNearResource();

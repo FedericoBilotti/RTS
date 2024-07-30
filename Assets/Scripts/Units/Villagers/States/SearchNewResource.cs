@@ -15,12 +15,16 @@ namespace Units.Villagers.States
         {
             SearchResource(_villager);
 
-            _villager.SetName("Search new resource");
+            _villager.SetStateName("Search new resource");
         }
 
         private static void SearchResource(Villager villager)
         {
-            if (!IsAnyResource(villager, out Collider[] colliders)) return;
+            if (!IsAnyResource(villager, out Collider[] colliders))
+            {
+                villager.SetResource(null);
+                return;
+            }
 
             List<Resource> resources = new();
 

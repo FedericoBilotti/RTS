@@ -12,7 +12,7 @@ namespace Units.Villagers.States
         {
             ToResource(_villager, _villager.GetResource().transform);
             
-            _villager.SetName("Move To Resource");
+            _villager.SetStateName("Move To Resource");
         }
 
         private static void ToResource(Villager villager, Transform resourceTransform)
