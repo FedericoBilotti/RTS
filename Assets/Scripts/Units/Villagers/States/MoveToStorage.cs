@@ -6,14 +6,15 @@ namespace Units.Villagers.States
 {
     public class MoveToStorage : BaseState
     {
-        private Center _actualCenter;
+        private Center _actualCenter; // -> IStorage 
         private readonly Villager _villager;
 
         public MoveToStorage(Villager villager) => _villager = villager;
 
         public override void OnEnter()
-        {
-            _actualCenter = GameManager.Instance.NearCenter(_villager);
+        {   
+            // En vez de GetCenter, seria -> GetStorage
+            _actualCenter = _villager.GetCenter() ?? GameManager.Instance.NearCenter(_villager);
 
             _villager.SetStateName("MoveToStorage");
         }

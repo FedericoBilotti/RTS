@@ -50,40 +50,47 @@ namespace Units.Villagers
             var chopping = new Chop(this);
             var moveToStorage = new MoveToStorage(this);
             var searchNewResource = new SearchNewResource(this);
+            var moveToCenter = new MoveToCenter(this);
 
-            Transitions(idle, moveToResource, chopping, mining, moveToStorage, searchNewResource, moveTo);
+            Transitions(idle, moveToResource, chopping, mining, moveToStorage, searchNewResource, moveTo, moveToCenter);
 
             fsm.SetState(idle);
         }
 
         private void Transitions(Idle idle, MoveToResource moveToResource, Chop chopping, Mining mining, MoveToStorage moveToStorage, SearchNewResource searchNewResource,
-                MoveTo moveTo)
+                MoveTo moveTo, MoveToCenter moveToCenter)
         {
             // from idle
+            fsm.AddTransition(idle, moveToCenter, new FuncPredicate(() => _center));
             fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
             fsm.AddTransition(idle, moveTo, new FuncPredicate(() => !_actualResource && agent.hasPath));
 
             // from moveTo 
             fsm.AddTransition(moveTo, idle, new FuncPredicate(() => !_actualResource && !agent.hasPath));
             fsm.AddTransition(moveTo, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
+            fsm.AddTransition(moveTo, moveToCenter, new FuncPredicate(() => _center));
 
             // from moveToResource
+            fsm.AddTransition(moveToResource, moveToCenter, new FuncPredicate(() => _center));
             fsm.AddTransition(moveToResource, moveTo, new FuncPredicate(() => !_actualResource));
             fsm.AddTransition(moveToResource, chopping, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Wood)));
             fsm.AddTransition(moveToResource, mining, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Gold)));
             // fsm.AddTransition(moveToResource, food, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Food)));
 
             // from mining
+            fsm.AddTransition(mining, moveToCenter, new FuncPredicate(() => _center));
             fsm.AddTransition(mining, moveTo, new FuncPredicate(() => !_actualResource));
             fsm.AddTransition(mining, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Gold)));
             fsm.AddTransition(mining, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Gold)));
 
             // from chop
+            fsm.AddTransition(chopping, moveToCenter, new FuncPredicate(() => _center));
             fsm.AddTransition(chopping, moveTo, new FuncPredicate(() => !_actualResource));
             fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Wood)));
             fsm.AddTransition(chopping, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Wood)));
 
             // from food
+            // fsm.AddTransition(food, moveToCenter, new FuncPredicate(() => _center));
             // fsm.AddTransition(food, searchNewResource, new FuncPredicate(() => _actualResource.GetActualAmount() <= 0 && !IsInventoryFull(ResourcesManager.ResourceType.Food)));
             // fsm.AddTransition(food, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Food)));
             // fsm.AddTransition(chopping, moveTo, new FuncPredicate(() => !_actualResource));
@@ -91,6 +98,9 @@ namespace Units.Villagers
             // from moveToStorage
             fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => !ResourceIsEmpty() && !IsInventoryFull(_previousResourceType)));
             fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(_previousResourceType)));
+
+            // from moveToCenter -> Can be convert to MoveToSpecificStorage -> clase center tendria q implementar la interfaz storage, y asi seria generico.
+            fsm.AddTransition(moveToCenter, idle, new FuncPredicate(IsInventoryEmpty));
 
             // from searchNewResource
             fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
@@ -104,6 +114,7 @@ namespace Units.Villagers
 
         #endregion
 
+        // Generico -> IStorage
         public void SetCenter(Center center)
         {
             _center = center;
@@ -134,6 +145,16 @@ namespace Units.Villagers
         public void AddResourceToInventory(ResourcesManager.ResourceType resourceType, int amount)
         {
             _inventoryResources[resourceType] += amount;
+        }
+
+        private bool IsInventoryEmpty()
+        {
+            foreach (ResourcesManager.ResourceType resourceType in System.Enum.GetValues(typeof(ResourcesManager.ResourceType)))
+            {
+                if (_inventoryResources[resourceType] > 0) return false;
+            }
+
+            return true;
         }
 
         private bool IsInventoryFull(ResourcesManager.ResourceType resourceType)
