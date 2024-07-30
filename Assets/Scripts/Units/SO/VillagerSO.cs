@@ -14,9 +14,9 @@ namespace Units.SO
         /// Check out if the inventory of the specificed resource is full
         /// </summary>
         /// <param name="desiredResourceType"></param>
-        /// <param name="inventoryResources"></param>
+        /// <param name="actualAmountInInventory"></param>
         /// <returns></returns>
-        public bool IsInventoryFull(ResourcesManager.ResourceType desiredResourceType, Dictionary<ResourcesManager.ResourceType, int> inventoryResources)
+        public bool IsInventoryFull(ResourcesManager.ResourceType desiredResourceType, int actualAmountInInventory)
         {
             float total = 0;
             InventoryMax resourceInventoryType = _inventoryMaxes[0];
@@ -25,7 +25,7 @@ namespace Units.SO
             {
                 if (inventoryMax.ResourceType != desiredResourceType) continue;
                 
-                total = inventoryResources[inventoryMax.ResourceType];
+                total = actualAmountInInventory;
                 resourceInventoryType = inventoryMax;
             }
 
