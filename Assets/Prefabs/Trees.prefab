@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7797071221871782383}
   - component: {fileID: 5270606822300797449}
-  - component: {fileID: 3140152136727040759}
   - component: {fileID: 4909258261167310831}
   m_Layer: 9
   m_Name: Trees
@@ -48,22 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resource: {fileID: 11400000, guid: 7deb4c92c0f4e6f44b6237fc93af69d2, type: 2}
---- !u!208 &3140152136727040759
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 121469659508989569}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 1.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!65 &4909258261167310831
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -35,16 +35,13 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
-        public void SetResourceToWorkUnits(Resource work, Unit.UnitType unitDesired)
+        public void SetResourceToWorkUnits(Resource resource)
         {
-            IEnumerable<Unit> unitsDesired = _selectedUnits.Where(unit => unit.GetUnitType() == unitDesired);
-
-            foreach (Unit selectedUnit in unitsDesired)
+            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            
+            foreach (Villager selectedUnit in villagers)
             {
-                if (selectedUnit is Villager villager)
-                {
-                    villager.SetResource(work);
-                }
+                selectedUnit.SetResource(resource);
             }
         }
 

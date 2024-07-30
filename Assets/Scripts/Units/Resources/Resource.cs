@@ -1,11 +1,9 @@
 using Manager;
 using Units.Resources.ScriptableObjects;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Units.Resources
 {
-    [RequireComponent(typeof(NavMeshObstacle))]
     public abstract class Resource : MonoBehaviour
     {
         [SerializeField] protected ResourceSO resource;

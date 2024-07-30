@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selector: {fileID: 2360557717262013253}
-  _unitType: 3
+  unitSo: {fileID: 11400000, guid: b62c1cb1c5638b84c8f75bb83beb93f8, type: 2}
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

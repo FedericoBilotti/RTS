@@ -35,8 +35,6 @@ namespace Player
 
             if (LeftMouseButtonDown())
             {
-                _unitManagerVisual.SetActiveBox(true);
-                _unitManagerVisual.SetSizeBox(Vector2.zero);
                 _startPosition = MouseExtension.GetMouseInWorldPosition();
                 _endPosition = _startPosition;
 
@@ -72,7 +70,6 @@ namespace Player
             bool hitSomething = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f);
             if (!hitSomething) return;
 
-            _unitManager.StopCoroutinesInUnits();
             Vector3 destination = hit.point;
 
             if (hit.transform.TryGetComponent(out Resource resource))
@@ -86,11 +83,12 @@ namespace Player
             }
             else
             {
+                AssignWorkToSelectedUnits(null);
                 MoveUnitsInFormation(destination);
             }
         }
 
-        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.SetResourceToWorkUnits(resource, resource.GetUnitDesired());
+        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.SetResourceToWorkUnits(resource);
         private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
 
