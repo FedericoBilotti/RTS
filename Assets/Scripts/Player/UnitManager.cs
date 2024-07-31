@@ -15,17 +15,28 @@ namespace Player
     {
         [SerializeField] private RectTransform _selectionBox;
 
-        private IController _controller;
         private FormationManager _formationManager;
-        private UnitManagerVisual _unitManagerVisual;
+        private IController _controller;
+        private UnitOrderManager _unitOrderManager;
+        private UnitVisualManager _unitVisualManager;
+        private UnitSelectorManager _unitSelectorManager;
+
         private readonly HashSet<Unit> _selectedUnits = new();
+
+        // Estas listas es para gestionar mejor que está haciendo cada villager.
+        private readonly List<Villager> _villagers = new();
+        private readonly List<Villager> _villagersInFood = new();
+        private readonly List<Villager> _villagersInWood = new();
+        private readonly List<Villager> _villagersInGold = new();
 
         protected override void InitializeSingleton()
         {
             base.InitializeSingleton();
 
-            _unitManagerVisual = new UnitManagerVisual(_selectionBox);
-            _controller = new UnitController(this, _unitManagerVisual);
+            _unitOrderManager = new UnitOrderManager(this);
+            _unitVisualManager = new UnitVisualManager(_selectionBox);
+            _unitSelectorManager = new UnitSelectorManager(this);
+            _controller = new UnitController(_unitVisualManager, _unitSelectorManager, _unitOrderManager);
 
             _formationManager = GetComponent<FormationManager>();
         }
@@ -37,10 +48,11 @@ namespace Player
 
         public void MoveToStorage(IStorage storage)
         {
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
-            
+            IEnumerable<Villager>
+                    villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+
             if (!villagers.Any()) return;
-            
+
             foreach (Villager selectedUnit in villagers)
             {
                 selectedUnit.SetStorage(storage);
@@ -49,10 +61,11 @@ namespace Player
 
         public void SetResourceToWorkUnits(Resource resource)
         {
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
-            
+            IEnumerable<Villager>
+                    villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+
             if (!villagers.Any()) return;
-            
+
             foreach (Villager selectedUnit in villagers)
             {
                 selectedUnit.SetResource(resource);
@@ -80,14 +93,6 @@ namespace Player
             }
         }
 
-        public void StopCoroutinesInUnits()
-        {
-            foreach (Unit unit in _selectedUnits)
-            {
-                unit.StopAllCoroutines();
-            }
-        }
-
         public void AddUnit(Unit unit)
         {
             _selectedUnits.Add(unit);
@@ -104,7 +109,11 @@ namespace Player
 
         public void ClearUnits()
         {
-            _selectedUnits.ForEach(unit => unit.UnitVisual.DeselectUnit());
+            foreach (Unit selectedUnit in _selectedUnits)
+            {
+                selectedUnit.UnitVisual.DeselectUnit();
+            }
+
             _selectedUnits.Clear();
         }
 

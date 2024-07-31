@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace Player
 {
-    public class UnitManagerVisual
+    public class UnitVisualManager
     {
         private readonly RectTransform _selectionBox;
         
-        public UnitManagerVisual(RectTransform selectionBox)
+        public UnitVisualManager(RectTransform selectionBox)
         {
             _selectionBox = selectionBox;
         }
