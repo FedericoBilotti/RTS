@@ -5,21 +5,20 @@ using Utilities;
 
 namespace Units.Villagers.States
 {
-    public class Chop : BaseState
+    public class Chop : BaseStateVillager
     {
-        private readonly Villager _villager;
         private readonly CountdownTimer _timer = new(2f);
 
         private Resource _resource;
         private ResourcesManager.ResourceType _resourceType;
 
-        public Chop(Villager villager) => _villager = villager;
+        public Chop(Villager villager) : base(villager) { }
 
         public override void OnEnter()
         {
-            _villager.StopMovement();
+            villager.StopMovement();
             
-            _resource = _villager.GetResource();
+            _resource = villager.GetResource();
             _resourceType = _resource.GetResourceType();
 
             _timer.Reset(_resource.GetTimeToGiveResource());
@@ -27,7 +26,7 @@ namespace Units.Villagers.States
             _timer.onTimerStop += StartTimer;
             _timer.Start();
 
-            _villager.SetStateName("Chop");
+            villager.SetStateName("Chop");
         }
 
         // Play chop animation
@@ -43,7 +42,7 @@ namespace Units.Villagers.States
             _timer.Stop();
         }
 
-        private void AddResource() => _villager.AddResourceToInventory(_resourceType, _resource.ProvideResource());
-        private void StartTimer() => _villager.GetResource().IsNotNull(() => _timer.Start());
+        private void AddResource() => villager.AddResourceToInventory(_resourceType, _resource.ProvideResource());
+        private void StartTimer() => villager.GetResource().IsNotNull(() => _timer.Start());
     }
 }

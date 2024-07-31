@@ -5,17 +5,16 @@ using UnityEngine;
 
 namespace Units.Villagers.States
 {
-    public class SearchNewResource : BaseState
+    public class SearchNewResource : BaseStateVillager
     {
-        private readonly Villager _villager;
 
-        public SearchNewResource(Villager villager) => _villager = villager;
+        public SearchNewResource(Villager villager) : base(villager) { }
 
         public override void OnEnter()
         {
-            SearchResource(_villager);
+            SearchResource(villager);
 
-            _villager.SetStateName("Search new resource");
+            villager.SetStateName("Search new resource");
         }
 
         private static void SearchResource(Villager villager)

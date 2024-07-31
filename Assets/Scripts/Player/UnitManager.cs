@@ -40,7 +40,7 @@ namespace Player
             
             foreach (Villager selectedUnit in villagers)
             {
-                selectedUnit.SetCenter(center);
+                selectedUnit.SetStorage(center);
             }
         }
 

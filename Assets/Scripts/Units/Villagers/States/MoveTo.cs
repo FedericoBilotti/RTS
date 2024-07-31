@@ -3,13 +3,13 @@ using UnityEngine.AI;
 
 namespace Units.Villagers.States
 {
-    public class MoveTo : BaseState
+    public class MoveTo : BaseStateVillager
     {
         private readonly Villager _villager;
         private readonly NavMeshAgent _agent;
         private readonly UnitSO _unitSO;
 
-        public MoveTo(Villager villager, NavMeshAgent agent, UnitSO villagerSo)
+        public MoveTo(Villager villager, NavMeshAgent agent, UnitSO villagerSo) : base(villager) 
         {
             _villager = villager;
             _agent = agent;

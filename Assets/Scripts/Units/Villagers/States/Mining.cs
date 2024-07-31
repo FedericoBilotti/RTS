@@ -5,20 +5,20 @@ using Utilities;
 
 namespace Units.Villagers.States
 {
-    public class Mining : BaseState
+    public class Mining : BaseStateVillager
     {
         private readonly Villager _villager;
         private readonly CountdownTimer _timer = new(2f);
-        
+
         private Resource _resource;
         private ResourcesManager.ResourceType _resourceType;
 
-        public Mining(Villager villager) => _villager = villager;
+        public Mining(Villager villager) : base(villager) { }
 
         public override void OnEnter()
         {
             _villager.StopMovement();
-            
+
             _resource = _villager.GetResource();
             _resourceType = _resource.GetResourceType();
 

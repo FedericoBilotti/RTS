@@ -2,33 +2,29 @@ using UnityEngine;
 
 namespace Units.Villagers.States
 {
-    public class MoveToCenter : BaseState
+    public class MoveToCenter : BaseStateVillager
     {
         private readonly Villager _villager;
 
-        public MoveToCenter(Villager villager) => _villager = villager;
+        public MoveToCenter(Villager villager) : base(villager) {}
 
         public override void OnEnter()
         {
-            ToCenter(_villager, _villager.GetCenter().transform);
+            ToCenter(villager, villager.GetStorage().Position);
             
-            _villager.SetStateName("Move To Center");
+            villager.SetStateName("Move To Center");
         }
 
         public override void OnUpdate()
         {
             if (!IsNearCenter()) return;
             
-            _villager.AddResourceToStorage();
+            villager.AddResourceToStorage();
         }
 
-        public override void OnExit() => _villager.SetCenter(null);
+        public override void OnExit() => villager.SetStorage(null);
 
-        private bool IsNearCenter() => Vector3.Distance(_villager.transform.position, _villager.GetCenter().transform.position) < 3f;
-        
-        private static void ToCenter(Villager villager, Transform resourceTransform)
-        {
-            villager.SetDestination(resourceTransform.position);
-        }
+        private bool IsNearCenter() => Vector3.Distance(villager.transform.position, villager.GetStorage().Position) < 3f;
+        private static void ToCenter(Villager villager, Vector3 position) => villager.SetDestination(position);
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Utilities;
 
 namespace Manager
@@ -22,14 +21,12 @@ namespace Manager
         public void AddResource(ResourceType resourceType, int amount)
         {
             _resourceAmount[resourceType] += amount;
-            Debug.Log($"Added to the resource manager {_resourceAmount[resourceType]} of {resourceType}");
         }
         
         
         public void RemoveResource(ResourceType resourceType, int amount)
         {
             _resourceAmount[resourceType] -= amount;
-            Debug.Log($"Removed from the resource manager {_resourceAmount[resourceType]} of {resourceType}");
         }
         
         public int GetResourceAmount(ResourceType resourceType)
