@@ -1,4 +1,5 @@
 using Manager;
+using Structures.Storages;
 using UnityEngine;
 
 namespace Structures
@@ -7,9 +8,18 @@ namespace Structures
     {
         public Vector3 Position => transform.position;
 
-        private void OnEnable() => GameManager.Instance.AddCenter(this);
-        private void OnDisable() => GameManager.Instance.RemoveCenter(this);
+        public ResourcesManager.ResourceType GetStorageType => ResourcesManager.ResourceType.All;
 
-        public StorageTypes GetStorageType() => StorageTypes.Center;
+        private void OnEnable()
+        {
+            GameManager.Instance.AddCenter(this);
+            GameManager.Instance.AddStorage(this);
+        }
+
+        private void OnDisable()
+        {
+            GameManager.Instance.RemoveCenter(this);
+            GameManager.Instance.RemoveStorage(this);
+        }
     }
 }

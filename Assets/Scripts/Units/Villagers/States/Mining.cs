@@ -17,6 +17,7 @@ namespace Units.Villagers.States
         public override void OnEnter()
         {
             villager.StopMovement();
+            villager.SetStorage(GameManager.Instance.NearStorage(villager, ResourcesManager.ResourceType.Gold));
 
             _resource = villager.GetResource();
             _resourceType = _resource.GetResourceType();

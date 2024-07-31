@@ -8,7 +8,7 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
-            ToResource(villager, villager.GetResource().transform);
+            ToResource(villager, villager.GetResourceTransform());
 
             villager.SetStateName("Move To Resource");
         }

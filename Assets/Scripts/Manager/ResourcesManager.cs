@@ -23,7 +23,6 @@ namespace Manager
             _resourceAmount[resourceType] += amount;
         }
         
-        
         public void RemoveResource(ResourceType resourceType, int amount)
         {
             _resourceAmount[resourceType] -= amount;
@@ -39,6 +38,7 @@ namespace Manager
             Wood,
             Food,
             Gold,
+            All
         }
     }
 }

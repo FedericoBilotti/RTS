@@ -1,8 +1,5 @@
-using System;
 using Manager;
-using Structures;
-using TMPro.EditorUtilities;
-using Units.Resources;
+using Structures.Storages;
 using UnityEngine;
 
 namespace Units.Villagers.States
@@ -13,10 +10,11 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
+            // If my storage is null, set it to the nearest center
             villager.SetStorage(villager.GetStorage() ?? GameManager.Instance.NearCenter(villager));
 
             Vector3 destination = villager.GetStorage().Position;
-            MoveToNearStorage(destination);
+            MoveToNearStorage(villager, destination);
 
             villager.SetStateName("Move To Storage");
         }
@@ -24,34 +22,31 @@ namespace Units.Villagers.States
         public override void OnUpdate()
         {
             IStorage actualStorage = villager.GetStorage();
-            Vector3 distance = actualStorage.Position - villager.transform.position;
 
-            if (distance.magnitude > 5f) return;
+            if (IsNearStorage(actualStorage)) return;
 
-            StorageTypes storage = actualStorage.GetStorageType();
+            AddResourceToStorage(actualStorage);
+        }
 
-            if (storage == StorageTypes.Center)
+        private bool IsNearStorage(IStorage actualStorage) => (actualStorage.Position - villager.transform.position).sqrMagnitude > 5f * 5f;
+
+        private void AddResourceToStorage(IStorage actualStorage)
+        {
+            ResourcesManager.ResourceType storage = actualStorage.GetStorageType;
+
+            if (storage == ResourcesManager.ResourceType.All)
             {
                 villager.AddResourceToStorage();
             }
             else
             {
                 // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
-                var resourceType = villager.GetResourceType();
+                ResourcesManager.ResourceType resourceType = villager.GetResourceType();
                 villager.AddSpecificResourceToStorage(resourceType);
                 Debug.Log("Se añadio un recurso específico");
-            } 
-            
-            villager.SetStorage(null);
-            
-            // else if (storage == StorageTypes.Food) villager.AddSpecificResourceToStorage(ResourcesManager.ResourceType.Food);
-            // else if (storage == StorageTypes.Wood) villager.AddSpecificResourceToStorage(ResourcesManager.ResourceType.Wood);
-            // else if (storage == StorageTypes.Gold) villager.AddSpecificResourceToStorage(ResourcesManager.ResourceType.Gold);
+            }
         }
 
-        private void MoveToNearStorage(Vector3 destination)
-        {
-            villager.SetDestination(destination);
-        }
+        private static void MoveToNearStorage(Villager villager, Vector3 destination) => villager.SetDestination(destination);
     }
 }

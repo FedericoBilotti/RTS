@@ -33,20 +33,14 @@ namespace Units.Formations
             _formations.Add(FormationType.Square, _squareFormation);
         }
 
-        // Va a ser cambiado con botones de la UI
+        // Va a ser cambiado con botones de la UI y por las teclas del teclado
         /// <summary>
         /// Change the actual formation unit
         /// </summary>
         /// <param name="formationType">Desired formation type</param>
         public IFormation GetFormation(FormationType formationType)
         {
-            if (!_formations.TryGetValue(formationType, out IFormation formation))
-            {
-                Debug.LogWarning("No existe la formación: " + formationType);
-                return null;
-            }
-
-            return formation;
+            return _formations.GetValueOrDefault(formationType);
         }
     }
 

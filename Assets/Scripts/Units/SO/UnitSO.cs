@@ -9,7 +9,7 @@ namespace Units.SO
         [SerializeField] private int _damage;
         [SerializeField] private Unit.UnitType _unitType = Unit.UnitType.Villager;
         
-        [Header("Nav Mesh")]
+        [Header("NavMesh")]
         [SerializeField] private int _stoppingDistanceToIdle = 0;
         [SerializeField] private int _stoppingDistanceToAttack = 1;
         

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Structures;
+using Structures.Storages;
 using Units;
 using Units.Formations;
 using Units.Resources;
@@ -34,19 +35,23 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
-        public void MoveToCenter(Center center)
+        public void MoveToStorage(IStorage storage)
         {
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            
+            if (!villagers.Any()) return;
             
             foreach (Villager selectedUnit in villagers)
             {
-                selectedUnit.SetStorage(center);
+                selectedUnit.SetStorage(storage);
             }
         }
 
         public void SetResourceToWorkUnits(Resource resource)
         {
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            
+            if (!villagers.Any()) return;
             
             foreach (Villager selectedUnit in villagers)
             {

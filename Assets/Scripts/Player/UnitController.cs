@@ -1,5 +1,6 @@
 using Manager;
 using Structures;
+using Structures.Storages;
 using Units;
 using Units.Resources;
 using UnityEngine;
@@ -83,18 +84,19 @@ namespace Player
                 destination = damageable.Position;
                 MoveUnits(destination);
             }
-            else if (hit.transform.TryGetComponent(out Center center))
+            else if (hit.transform.TryGetComponent(out IStorage storage))
             {
-                MoveToCenter(center);
+                MoveToCenter(storage);
             }
             else
             {
-                AssignWorkToSelectedUnits(null);
                 MoveUnitsInFormation(destination);
+                MoveToCenter(null);
+                AssignWorkToSelectedUnits(null);
             }
         }
 
-        private void MoveToCenter(Center center) => _unitManager.MoveToCenter(center);
+        private void MoveToCenter(IStorage storage) => _unitManager.MoveToStorage(storage);
         private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.SetResourceToWorkUnits(resource);
         private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
