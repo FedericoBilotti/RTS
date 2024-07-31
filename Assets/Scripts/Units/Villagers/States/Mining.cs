@@ -7,7 +7,6 @@ namespace Units.Villagers.States
 {
     public class Mining : BaseStateVillager
     {
-        private readonly Villager _villager;
         private readonly CountdownTimer _timer = new(2f);
 
         private Resource _resource;
@@ -17,9 +16,9 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
-            _villager.StopMovement();
+            villager.StopMovement();
 
-            _resource = _villager.GetResource();
+            _resource = villager.GetResource();
             _resourceType = _resource.GetResourceType();
 
             _timer.Reset(_resource.GetTimeToGiveResource());
@@ -27,7 +26,7 @@ namespace Units.Villagers.States
             _timer.onTimerStop += StartTimer;
             _timer.Start();
 
-            _villager.SetStateName("Mining");
+            villager.SetStateName("Mining");
         }
 
         // Play mining animation
@@ -43,7 +42,7 @@ namespace Units.Villagers.States
             _timer.Stop();
         }
 
-        private void AddResource() => _villager.AddResourceToInventory(_resourceType, _resource.ProvideResource());
-        private void StartTimer() => _villager.GetResource().IsNotNull(() => _timer.Start());
+        private void AddResource() => villager.AddResourceToInventory(_resourceType, _resource.ProvideResource());
+        private void StartTimer() => villager.GetResource().IsNotNull(() => _timer.Start());
     }
 }

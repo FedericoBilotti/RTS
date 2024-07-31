@@ -26,7 +26,6 @@ namespace Units.Villagers.States
             IStorage actualStorage = villager.GetStorage();
             Vector3 distance = actualStorage.Position - villager.transform.position;
 
-            Debug.Log("hola");
             if (distance.magnitude > 5f) return;
 
             StorageTypes storage = actualStorage.GetStorageType();
@@ -40,10 +39,10 @@ namespace Units.Villagers.States
                 // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
                 var resourceType = villager.GetResourceType();
                 villager.AddSpecificResourceToStorage(resourceType);
+                Debug.Log("Se añadio un recurso específico");
             } 
             
             villager.SetStorage(null);
-            Debug.Log("Añadi el recurso al storage");
             
             // else if (storage == StorageTypes.Food) villager.AddSpecificResourceToStorage(ResourcesManager.ResourceType.Food);
             // else if (storage == StorageTypes.Wood) villager.AddSpecificResourceToStorage(ResourcesManager.ResourceType.Wood);
