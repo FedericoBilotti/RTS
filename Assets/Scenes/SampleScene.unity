@@ -2184,8 +2184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
-  _onAddResource: {fileID: 11400000, guid: 05a4c7e476d6b3447a532eb017b84b93, type: 2}
-  _onRemoveResource: {fileID: 11400000, guid: 57fbf793ff6b35d40940d8fc8b651f01, type: 2}
+  _onAddResource: {fileID: 11400000, guid: bc94f6c2c46ef994497116079b309fc6, type: 2}
+  _onRemoveResource: {fileID: 11400000, guid: 420edf7b87f742a428186177d1558389, type: 2}
 --- !u!4 &883671734
 Transform:
   m_ObjectHideFlags: 0
