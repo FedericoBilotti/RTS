@@ -102,9 +102,9 @@ namespace Units.Villagers
 
         private void FoodTransitions(Chop chopping, Moving moving, SearchNewResource searchNewResource, MoveToStorage moveToStorage)
         {
-            // fsm.AddTransition(food, moveTo, new FuncPredicate(() => !_actualResource));
-            // fsm.AddTransition(food, searchNewResource, new FuncPredicate(() => _actualResource.GetActualAmount() <= 0 && !IsInventoryFull(ResourcesManager.ResourceType.Food)));
-            // fsm.AddTransition(food, moveToStorage, new FuncPredicate(() => _storage != null || IsInventoryFull(ResourcesManager.ResourceType.Food)));
+            // fsm.AddTransition(chopping, moving, new FuncPredicate(() => !_actualResource));
+            // fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Food)));
+            // fsm.AddTransition(chopping, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Food)));
         }
 
         private void MoveToStorageTransitions(MoveToStorage moveToStorage, MoveToResource moveToResource, SearchNewResource searchNewResource, Idle moveTo)
@@ -116,7 +116,6 @@ namespace Units.Villagers
 
         private void SearchNewResourceTransitions(SearchNewResource searchNewResource, MoveToStorage moveToStorage, MoveToResource moveToResource, Idle idle)
         {
-            // from searchNewResource
             fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => _actualResource && !ResourceIsEmpty()));
             fsm.AddTransition(searchNewResource, moveToStorage, new FuncPredicate(() => !_actualResource && !IsInventoryEmpty()));
             fsm.AddTransition(searchNewResource, idle, new FuncPredicate(() => !_actualResource));

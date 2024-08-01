@@ -48,7 +48,6 @@ namespace Player
                 Vector3 dragSize = _endPosition - _startPosition;
                 dragSize.y = 1;
 
-                //ScaleBox(dragCenter, dragSize);
                 _unitVisualManager.SetActiveBox(true);
                 _unitVisualManager.ResizeSelectionBox(_firstPosition);
                 _unitSelectorManager.GetUnitInArea(dragCenter, dragSize, LeftShiftButton());

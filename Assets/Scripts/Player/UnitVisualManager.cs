@@ -1,16 +1,12 @@
 using UnityEngine;
+using Utilities;
 
 namespace Player
 {
-    public class UnitVisualManager
+    public class UnitVisualManager : Singleton<UnitVisualManager>
     {
-        private readonly RectTransform _selectionBox;
-        
-        public UnitVisualManager(RectTransform selectionBox)
-        {
-            _selectionBox = selectionBox;
-        }
-        
+        [SerializeField] private RectTransform _selectionBox;
+
         public void ResizeSelectionBox(Vector2 startPosition)
         {
             float width = Input.mousePosition.x - startPosition.x;
@@ -20,6 +16,6 @@ namespace Player
             _selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));                // Scale the selection box
         }
         
-        public void SetActiveBox(bool enabled) => _selectionBox.gameObject.SetActive(enabled);
+        public void SetActiveBox(bool param) => _selectionBox.gameObject.SetActive(param);
     }
 }

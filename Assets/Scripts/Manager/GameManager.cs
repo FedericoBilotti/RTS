@@ -25,25 +25,11 @@ namespace Manager
         public LayerMask GetTreesLayer() => _treesLayer;
         public LayerMask GetGroundLayer() => _groundLayer;
 
-        public void AddCenter(Center center)
-        {
-            _centers.Add(center);
-        }
+        public void AddCenter(Center center) => _centers.Add(center);
+        public void RemoveCenter(Center center) => _centers.Remove(center);
 
-        public void RemoveCenter(Center center)
-        {
-            _centers.Remove(center);
-        }
-        
-        public void AddStorage(IStorage storage)
-        {
-            _storages.Add(storage);
-        }
-
-        public void RemoveStorage(IStorage storage)
-        {
-            _storages.Remove(storage);
-        }
+        public void AddStorage(IStorage storage) => _storages.Add(storage);
+        public void RemoveStorage(IStorage storage) => _storages.Remove(storage);
 
         public Center NearCenter(Unit unit)
         {
