@@ -17,3 +17,6 @@ MonoBehaviour:
   _timeToGiveResource: 1
   _resourceType: 0
   _desiredUnitType: 1
+  _resourceLayerMask:
+    serializedVersion: 2
+    m_Bits: 512

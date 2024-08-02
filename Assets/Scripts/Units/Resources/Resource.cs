@@ -28,6 +28,7 @@ namespace Units.Resources
         }
 
         public ResourceSO GetResourceSO() => _resourceSO;
+
         public Vector3 Position => transform.position;
         public int GetActualAmount() => _actualAmountOfResource;
         

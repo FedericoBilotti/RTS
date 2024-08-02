@@ -42,9 +42,10 @@ namespace Units.Villagers.States
             else
             {
                 // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
-                ResourcesManager.ResourceType resourceType = villager.ActualWork.GetResourceSO().ResourceType;
+                ResourcesManager.ResourceType resourceType = villager.PreviousWork.GetResourceSO().ResourceType;
+                
                 villager.AddSpecificResourceToStorage(resourceType);
-                Debug.Log("Se añadio un recurso específico");
+                Debug.Log($"Se añadio: {resourceType} al storage");
             }
         }
 

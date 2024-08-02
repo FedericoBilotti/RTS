@@ -6,6 +6,7 @@ using Units.Resources;
 using Units.SO;
 using Units.Villagers.States;
 using UnityEngine;
+using Utilities;
 
 namespace Units.Villagers
 {
@@ -18,6 +19,7 @@ namespace Units.Villagers
 
         public IStorage ActualStorage { get; private set; }
         public IWork ActualWork { get; private set; }
+        public IWork PreviousWork { get; private set; }
 
         private void Start()
         {
@@ -43,11 +45,7 @@ namespace Units.Villagers
             var idle = new Idle(this, agent, _villagerSO);
             var moving = new Moving(this, agent, _villagerSO);
             var moveToResource = new MoveToResource(this); // Deberia llamarse MoveToWork
-
             var workVillager = new WorkVillager(this);
-            // var mining = new Mining(this);
-            // var chopping = new Chop(this);
-
             var moveToStorage = new MoveToStorage(this);
             var searchNewResource = new SearchNewResource(this);
 
@@ -55,9 +53,6 @@ namespace Units.Villagers
             MoveToTransitions(moving, idle, moveToResource, moveToStorage);
             MoveToResourceTransitions(moveToResource, workVillager,moveToStorage, moving);
             WorkVillagerTransitions(workVillager, moving, searchNewResource, moveToStorage);
-            // MiningTransitions(mining, chopping, moving, searchNewResource, moveToStorage);
-            // ChopTransitions(chopping, mining, moving, searchNewResource, moveToStorage);
-            // FoodTransitions(chopping, mining, moving, searchNewResource, moveToStorage);
             MoveToStorageTransitions(moveToStorage, moveToResource, searchNewResource, idle);
             SearchNewResourceTransitions(searchNewResource, moveToStorage, moveToResource, idle);
 
@@ -68,7 +63,7 @@ namespace Units.Villagers
         {
             fsm.AddTransition(idle, moveToStorage, new FuncPredicate(() => ActualStorage != null && !IsInventoryEmpty()));
             fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty()));
-            fsm.AddTransition(idle, moving, new FuncPredicate(() => ActualWork == null && agent.hasPath));
+            fsm.AddTransition(idle, moving, new FuncPredicate(() => ActualWork == null && (agent.hasPath || !agent.isStopped)));
         }
 
         private void MoveToTransitions(Moving moving, Idle idle, MoveToResource moveToResource, MoveToStorage moveToStorage)
@@ -83,33 +78,7 @@ namespace Units.Villagers
             fsm.AddTransition(moveToResource, moveToStorage, new FuncPredicate(() => ActualStorage != null && ActualWork == null));
             fsm.AddTransition(moveToResource, moving, new FuncPredicate(() => ActualWork == null));
             fsm.AddTransition(moveToResource, workVillager, new FuncPredicate(() => MoveToResource(ActualWork.GetResourceSO().ResourceType)));
-            // fsm.AddTransition(moveToResource, mining, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Gold)));
-            // fsm.AddTransition(moveToResource, food, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Food)));
         }
-
-        // private void MiningTransitions(Mining mining, Chop chopping, Moving moving, SearchNewResource searchNewResource, MoveToStorage moveToStorage)
-        // {
-        //     fsm.AddTransition(mining, moving, new FuncPredicate(() => !ActualResource));
-        //     fsm.AddTransition(mining, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Gold)));
-        //     fsm.AddTransition(mining, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Gold)));
-        //     fsm.AddTransition(mining, chopping, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Wood)));
-        // }
-        //
-        // private void ChopTransitions(Chop chopping, Mining mining, Moving moving, SearchNewResource searchNewResource, MoveToStorage moveToStorage)
-        // {
-        //     fsm.AddTransition(chopping, moving, new FuncPredicate(() => !ActualResource));
-        //     fsm.AddTransition(chopping, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Wood)));
-        //     fsm.AddTransition(chopping, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Wood)));
-        //     fsm.AddTransition(chopping, mining, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Gold)));
-        // }
-        //
-        // private void FoodTransitions(Chop chopping, Mining mining, Moving moving, SearchNewResource searchNewResource, MoveToStorage moveToStorage)
-        // {
-        //     // fsm.AddTransition(food, moving, new FuncPredicate(() => !_actualResource));
-        //     // fsm.AddTransition(food, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ResourcesManager.ResourceType.Food)));
-        //     // fsm.AddTransition(food, moveToStorage, new FuncPredicate(() => IsInventoryFull(ResourcesManager.ResourceType.Food)));
-        //     // fsm.AddTransition(food, mining, new FuncPredicate(() => MoveToResource(ResourcesManager.ResourceType.Food) && !Equals(_previousResource, ActualResource)));
-        // }
 
         private void WorkVillagerTransitions(WorkVillager workVillager, Moving moving, SearchNewResource searchNewResource, MoveToStorage moveToStorage)
         {
@@ -128,7 +97,7 @@ namespace Units.Villagers
         private void SearchNewResourceTransitions(SearchNewResource searchNewResource, MoveToStorage moveToStorage, MoveToResource moveToResource, Idle idle)
         {
             fsm.AddTransition(searchNewResource, moveToResource, new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty()));
-            fsm.AddTransition(searchNewResource, moveToStorage, new FuncPredicate(() => ActualWork != null && !IsInventoryEmpty()));
+            fsm.AddTransition(searchNewResource, moveToStorage, new FuncPredicate(() => ActualWork == null && !IsInventoryEmpty()));
             fsm.AddTransition(searchNewResource, idle, new FuncPredicate(() => ActualWork == null));
         }
 
@@ -140,14 +109,11 @@ namespace Units.Villagers
 
         // Generico -> IStorage
         public void SetStorage(IStorage center) => ActualStorage = center;
-        public void SetWork(IWork work) => ActualWork = work;
-
-        // public void SetResource(Resource resource)
-        // {
-        //     ActualResource = resource;
-        //     ActualResource.IsNotNull(() => ActualResourceTransform = resource.transform);
-        //     ActualResource.IsNotNull(() => ActualResourceType = resource.GetResourceSO().ResourceType);
-        // }
+        public void SetWork(IWork work)
+        {
+            PreviousWork = ActualWork;
+            ActualWork = work;
+        }
 
         public void AddResourceToStorage()
         {

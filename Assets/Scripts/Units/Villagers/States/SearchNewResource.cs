@@ -24,23 +24,23 @@ namespace Units.Villagers.States
                 return;
             }
 
-            List<IWork> resources = new();
+            List<IWork> nearWorks = new();
 
             foreach (Collider col in colliders)
             {
-                var canAddResource = CanAddResource(col, villager);
-                
-                if (!canAddResource.Item1) continue;
-                resources.Add(canAddResource.Item2);
+                (bool canAdd, IWork work) resource = CanAddResource(col, villager);
+
+                if (!resource.canAdd) continue;
+                nearWorks.Add(resource.work);
             }
 
-            IWork newResource = resources.OrderBy(x => (x.Position - villager.ActualWork.Position).sqrMagnitude).FirstOrDefault();
-            villager.SetWork(newResource); // Se encontró para seguir trabajando.
+            IWork nearWork = nearWorks.OrderBy(x => (x.Position - villager.ActualWork.Position).sqrMagnitude).FirstOrDefault();
+            villager.SetWork(nearWork); // Se encontró para seguir trabajando.
         }
 
         private static bool IsAnyResource(Villager villager, out Collider[] colliders)
         {
-            colliders = Physics.OverlapSphere(villager.ActualWork.Position, 10f);
+            colliders = Physics.OverlapSphere(villager.ActualWork.Position, 7.5f, villager.ActualWork.GetResourceSO().ResourceLayerMask);
 
             return colliders.Length > 0;
         }
