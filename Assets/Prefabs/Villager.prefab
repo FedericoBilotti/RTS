@@ -215,8 +215,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selector: {fileID: 2360557717262013253}
-  unitSo: {fileID: 11400000, guid: 8525b432097349344a183cb171c37aeb, type: 2}
   _actualState: 
+  _villagerSO: {fileID: 11400000, guid: 8525b432097349344a183cb171c37aeb, type: 2}
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

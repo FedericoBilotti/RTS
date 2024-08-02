@@ -35,13 +35,13 @@ namespace Units.Villagers.States
                 resources.Add(canAddResource.Item2);
             }
 
-            Resource newResource = resources.OrderBy(x => (x.transform.position - villager.GetResourceTransform().position).sqrMagnitude).FirstOrDefault();
+            Resource newResource = resources.OrderBy(x => (x.transform.position - villager.ActualResourceTransform.position).sqrMagnitude).FirstOrDefault();
             villager.SetResource(newResource);
         }
 
         private static bool IsAnyResource(Villager villager, out Collider[] colliders)
         {
-            colliders = Physics.OverlapSphere(villager.GetResourceTransform().position, 10f);
+            colliders = Physics.OverlapSphere(villager.ActualResourceTransform.position, 10f);
 
             return colliders.Length > 0;
         }
@@ -49,7 +49,7 @@ namespace Units.Villagers.States
         private static (bool, Resource) CanAddResource(Collider col, Villager villager)
         {
             if (!col.transform.TryGetComponent(out Resource resource)) return (false, resource);
-            if (resource.GetResourceType() != villager.GetResourceType()) return (false, resource);
+            if (resource.GetResourceType() != villager.ActualResourceType) return (false, resource);
             return resource.GetActualAmount() <= 0 ? (false, resource) : (true, resource);
         }
     }

@@ -1,5 +1,5 @@
+using System.Security.Cryptography;
 using StateMachine;
-using Units.SO;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +9,6 @@ namespace Units
     public abstract class Unit : MonoBehaviour
     {
         [SerializeField] private GameObject _selector;
-        [SerializeField] protected UnitSO unitSo;
         protected NavMeshAgent agent;
 
         public UnitVisual UnitVisual { get; private set; }
@@ -23,14 +22,16 @@ namespace Units
         }
 
         public void StopMovement() => agent.isStopped = true;
-        
+
         public void SetDestination(Vector3 destination)
         {
             agent.isStopped = false;
-            agent.SetDestination(destination);
-        }
 
-        public UnitType GetUnitType() => unitSo.UnitType;
+            agent.SetDestination(destination);
+            
+            // Make sure the position is valid.
+            if (NavMesh.SamplePosition(destination, out NavMeshHit hit, 5f, NavMesh.AllAreas)) { }
+        }
 
         public enum UnitType
         {

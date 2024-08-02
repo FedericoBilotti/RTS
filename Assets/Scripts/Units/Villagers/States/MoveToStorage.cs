@@ -11,9 +11,9 @@ namespace Units.Villagers.States
         public override void OnEnter()
         {
             // If my storage is null, set it to the nearest center
-            villager.SetStorage(villager.GetStorage() ?? GameManager.Instance.NearCenter(villager));
+            villager.SetStorage(villager.ActualStorage ?? GameManager.Instance.NearCenter(villager));
 
-            Vector3 destination = villager.GetStorage().Position;
+            Vector3 destination = villager.ActualStorage.Position;
             MoveToNearStorage(villager, destination);
 
             villager.SetStateName("Move To Storage");
@@ -21,11 +21,12 @@ namespace Units.Villagers.States
 
         public override void OnUpdate()
         {
-            IStorage actualStorage = villager.GetStorage();
+            IStorage actualStorage = villager.ActualStorage;
 
             if (IsNearStorage(actualStorage)) return;
 
             AddResourceToStorage(actualStorage);
+            villager.StopMovement();
         }
 
         private bool IsNearStorage(IStorage actualStorage) => (actualStorage.Position - villager.transform.position).sqrMagnitude > 5f * 5f;
@@ -41,7 +42,7 @@ namespace Units.Villagers.States
             else
             {
                 // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
-                ResourcesManager.ResourceType resourceType = villager.GetResourceType();
+                ResourcesManager.ResourceType resourceType = villager.ActualResourceType;
                 villager.AddSpecificResourceToStorage(resourceType);
                 Debug.Log("Se añadio un recurso específico");
             }

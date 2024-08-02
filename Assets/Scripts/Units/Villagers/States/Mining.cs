@@ -19,7 +19,7 @@ namespace Units.Villagers.States
             villager.StopMovement();
             villager.SetStorage(GameManager.Instance.NearStorage(villager, ResourcesManager.ResourceType.Gold));
 
-            _resource = villager.GetResource();
+            _resource = villager.ActualResource;
             _resourceType = _resource.GetResourceType();
 
             _timer.Reset(_resource.GetTimeToGiveResource());
@@ -44,6 +44,6 @@ namespace Units.Villagers.States
         }
 
         private void AddResource() => villager.AddResourceToInventory(_resourceType, _resource.ProvideResource());
-        private void StartTimer() => villager.GetResource().IsNotNull(() => _timer.Start());
+        private void StartTimer() => villager.ActualResource.IsNotNull(() => _timer.Start());
     }
 }

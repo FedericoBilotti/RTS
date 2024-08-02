@@ -23,13 +23,13 @@ namespace Manager
             }
         }
         
-        public void AddResource(ResourceType resourceType, int amount)
+        public void AddResourceAmount(ResourceType resourceType, int amount)
         {
             _resourceAmount[resourceType] += amount;
             _onAddResource.Invoke(new ResourceEvent(_resourceAmount[resourceType], resourceType));
         }
         
-        public void RemoveResource(ResourceType resourceType, int amount)
+        public void RemoveResourceAmount(ResourceType resourceType, int amount)
         {
             _resourceAmount[resourceType] -= amount;
             _onRemoveResource.Invoke(new ResourceEvent(_resourceAmount[resourceType], resourceType));
