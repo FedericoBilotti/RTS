@@ -18,9 +18,9 @@ namespace Player
 
             Vector3 destination = hit.point;
 
-            if (hit.transform.TryGetComponent(out Resource resource))
+            if (hit.transform.TryGetComponent(out IWork work))
             {
-                AssignWorkToSelectedUnits(resource);
+                AssignWorkToSelectedUnits(work);
             }
             else if (hit.transform.TryGetComponent(out IStorage storage))
             {
@@ -40,7 +40,7 @@ namespace Player
         }
 
         private void AssignStorage(IStorage storage) => _unitManager.MoveToStorage(storage);
-        private void AssignWorkToSelectedUnits(Resource resource) => _unitManager.SetResourceToWorkUnits(resource);
+        private void AssignWorkToSelectedUnits(IWork resource) => _unitManager.SetResourceToWorkUnits(resource);
         private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
     }

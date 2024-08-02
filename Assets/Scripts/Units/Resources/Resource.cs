@@ -1,20 +1,14 @@
-using Manager;
 using Units.Resources.ScriptableObjects;
 using UnityEngine;
 
 namespace Units.Resources
 {
-    public abstract class Resource : MonoBehaviour
+    public abstract class Resource : MonoBehaviour, IWork
     {
-        [SerializeField] protected ResourceSO resource;
+        [SerializeField] private ResourceSO _resourceSO;
         private int _actualAmountOfResource;
 
-        private void Awake() => _actualAmountOfResource = resource.TotalAmountOfResource;
-
-        public ResourcesManager.ResourceType GetResourceType() => resource.ResourceType;
-        public Unit.UnitType GetUnitDesired() => resource.DesiredUnitType;
-        public float GetTimeToGiveResource() => resource.TimeToGiveResource;
-        public int GetActualAmount() => _actualAmountOfResource;
+        private void Awake() => _actualAmountOfResource = _resourceSO.TotalAmountOfResource;
 
         /// <summary>
         /// Give the resource to the player in a specific time.
@@ -22,7 +16,7 @@ namespace Units.Resources
         /// <returns>The amount of resource given</returns>
         public virtual int ProvideResource()
         {
-            int amount = resource.AmountToGive;
+            int amount = _resourceSO.AmountToGive;
             _actualAmountOfResource -= amount;
 
             if (_actualAmountOfResource <= 0)
@@ -32,5 +26,11 @@ namespace Units.Resources
 
             return amount;
         }
+
+        public ResourceSO GetResourceSO() => _resourceSO;
+        public Vector3 Position => transform.position;
+        public int GetActualAmount() => _actualAmountOfResource;
+        
+        public abstract void PlayAnimation(Unit unit);
     }
 }

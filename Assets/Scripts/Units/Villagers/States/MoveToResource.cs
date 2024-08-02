@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Units.Villagers.States
@@ -8,14 +9,14 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
-            ToResource(villager, villager.ActualResourceTransform);
+            ToResource(villager, villager.ActualWork.Position);
 
             villager.SetStateName("Move To Resource");
         }
 
-        private static void ToResource(Villager villager, Transform resourceTransform)
+        private static void ToResource(Villager villager, Vector3 position)
         {
-            villager.SetDestination(resourceTransform.position);
+            villager.SetDestination(position);
         }
     }
 }

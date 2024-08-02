@@ -7,7 +7,6 @@ namespace Units.Villagers.States
 {
     public class SearchNewResource : BaseStateVillager
     {
-
         public SearchNewResource(Villager villager) : base(villager) { }
 
         public override void OnEnter()
@@ -21,11 +20,11 @@ namespace Units.Villagers.States
         {
             if (!IsAnyResource(villager, out Collider[] colliders))
             {
-                villager.SetResource(null);
+                villager.SetWork(null); // No se encontró para hacer el trabajo.
                 return;
             }
 
-            List<Resource> resources = new();
+            List<IWork> resources = new();
 
             foreach (Collider col in colliders)
             {
@@ -35,21 +34,21 @@ namespace Units.Villagers.States
                 resources.Add(canAddResource.Item2);
             }
 
-            Resource newResource = resources.OrderBy(x => (x.transform.position - villager.ActualResourceTransform.position).sqrMagnitude).FirstOrDefault();
-            villager.SetResource(newResource);
+            IWork newResource = resources.OrderBy(x => (x.Position - villager.ActualWork.Position).sqrMagnitude).FirstOrDefault();
+            villager.SetWork(newResource); // Se encontró para seguir trabajando.
         }
 
         private static bool IsAnyResource(Villager villager, out Collider[] colliders)
         {
-            colliders = Physics.OverlapSphere(villager.ActualResourceTransform.position, 10f);
+            colliders = Physics.OverlapSphere(villager.ActualWork.Position, 10f);
 
             return colliders.Length > 0;
         }
 
-        private static (bool, Resource) CanAddResource(Collider col, Villager villager)
+        private static (bool, IWork) CanAddResource(Collider col, Villager villager)
         {
-            if (!col.transform.TryGetComponent(out Resource resource)) return (false, resource);
-            if (resource.GetResourceType() != villager.ActualResourceType) return (false, resource);
+            if (!col.transform.TryGetComponent(out IWork resource)) return (false, resource);
+            if (resource.GetResourceSO().ResourceType != villager.ActualWork.GetResourceSO().ResourceType) return (false, resource);
             return resource.GetActualAmount() <= 0 ? (false, resource) : (true, resource);
         }
     }

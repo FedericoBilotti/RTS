@@ -56,16 +56,15 @@ namespace Player
             }
         }
 
-        public void SetResourceToWorkUnits(Resource resource)
+        public void SetResourceToWorkUnits(IWork work)
         {
-            IEnumerable<Villager>
-                    villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
 
             if (!villagers.Any()) return;
 
             foreach (Villager selectedUnit in villagers)
             {
-                selectedUnit.SetResource(resource);
+                selectedUnit.SetWork(work);
             }
         }
 
