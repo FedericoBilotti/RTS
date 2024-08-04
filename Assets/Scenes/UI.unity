@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 261905417}
   - component: {fileID: 261905413}
   m_Layer: 5
-  m_Name: Horizontal Layout Group
+  m_Name: UI Resources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 779262571}
   - component: {fileID: 779262570}
   m_Layer: 5
-  m_Name: Canvas Selection Box
+  m_Name: Selection Box Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -799,7 +799,7 @@ GameObject:
   - component: {fileID: 1680447782}
   - component: {fileID: 1680447781}
   m_Layer: 5
-  m_Name: Canvas Resources
+  m_Name: Resources Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

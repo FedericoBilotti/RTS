@@ -1,7 +1,7 @@
 using Manager;
 using UnityEngine;
 
-namespace EventSystem
+namespace EventSystem.Channel
 {
     [CreateAssetMenu(menuName = "EventSystem/ResourceChannel", fileName = "ResourceChannel")]
     public class ResourceChannel : EventChannel<ResourceEvent> { }

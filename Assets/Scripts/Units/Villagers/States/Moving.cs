@@ -18,7 +18,7 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
-            _villager.SetStateName("Move To");
+            _villager.SetStateName("Moving");
             _agent.stoppingDistance = _unitSO.StoppingDistanceToIdle;
         }
     }

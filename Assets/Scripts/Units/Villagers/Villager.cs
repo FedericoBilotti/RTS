@@ -130,7 +130,7 @@ namespace Units.Villagers
             RemoveResourceFromInventory(resourceType);
         }
 
-        #region Villager Inventory
+        #region Villager Inventory Methods
 
         public void AddResourceToInventory(ResourcesManager.ResourceType resourceType, int amount) => _inventoryResources[resourceType] += amount;
         private void RemoveResourceFromInventory(ResourcesManager.ResourceType resourceType) => _inventoryResources[resourceType] = 0;
