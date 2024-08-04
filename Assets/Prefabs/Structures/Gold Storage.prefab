@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 4010512748300503229}
   - component: {fileID: 3616372555001142251}
   - component: {fileID: 6534286062764620805}
+  - component: {fileID: 7092403212375591859}
   m_Layer: 0
   m_Name: Gold Storage
   m_TagString: Untagged
@@ -176,3 +177,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &7092403212375591859
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4189247044679435008}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.375, y: 0.5, z: 0.375}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

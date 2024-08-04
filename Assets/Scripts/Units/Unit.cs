@@ -27,10 +27,13 @@ namespace Units
         {
             agent.isStopped = false;
 
-            agent.SetDestination(destination);
+            Debug.Log($"previous destination: {destination}" );
             
             // Make sure the position is valid.
-            if (NavMesh.SamplePosition(destination, out NavMeshHit hit, 5f, NavMesh.AllAreas)) { }
+            if (!NavMesh.SamplePosition(destination, out NavMeshHit hit, 5f, ~0)) return;
+            
+            agent.SetDestination(hit.position);
+            Debug.Log($"hit.position: {hit.position}, destination: {destination}" );
         }
 
         public enum UnitType

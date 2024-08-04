@@ -6,7 +6,6 @@ using Units.Resources;
 using Units.SO;
 using Units.Villagers.States;
 using UnityEngine;
-using Utilities;
 
 namespace Units.Villagers
 {
