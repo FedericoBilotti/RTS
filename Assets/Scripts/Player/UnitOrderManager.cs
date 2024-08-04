@@ -39,7 +39,7 @@ namespace Player
             }
         }
 
-        private void AssignStorage(IStorage storage) => _unitManager.MoveToStorage(storage);
+        private void AssignStorage(IStorage storage) => _unitManager.SetStorage(storage);
         private void AssignWorkToSelectedUnits(IWork resource) => _unitManager.SetResourceToWorkUnits(resource);
         private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);

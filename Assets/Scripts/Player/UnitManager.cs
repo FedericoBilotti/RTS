@@ -43,7 +43,7 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
-        public void MoveToStorage(IStorage storage)
+        public void SetStorage(IStorage storage)
         {
             IEnumerable<Villager>
                     villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.

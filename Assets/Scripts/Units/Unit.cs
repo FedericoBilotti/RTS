@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using StateMachine;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,14 +25,11 @@ namespace Units
         public void SetDestination(Vector3 destination)
         {
             agent.isStopped = false;
-
-            Debug.Log($"previous destination: {destination}" );
             
             // Make sure the position is valid.
-            if (!NavMesh.SamplePosition(destination, out NavMeshHit hit, 5f, ~0)) return;
+            if (!NavMesh.SamplePosition(destination, out NavMeshHit hit, 5f, NavMesh.AllAreas)) return;
             
             agent.SetDestination(hit.position);
-            Debug.Log($"hit.position: {hit.position}, destination: {destination}" );
         }
 
         public enum UnitType

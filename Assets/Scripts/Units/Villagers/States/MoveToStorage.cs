@@ -29,6 +29,11 @@ namespace Units.Villagers.States
             villager.StopMovement();
         }
 
+        public override void OnExit()
+        {
+            villager.SetStorage(null);
+        }
+
         private bool IsNearStorage(IStorage actualStorage) => (actualStorage.Position - villager.transform.position).sqrMagnitude > 5f * 5f;
 
         private void AddResourceToStorage(IStorage actualStorage)

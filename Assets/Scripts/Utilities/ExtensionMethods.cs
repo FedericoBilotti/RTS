@@ -14,6 +14,11 @@ namespace Utilities
                 action();
         }
 
+        public static bool IsNotNull<T>(this T obj, Func<bool> func)
+        {
+            return obj != null && func();
+        }
+
         public static void IsNull<T>(this T obj, Action action)
         {
             if (obj == null)
