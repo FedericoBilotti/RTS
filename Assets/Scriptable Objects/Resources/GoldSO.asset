@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GoldSO
   m_EditorClassIdentifier: 
   _totalAmountOfResource: 20
-  _amountToGive: 2
-  _timeToGiveResource: 1
+  _amountToGive: 4
+  _timeToGiveResource: 3
   _resourceLayerMask:
     serializedVersion: 2
     m_Bits: 1024

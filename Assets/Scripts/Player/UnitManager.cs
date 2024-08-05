@@ -56,7 +56,11 @@ namespace Player
 
         public void SetStorage(IStorage storage)
         {
-            if (_selectedVillagers.Count == 0) return;
+            if (_selectedVillagers.Count == 0)
+            {
+                Debug.Log("No hay villagers seleccionados");
+                return;
+            }
 
             foreach (Villager selectedUnit in _selectedVillagers)
             {
@@ -67,7 +71,11 @@ namespace Player
 
         public void SetResourceToWorkUnits(IWork work)
         {
-            if (_selectedVillagers.Count == 0) return;
+            if (_selectedVillagers.Count == 0)
+            {
+                Debug.Log("No hay villagers seleccionados");
+                return;
+            }
 
             foreach (Villager selectedUnit in _selectedVillagers)
             {

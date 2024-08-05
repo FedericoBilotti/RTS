@@ -55,15 +55,24 @@ namespace Player
 
             if (!hit.transform.TryGetComponent(out Unit unitComponent)) return;
 
+            // Add more than one unit
             if (isShiftPressed)
             {
                 if (RemoveUnitSelected(unitComponent)) return;
 
-                _unitManager.AddUnit(unitComponent); // if not selected, add it and return
+                AddUnit(unitComponent);
                 return;
             }
 
+            // Add only one unit
             _unitManager.ClearUnits();
+            AddUnit(unitComponent);
+        }
+
+        private void AddUnit(Unit unitComponent)
+        {
+            if (unitComponent is Villager villager) _unitManager.AddSelectedVillager(villager);
+
             _unitManager.AddUnit(unitComponent);
         }
 
