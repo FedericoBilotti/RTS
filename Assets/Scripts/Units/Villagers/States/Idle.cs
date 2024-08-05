@@ -18,6 +18,7 @@ namespace Units.Villagers.States
         {
             villager.SetStateName("Idle");
             _agent.stoppingDistance = _unitSO.StoppingDistanceToAttack;
+            villager.StopMovement();
         }
         // Play Idle Animation
     }

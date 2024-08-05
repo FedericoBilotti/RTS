@@ -13,7 +13,7 @@ namespace Player
 
         public void ControlUnits()
         {
-            bool hitSomething = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f);
+            bool hitSomething = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 100f);
             if (!hitSomething) return;
 
             Vector3 destination = hit.point;
@@ -34,14 +34,13 @@ namespace Player
             else
             {
                 MoveUnitsInFormation(destination);
-                AssignStorage(null);
                 AssignWorkToSelectedUnits(null);
             }
         }
 
-        private void AssignStorage(IStorage storage) => _unitManager.SetStorage(storage);
         private void AssignWorkToSelectedUnits(IWork resource) => _unitManager.SetResourceToWorkUnits(resource);
-        private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
+        private void AssignStorage(IStorage storage) => _unitManager.SetStorage(storage);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
+        private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
     }
 }

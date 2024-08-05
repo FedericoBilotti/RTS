@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Structures.Storages;
@@ -45,25 +44,28 @@ namespace Player
 
         public void SetStorage(IStorage storage)
         {
-            IEnumerable<Villager>
-                    villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); 
 
             if (!villagers.Any()) return;
 
             foreach (Villager selectedUnit in villagers)
             {
+                selectedUnit.SetWork(null);
                 selectedUnit.SetStorage(storage);
             }
         }
 
         public void SetResourceToWorkUnits(IWork work)
         {
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
+            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); 
 
             if (!villagers.Any()) return;
 
             foreach (Villager selectedUnit in villagers)
             {
+                selectedUnit.SetStorage(null);
                 selectedUnit.SetWork(work);
             }
         }
@@ -113,9 +115,6 @@ namespace Player
             _selectedUnits.Clear();
         }
 
-        private void OnDrawGizmos()
-        {
-            _controller?.DrawGizmo();
-        }
+        private void OnDrawGizmos() => _controller?.DrawGizmo();
     }
 }

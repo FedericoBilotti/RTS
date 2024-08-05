@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _totalAmountOfResource: 20
   _amountToGive: 5
-  _timeToGiveResource: 1
-  _resourceType: 0
-  _desiredUnitType: 1
+  _timeToGiveResource: 0.5
   _resourceLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  _resourceType: 0

@@ -11,11 +11,10 @@ namespace Units.Villagers.States
         public override void OnEnter()
         {
             // If my storage is null, set it to the nearest center
-            villager.SetStorage(villager.ActualStorage ?? GameManager.Instance.NearCenter(villager));
-
-            Vector3 destination = villager.ActualStorage.Position;
-            MoveToNearStorage(villager, destination);
-
+            IStorage storage = villager.ActualStorage ?? GameManager.Instance.NearCenter(villager);
+            
+            villager.SetStorage(storage);
+            villager.SetDestination(storage.Position);
             villager.SetStateName("Move To Storage");
         }
 
@@ -23,7 +22,7 @@ namespace Units.Villagers.States
         {
             IStorage actualStorage = villager.ActualStorage;
 
-            if (IsNearStorage(actualStorage)) return;
+            if (!IsNearStorage(actualStorage)) return;
 
             AddResourceToStorage(actualStorage);
             villager.StopMovement();
@@ -34,26 +33,36 @@ namespace Units.Villagers.States
             villager.SetStorage(null);
         }
 
-        private bool IsNearStorage(IStorage actualStorage) => (actualStorage.Position - villager.transform.position).sqrMagnitude > 5f * 5f;
+        private bool IsNearStorage(IStorage actualStorage) => (actualStorage.Position - villager.transform.position).sqrMagnitude < 5f * 5f;
 
         private void AddResourceToStorage(IStorage actualStorage)
         {
-            ResourcesManager.ResourceType storage = actualStorage.GetStorageType;
+            ResourcesManager.ResourceType resourceStorageType = actualStorage.GetStorageType;
 
-            if (storage == ResourcesManager.ResourceType.All)
-            {
-                villager.AddResourceToStorage();
-            }
-            else
-            {
-                // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
-                ResourcesManager.ResourceType resourceType = villager.PreviousWork.GetResourceSO().ResourceType;
-                
-                villager.AddSpecificResourceToStorage(resourceType);
-                Debug.Log($"Se añadio: {resourceType} al storage");
-            }
+            if (AddResourcesToCenter(resourceStorageType)) return;
+
+            AddResource(resourceStorageType);
         }
 
-        private static void MoveToNearStorage(Villager villager, Vector3 destination) => villager.SetDestination(destination);
+        private bool AddResourcesToCenter(ResourcesManager.ResourceType resourceStorageType)
+        {
+            if (resourceStorageType != ResourcesManager.ResourceType.All) return false;
+
+            villager.AddResourcesToCenter();
+            return true;
+        }
+
+        private void AddResource(ResourcesManager.ResourceType resourceStorageType)
+        {
+            // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
+            if (!villager.HasResourceInInventory(resourceStorageType))
+            {
+                Debug.Log($"El tipo de recurso que se quiere añadir no se tiene actualmente en el inventario: {resourceStorageType}");
+                villager.SetStorage(null);
+                return;
+            }
+
+            villager.AddResourceToStorage(resourceStorageType);
+        }
     }
 }

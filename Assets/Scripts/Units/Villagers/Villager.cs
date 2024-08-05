@@ -39,15 +39,17 @@ namespace Units.Villagers
 
         public void SetWork(IWork work)
         {
-            SetPreviousWork(ActualWork);
+            if (ActualWork != null) 
+                SetPreviousWork(ActualWork);
+            
             ActualWork = work;
         }
         
         public void SetPreviousWork(IWork work) => PreviousWork = work;
-        
+
         #region Resources Storage Methods
 
-        public void AddResourceToStorage()
+        public void AddResourcesToCenter()
         {
             foreach (ResourcesManager.ResourceType resourceType in System.Enum.GetValues(typeof(ResourcesManager.ResourceType)))
             {
@@ -56,7 +58,7 @@ namespace Units.Villagers
             }
         }
 
-        public void AddSpecificResourceToStorage(ResourcesManager.ResourceType resourceType)
+        public void AddResourceToStorage(ResourcesManager.ResourceType resourceType)
         {
             ResourcesManager.Instance.AddResourceAmount(resourceType, _inventoryResources[resourceType]);
             RemoveResourceFromInventory(resourceType);
@@ -65,6 +67,8 @@ namespace Units.Villagers
         #endregion
 
         #region Villager Inventory Methods
+
+        public bool HasResourceInInventory(ResourcesManager.ResourceType resourceType) => _inventoryResources[resourceType] > 0;
 
         public void AddResourceToInventory(ResourcesManager.ResourceType resourceType, int amount) => _inventoryResources[resourceType] += amount;
         private void RemoveResourceFromInventory(ResourcesManager.ResourceType resourceType) => _inventoryResources[resourceType] = 0;
@@ -111,9 +115,9 @@ namespace Units.Villagers
 
         private void IdleTransitions(Idle idle, MoveToStorage moveToStorage, MoveToResource moveToResource, Moving moving)
         {
-            fsm.AddTransition(idle, moving, new FuncPredicate(() => ActualWork == null && agent.hasPath));
+            fsm.AddTransition(idle, moving, new FuncPredicate(() => ActualWork == null && !agent.isStopped));
             fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty()));
-            fsm.AddTransition(idle, moveToStorage, new FuncPredicate(() => ActualStorage != null && !IsInventoryEmpty()));
+            fsm.AddTransition(idle, moveToStorage, new FuncPredicate(() => ActualStorage != null)); // && !IsInventoryEmpty()
         }
 
         private void MoveToTransitions(Moving moving, Idle idle, MoveToResource moveToResource, MoveToStorage moveToStorage)
@@ -141,11 +145,9 @@ namespace Units.Villagers
 
         private void MoveToStorageTransitions(MoveToStorage moveToStorage, MoveToResource moveToResource, SearchNewResource searchNewResource, Idle idle)
         {
-            fsm.AddTransition(moveToStorage, moveToResource,
-                    new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
-            fsm.AddTransition(moveToStorage, searchNewResource,
-                    new FuncPredicate(() => ActualWork != null && ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
-            fsm.AddTransition(moveToStorage, idle, new FuncPredicate(IsInventoryEmpty));
+            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => ActualWork != null && ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToStorage, idle, new FuncPredicate(() => ActualStorage == null || IsInventoryEmpty()));
         }
 
         private void SearchNewResourceTransitions(SearchNewResource searchNewResource, MoveToStorage moveToStorage, MoveToResource moveToResource, Idle idle)

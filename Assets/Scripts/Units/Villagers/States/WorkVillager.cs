@@ -18,13 +18,12 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
-            Debug.Log("Work Villager");
-
             _work = villager.ActualWork;
             _resourceType = _work.GetResourceSO().ResourceType;
 
             villager.SetStorage(GameManager.Instance.NearStorage(villager, _resourceType));
             villager.SetPreviousWork(villager.ActualWork);
+            villager.StopMovement();
             
             _timer.Reset(_work.GetResourceSO().TimeToGiveResource);
             _timer.onTimerStop += AddResource;
