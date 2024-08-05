@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Manager;
+using Player;
 using StateMachine;
 using Structures.Storages;
 using Units.Resources;
@@ -29,6 +31,9 @@ namespace Units.Villagers
 
             CreateFSM();
         }
+
+        private void OnEnable() => UnitManager.Instance.AddVillager(this);
+        private void OnDisable() => UnitManager.Instance.RemoveVillager(this);
 
         private void Update() => fsm?.Update();
         private void FixedUpdate() => fsm?.FixedUpdate();

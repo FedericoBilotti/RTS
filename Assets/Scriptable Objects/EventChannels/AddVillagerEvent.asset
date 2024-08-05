@@ -9,13 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a880ea2a3d54ab299543bbe60f42bc0, type: 3}
-  m_Name: FoodSO
+  m_Script: {fileID: 11500000, guid: 37e0c18ff6734404a6f22e0096e237f8, type: 3}
+  m_Name: AddVillagerEvent
   m_EditorClassIdentifier: 
-  _totalAmountOfResource: 24
-  _amountToGive: 8
-  _timeToGiveResource: 3
-  _resourceLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  _resourceType: 1

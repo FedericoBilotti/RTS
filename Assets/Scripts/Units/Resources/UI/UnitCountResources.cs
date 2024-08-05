@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Units.Resources.UI
 {
-    public class UIResource : MonoBehaviour
+    public class UnitCountResources : MonoBehaviour
     {
         [SerializeField] private TextResource[] _resourceTexts;
 
@@ -21,8 +21,8 @@ namespace Units.Resources.UI
             }
         }
 
-        // This is to add in the Resource EventListener
-        public void ChangeResourceText(ResourceEvent resourceEvent)
+        // This is to add villager int the villager EventListener
+        public void ChangeVillagerText(ResourceEvent resourceEvent)
         {
             _resources[resourceEvent.resourceType].SetText(resourceEvent.amount);
         }

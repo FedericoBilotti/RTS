@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using EventSystem.Channel;
+using Manager;
 using Structures.Storages;
 using Units;
 using Units.Formations;
@@ -19,11 +22,13 @@ namespace Player
 
         private readonly HashSet<Unit> _selectedUnits = new();
 
-        // Estas listas es para gestionar mejor que está haciendo cada villager.
-        private readonly List<Villager> _villagers = new();
-        private readonly List<Villager> _villagersInFood = new();
-        private readonly List<Villager> _villagersInWood = new();
-        private readonly List<Villager> _villagersInGold = new();
+        private readonly List<Villager> _villagers = new();         // Cada vez que se crea un villager sea añade acá.
+        private readonly List<Villager> _selectedVillagers = new(); // Villagers seleccionados.
+        private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new();
+        
+        [Header("Events")]
+        [SerializeField] private ResourceChannel _onAddWorkVillager;
+        [SerializeField] private ResourceChannel _onRemoveWorkVillager;
 
         protected override void InitializeSingleton()
         {
@@ -31,6 +36,11 @@ namespace Player
 
             _unitOrderManager = new UnitOrderManager(this);
             _unitSelectorManager = new UnitSelectorManager(this);
+
+            foreach (ResourcesManager.ResourceType resource in Enum.GetValues(typeof(ResourcesManager.ResourceType)))
+            {
+                _villagersByResource[resource] = new List<Villager>();
+            }
 
             _formationManager = GetComponent<FormationManager>();
         }
@@ -42,14 +52,13 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
+        #region Movement
+
         public void SetStorage(IStorage storage)
         {
-            // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); 
+            if (_selectedVillagers.Count == 0) return;
 
-            if (!villagers.Any()) return;
-
-            foreach (Villager selectedUnit in villagers)
+            foreach (Villager selectedUnit in _selectedVillagers)
             {
                 selectedUnit.SetWork(null);
                 selectedUnit.SetStorage(storage);
@@ -58,12 +67,9 @@ namespace Player
 
         public void SetResourceToWorkUnits(IWork work)
         {
-            // Crear listas de cada tipo específico, asi no se filtra cada vez que necesita lista de villagers.
-            IEnumerable<Villager> villagers = _selectedUnits.OfType<Villager>().ToArray(); 
+            if (_selectedVillagers.Count == 0) return;
 
-            if (!villagers.Any()) return;
-
-            foreach (Villager selectedUnit in villagers)
+            foreach (Villager selectedUnit in _selectedVillagers)
             {
                 selectedUnit.SetStorage(null);
                 selectedUnit.SetWork(work);
@@ -91,6 +97,10 @@ namespace Player
             }
         }
 
+        #endregion
+
+        #region Units
+
         public void AddUnit(Unit unit)
         {
             _selectedUnits.Add(unit);
@@ -113,7 +123,44 @@ namespace Player
             }
 
             _selectedUnits.Clear();
+            _selectedVillagers.Clear();
         }
+
+        #region Villagers
+
+        public void AddVillager(Villager villager) => _villagers.Add(villager);
+        public void RemoveVillager(Villager villager) => _villagers.Remove(villager);
+
+        public void AddSelectedVillager(Villager villager) => _selectedVillagers.Add(villager);
+        public void RemoveSelectedVillager(Villager villager) => _selectedVillagers.Remove(villager);
+
+        public void AddWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
+        {
+            if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
+            {
+                Debug.LogWarning("Resource not found: " + resourceType);
+                return;
+            }
+
+            workingVillagers.Add(villager);
+            _onAddWorkVillager.Invoke(new ResourceEvent(workingVillagers.Count, resourceType));
+        }
+
+        public void RemoveWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
+        {
+            if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
+            {
+                Debug.LogWarning("Resource not found: " + resourceType);
+                return;
+            }
+
+            workingVillagers.Remove(villager);
+            _onRemoveWorkVillager.Invoke(new ResourceEvent(workingVillagers.Count, resourceType));
+        }
+
+        #endregion
+
+        #endregion
 
         private void OnDrawGizmos() => _controller?.DrawGizmo();
     }

@@ -1,7 +1,7 @@
 using Manager;
+using Player;
 using Units.Resources;
 using UnityEngine;
-using UnityEngine.AI;
 using Utilities;
 
 namespace Units.Villagers.States
@@ -21,6 +21,8 @@ namespace Units.Villagers.States
             _work = villager.ActualWork;
             _resourceType = _work.GetResourceSO().ResourceType;
 
+            UnitManager.Instance.AddWorkingVillager(villager, _resourceType);
+            
             villager.SetStorage(GameManager.Instance.NearStorage(villager, _resourceType));
             villager.SetPreviousWork(villager.ActualWork);
             villager.StopMovement();
@@ -43,6 +45,8 @@ namespace Units.Villagers.States
 
         public override void OnExit()
         {
+            UnitManager.Instance.RemoveWorkingVillager(villager, _resourceType);
+            
             _timer.onTimerStop -= AddResource;
             _timer.onTimerStop -= StartTimer;
             _timer.Stop();

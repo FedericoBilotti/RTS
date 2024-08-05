@@ -1,5 +1,6 @@
 using Manager;
 using Units;
+using Units.Villagers;
 using UnityEngine;
 using Utilities;
 
@@ -31,15 +32,20 @@ namespace Player
             {
                 if (!hit.transform.TryGetComponent(out Unit unit)) continue;
 
+                if (unit is Villager villager)
+                {
+                    _unitManager.AddSelectedVillager(villager);
+                }
+
                 _unitManager.AddUnit(unit);
             }
         }
 
         public void AddSingleUnit(float mouseDownTime, bool isShiftPressed)
         {
-            bool unit = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f, GameManager.Instance.GetUnitStructureLayer());
+            bool unitOrStructure = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f, GameManager.Instance.GetUnitStructureLayer());
 
-            if (!unit)
+            if (!unitOrStructure)
             {
                 if (mouseDownTime + DELAY_TO_SELECT_UNITS < Time.time)
                     return;                                     // This is to prevent the player from deselecting at the moment to select multiples unit without the shift
@@ -61,9 +67,11 @@ namespace Player
             _unitManager.AddUnit(unitComponent);
         }
 
-        public bool RemoveUnitSelected(Unit unitComponent)
+        private bool RemoveUnitSelected(Unit unitComponent)
         {
             if (!_unitManager.IsUnitSelected(unitComponent)) return false;
+
+            if (unitComponent is Villager villager) _unitManager.RemoveSelectedVillager(villager);
 
             _unitManager.RemoveUnity(unitComponent);
             return true;
