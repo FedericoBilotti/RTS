@@ -22,12 +22,13 @@ namespace Player
 
         private readonly HashSet<Unit> _selectedUnits = new();
 
-        private readonly List<Villager> _villagers = new();         // Cada vez que se crea un villager sea añade acá.
+        private readonly List<Villager> _totalVillagers = new();    // Cada vez que se crea un villager sea añade acá.
         private readonly List<Villager> _selectedVillagers = new(); // Villagers seleccionados.
         private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new();
-        
-        [Header("Events")]
-        [SerializeField] private ResourceChannel _onAddWorkVillager;
+
+        public List<Villager> TotalVillagers => _totalVillagers;
+
+        [Header("Events")] [SerializeField] private ResourceChannel _onAddWorkVillager;
         [SerializeField] private ResourceChannel _onRemoveWorkVillager;
 
         protected override void InitializeSingleton()
@@ -136,8 +137,8 @@ namespace Player
 
         #region Villagers
 
-        public void AddVillager(Villager villager) => _villagers.Add(villager);
-        public void RemoveVillager(Villager villager) => _villagers.Remove(villager);
+        public void AddVillager(Villager villager) => _totalVillagers.Add(villager);
+        public void RemoveVillager(Villager villager) => _totalVillagers.Remove(villager);
 
         public void AddSelectedVillager(Villager villager) => _selectedVillagers.Add(villager);
         public void RemoveSelectedVillager(Villager villager) => _selectedVillagers.Remove(villager);
