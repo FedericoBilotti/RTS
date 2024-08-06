@@ -32,6 +32,7 @@ namespace Player
             foreach (Collider hit in collisions)
             {
                 if (!hit.transform.TryGetComponent(out Unit unit)) continue;
+                if (unit.GetFaction() != _unitManager.Faction) continue;
 
                 if (unit is Villager villager)
                 {

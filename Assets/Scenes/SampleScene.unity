@@ -2419,6 +2419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
+  _faction: 0
   _onAddWorkVillager: {fileID: 11400000, guid: 167025b1e628f0c40a2631fe0d10ea69, type: 2}
   _onRemoveWorkVillager: {fileID: 11400000, guid: 1e89d97fe09964f4e8c761768ece5bb0,
     type: 2}

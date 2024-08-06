@@ -24,10 +24,14 @@ namespace Player
             }
             else if (hit.transform.TryGetComponent(out IStorage storage))
             {
+                if (storage.Faction != _unitManager.Faction) return;
+                
                 AssignStorageToVillagers(storage);
             }
             else if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
+                if (storage.Faction == _unitManager.Faction) return;
+                
                 destination = damageable.Position;
                 MoveUnits(destination);
             }

@@ -1,4 +1,5 @@
 using Manager;
+using Player;
 using Structures.Storages;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ namespace Structures
         public Vector3 Position => transform.position;
 
         public ResourcesManager.ResourceType GetStorageType => ResourcesManager.ResourceType.All;
+        
+        public EFaction Faction { get; private set; }
+        public void SetFaction(EFaction faction) => Faction = faction;
 
         private void OnEnable()
         {
