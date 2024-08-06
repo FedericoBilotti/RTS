@@ -26,8 +26,6 @@ namespace Player
         private readonly List<Villager> _selectedVillagers = new(); // Villagers seleccionados.
         private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new();
 
-        public List<Villager> TotalVillagers => _totalVillagers;
-
         [Header("Events")] [SerializeField] private ResourceChannel _onAddWorkVillager;
         [SerializeField] private ResourceChannel _onRemoveWorkVillager;
 
@@ -35,6 +33,7 @@ namespace Player
         {
             base.InitializeSingleton();
 
+            _formationManager = GetComponent<FormationManager>();
             _unitOrderManager = new UnitOrderManager(this);
             _unitSelectorManager = new UnitSelectorManager(this);
 
@@ -42,8 +41,6 @@ namespace Player
             {
                 _villagersByResource[resource] = new List<Villager>();
             }
-
-            _formationManager = GetComponent<FormationManager>();
         }
 
         private void Start() => _controller = new UnitController(UnitVisualManager.Instance, _unitSelectorManager, _unitOrderManager);
@@ -53,34 +50,24 @@ namespace Player
 
         public bool IsUnitSelected(Unit unit) => _selectedUnits.Contains(unit);
 
-        #region Movement
-
         public void SetStorage(IStorage storage)
         {
-            if (_selectedVillagers.Count == 0)
-            {
-                Debug.Log("No hay villagers seleccionados");
-                return;
-            }
+            if (_selectedVillagers.Count == 0) return;
 
             foreach (Villager selectedUnit in _selectedVillagers)
             {
-                selectedUnit.SetWork(null);
+                // selectedUnit.SetWork(null);
                 selectedUnit.SetStorage(storage);
             }
         }
 
         public void SetResourceToWorkUnits(IWork work)
         {
-            if (_selectedVillagers.Count == 0)
-            {
-                Debug.Log("No hay villagers seleccionados");
-                return;
-            }
+            if (_selectedVillagers.Count == 0) return;
 
             foreach (Villager selectedUnit in _selectedVillagers)
             {
-                selectedUnit.SetStorage(null);
+                // selectedUnit.SetStorage(null);
                 selectedUnit.SetWork(work);
             }
         }
@@ -105,10 +92,6 @@ namespace Player
                 selectedUnit.SetDestination(desiredPosition);
             }
         }
-
-        #endregion
-
-        #region Units
 
         public void AddUnit(Unit unit)
         {
@@ -135,14 +118,17 @@ namespace Player
             _selectedVillagers.Clear();
         }
 
-        #region Villagers
+        public void AddSelectedVillager(Villager villager) => _selectedVillagers.Add(villager);
+        public void RemoveSelectedVillager(Villager villager) => _selectedVillagers.Remove(villager);
 
         public void AddVillager(Villager villager) => _totalVillagers.Add(villager);
         public void RemoveVillager(Villager villager) => _totalVillagers.Remove(villager);
 
-        public void AddSelectedVillager(Villager villager) => _selectedVillagers.Add(villager);
-        public void RemoveSelectedVillager(Villager villager) => _selectedVillagers.Remove(villager);
-
+        /// <summary>
+        /// Añade el villager a la lista de workingVillagers
+        /// </summary>
+        /// <param name="villager"></param>
+        /// <param name="resourceType"></param>
         public void AddWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
             if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
@@ -155,6 +141,11 @@ namespace Player
             _onAddWorkVillager.Invoke(new ResourceEvent(workingVillagers.Count, resourceType));
         }
 
+        /// <summary>
+        /// Remueve el villager de la lista de workingVillagers 
+        /// </summary>
+        /// <param name="villager"></param>
+        /// <param name="resourceType"></param>
         public void RemoveWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
             if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
@@ -166,10 +157,6 @@ namespace Player
             workingVillagers.Remove(villager);
             _onRemoveWorkVillager.Invoke(new ResourceEvent(workingVillagers.Count, resourceType));
         }
-
-        #endregion
-
-        #endregion
 
         private void OnDrawGizmos() => _controller?.DrawGizmo();
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EventSystem.Channel;
 using Manager;
@@ -10,6 +11,14 @@ namespace Units.Resources.UI
         [SerializeField] private TextResource[] _resourceTexts;
 
         private readonly Dictionary<ResourcesManager.ResourceType, TextResource> _resources = new();
+
+        private void OnValidate()
+        {
+            foreach (TextResource resourceText in _resourceTexts)
+            {
+                resourceText.name = resourceText.ResourceType.ToString();
+            }
+        }
 
         private void Awake() => AddTextToDictionary();
 

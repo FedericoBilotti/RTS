@@ -20,11 +20,11 @@ namespace Player
 
             if (hit.transform.TryGetComponent(out IWork work))
             {
-                AssignWorkToSelectedUnits(work);
+                AssignWorkToVillagers(work);
             }
             else if (hit.transform.TryGetComponent(out IStorage storage))
             {
-                AssignStorage(storage);
+                AssignStorageToVillagers(storage);
             }
             else if (hit.transform.TryGetComponent(out IDamageable damageable))
             {
@@ -34,12 +34,12 @@ namespace Player
             else
             {
                 MoveUnitsInFormation(destination);
-                AssignWorkToSelectedUnits(null);
+                AssignWorkToVillagers(null);
             }
         }
 
-        private void AssignWorkToSelectedUnits(IWork resource) => _unitManager.SetResourceToWorkUnits(resource);
-        private void AssignStorage(IStorage storage) => _unitManager.SetStorage(storage);
+        private void AssignWorkToVillagers(IWork resource) => _unitManager.SetResourceToWorkUnits(resource);
+        private void AssignStorageToVillagers(IStorage storage) => _unitManager.SetStorage(storage);
         private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
         private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
     }

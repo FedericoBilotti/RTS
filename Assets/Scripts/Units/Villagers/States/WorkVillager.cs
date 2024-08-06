@@ -24,7 +24,7 @@ namespace Units.Villagers.States
             UnitManager.Instance.AddWorkingVillager(villager, _resourceType);
             
             villager.SetStorage(GameManager.Instance.NearStorage(villager, _resourceType));
-            villager.SetPreviousWork(villager.ActualWork);
+            villager.SetResourceType(villager.ActualWork.GetResourceSO().ResourceType);
             villager.StopMovement();
             
             _timer.Reset(_work.GetResourceSO().TimeToGiveResource);
