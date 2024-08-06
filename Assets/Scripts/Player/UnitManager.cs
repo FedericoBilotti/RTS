@@ -56,7 +56,7 @@ namespace Player
 
             foreach (Villager selectedUnit in _selectedVillagers)
             {
-                // selectedUnit.SetWork(null);
+                selectedUnit.SetWork(null);
                 selectedUnit.SetStorage(storage);
             }
         }
@@ -67,7 +67,7 @@ namespace Player
 
             foreach (Villager selectedUnit in _selectedVillagers)
             {
-                // selectedUnit.SetStorage(null);
+                selectedUnit.SetStorage(null);
                 selectedUnit.SetWork(work);
             }
         }
