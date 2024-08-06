@@ -29,7 +29,6 @@ namespace Player
         private UnitSelectorManager _unitSelectorManager;
 
         private readonly HashSet<Unit> _selectedUnits = new();
-
         private readonly List<Villager> _totalVillagers = new();    // Cada vez que se crea un villager sea añade acá.
         private readonly List<Villager> _selectedVillagers = new(); // Villagers seleccionados.
         private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new();
@@ -126,8 +125,19 @@ namespace Player
         public void AddSelectedVillager(Villager villager) => _selectedVillagers.Add(villager);
         public void RemoveSelectedVillager(Villager villager) => _selectedVillagers.Remove(villager);
 
-        public void AddVillager(Villager villager) => _totalVillagers.Add(villager);
-        public void RemoveVillager(Villager villager) => _totalVillagers.Remove(villager);
+        public void AddVillager(Villager villager)
+        {
+            if (villager.GetFaction() != Faction) return;
+            
+            _totalVillagers.Add(villager);
+        }
+
+        public void RemoveVillager(Villager villager)
+        {
+            if (villager.GetFaction() != Faction) return;
+            
+            _totalVillagers.Remove(villager);
+        }
 
         /// <summary>
         /// Añade el villager a la lista de workingVillagers
@@ -136,6 +146,8 @@ namespace Player
         /// <param name="resourceType"></param>
         public void AddWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
+            if (villager.GetFaction() != Faction) return;
+            
             if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
             {
                 Debug.LogWarning("Resource not found: " + resourceType);
@@ -153,6 +165,8 @@ namespace Player
         /// <param name="resourceType"></param>
         public void RemoveWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
+            if (villager.GetFaction() != Faction) return;
+            
             if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
             {
                 Debug.LogWarning("Resource not found: " + resourceType);

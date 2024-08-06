@@ -14,7 +14,7 @@ namespace Units
         protected NavMeshAgent agent;
         protected FiniteStateMachine fsm;
 
-        [SerializeField] public EFaction _faction = EFaction.Blue;
+        [SerializeField] private EFaction _faction = EFaction.Blue;
 
         protected virtual void Awake()
         {
