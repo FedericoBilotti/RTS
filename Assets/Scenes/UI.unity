@@ -314,17 +314,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resourceTexts:
-  - name: Wood
-    _resourceType: 0
-    _resourceText: {fileID: 799029179}
-    _preFix: 'Wood:'
   - name: Food
     _resourceType: 1
-    _resourceText: {fileID: 2129746304}
+    _resourceTexts:
+    - {fileID: 2129746304}
     _preFix: 'Food:'
+  - name: Wood
+    _resourceType: 0
+    _resourceTexts:
+    - {fileID: 799029179}
+    _preFix: 'Wood:'
   - name: Gold
     _resourceType: 2
-    _resourceText: {fileID: 252695120}
+    _resourceTexts:
+    - {fileID: 252695120}
+    _preFix: 'Gold:'
+  - name: All
+    _resourceType: 3
+    _resourceTexts:
+    - {fileID: 2129746304}
+    - {fileID: 799029179}
+    - {fileID: 252695120}
     _preFix: 'Gold:'
 --- !u!114 &261905417
 MonoBehaviour:
@@ -664,15 +674,18 @@ MonoBehaviour:
   _resourceTexts:
   - name: Food
     _resourceType: 1
-    _resourceText: {fileID: 2110946174}
+    _resourceTexts:
+    - {fileID: 2110946174}
     _preFix: 
   - name: Wood
     _resourceType: 0
-    _resourceText: {fileID: 1059576934}
+    _resourceTexts:
+    - {fileID: 1059576934}
     _preFix: 
   - name: Gold
     _resourceType: 2
-    _resourceText: {fileID: 938060383}
+    _resourceTexts:
+    - {fileID: 938060383}
     _preFix: 
 --- !u!114 &642908231
 MonoBehaviour:
@@ -1285,7 +1298,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1387,7 +1400,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

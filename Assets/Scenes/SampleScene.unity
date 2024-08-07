@@ -707,11 +707,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 9092827534324999098, guid: d935c47f458097a44a5454cc9d5248d5,
-        type: 3}
-      propertyPath: _faction
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2001,11 +1996,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 9092827534324999098, guid: d935c47f458097a44a5454cc9d5248d5,
-        type: 3}
-      propertyPath: _faction
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3153,11 +3143,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Villager
       objectReference: {fileID: 0}
-    - target: {fileID: 9092827534324999098, guid: d935c47f458097a44a5454cc9d5248d5,
-        type: 3}
-      propertyPath: _faction
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3629,7 +3614,7 @@ PrefabInstance:
     - target: {fileID: 1876741671350199631, guid: 09e2f14a0e331d646a21ab5e9ac9fe53,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15.22
+      value: -11.3
       objectReference: {fileID: 0}
     - target: {fileID: 1876741671350199631, guid: 09e2f14a0e331d646a21ab5e9ac9fe53,
         type: 3}
@@ -3639,7 +3624,7 @@ PrefabInstance:
     - target: {fileID: 1876741671350199631, guid: 09e2f14a0e331d646a21ab5e9ac9fe53,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.04
+      value: 11.1
       objectReference: {fileID: 0}
     - target: {fileID: 1876741671350199631, guid: 09e2f14a0e331d646a21ab5e9ac9fe53,
         type: 3}

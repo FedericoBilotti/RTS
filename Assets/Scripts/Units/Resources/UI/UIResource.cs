@@ -29,7 +29,7 @@ namespace Units.Resources.UI
             }
         }
 
-        // This is to add in the Resource EventListener
+        // This is to add in the Resource EventListener. It´s called in the inspector.
         public void ChangeResourceText(ResourceEvent resourceEvent)
         {
             _resources[resourceEvent.resourceType].SetText(resourceEvent.amount);

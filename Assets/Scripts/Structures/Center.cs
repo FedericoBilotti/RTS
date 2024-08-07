@@ -1,19 +1,15 @@
 using Manager;
-using Player;
 using Structures.Storages;
-using UnityEngine;
 
 namespace Structures
 {
-    public class Center : MonoBehaviour, IStorage
+    public class Center : Storage
     {
-        public Vector3 Position => transform.position;
-
-        public ResourcesManager.ResourceType GetStorageType => ResourcesManager.ResourceType.All;
+        private void Start()
+        {
+            GetStorageType = ResourcesManager.ResourceType.All;
+        }
         
-        public EFaction Faction { get; private set; }
-        public void SetFaction(EFaction faction) => Faction = faction;
-
         private void OnEnable()
         {
             GameManager.Instance.AddCenter(this);
