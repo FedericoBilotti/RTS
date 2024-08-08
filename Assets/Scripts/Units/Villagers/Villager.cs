@@ -115,7 +115,7 @@ namespace Units.Villagers
             var searchNewResource = new SearchNewResource(this);
 
             IdleTransitions(idle, moveToStorage, moveToResource, moving);
-            MoveToTransitions(moving, idle, moveToResource, moveToStorage);
+            MovingTransitions(moving, idle, moveToResource, moveToStorage);
             MoveToResourceTransitions(moveToResource, workVillager, moveToStorage, moving);
             WorkVillagerTransitions(workVillager, moveToResource, moving, searchNewResource, moveToStorage);
             MoveToStorageTransitions(moveToStorage, moveToResource, searchNewResource, idle);
@@ -131,7 +131,7 @@ namespace Units.Villagers
             fsm.AddTransition(idle, moveToStorage, new FuncPredicate(() => ActualStorage != null)); // && !IsInventoryEmpty()
         }
 
-        private void MoveToTransitions(Moving moving, Idle idle, MoveToResource moveToResource, MoveToStorage moveToStorage)
+        private void MovingTransitions(Moving moving, Idle idle, MoveToResource moveToResource, MoveToStorage moveToStorage)
         {
             fsm.AddTransition(moving, idle, new FuncPredicate(() => ActualWork == null && !agent.hasPath));
             fsm.AddTransition(moving, moveToResource, new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty()));
