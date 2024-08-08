@@ -45,7 +45,7 @@ namespace Player
 
         public void AddSingleUnit(float mouseDownTime, bool isShiftPressed)
         {
-            bool unitOrStructure = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f, GameManager.Instance.GetUnitStructureLayer());
+            bool unitOrStructure = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f, GameManager.Instance.GetUnitAndStructureLayer());
 
             if (!unitOrStructure)
             {

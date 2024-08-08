@@ -17,7 +17,7 @@ namespace Player
 
             _actions = new List<IOrderStrategy>
             {
-                new WorkAction(), 
+                new WorkAction(),
                 new AttackAction(), 
                 new StorageAction(), 
                 new MoveUnitsInFormation() // Siempre tiene que ser la última

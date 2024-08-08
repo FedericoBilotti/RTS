@@ -13,13 +13,14 @@ namespace Units
         [SerializeField] private EFaction _faction = EFaction.Blue;
 
         private UnitVisual _unitVisual;
+        private EntityLife _entityLife;
+
+        public Action onSelectUnit = delegate { };
+        public Action onDeselectUnit = delegate { };
 
         protected FiniteStateMachine fsm;
         protected NavMeshAgent agent;
         protected ITargetable targetable;
-
-        public Action onSelectUnit = delegate { };
-        public Action onDeselectUnit = delegate { };
 
         protected virtual void Awake()
         {
@@ -54,5 +55,7 @@ namespace Units
         }
 
         public Vector3 GetPosition() => transform.position;
+        
+        public bool IsDead() => _entityLife.IsDead();
     }
 }

@@ -20,7 +20,7 @@ namespace Manager
         [SerializeField] private LayerMask _groundLayer;
 
         public LayerMask GetUnitLayer() => _unitLayer;
-        public LayerMask GetUnitStructureLayer() => _unitStructureLayer;
+        public LayerMask GetUnitAndStructureLayer() => _unitStructureLayer;
         public LayerMask GetResourceLayer() => _resourceLayer;
         public LayerMask GetTreesLayer() => _treesLayer;
         public LayerMask GetGroundLayer() => _groundLayer;

@@ -217,6 +217,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selector: {fileID: 2360557717262013253}
   _faction: 0
+  _actualState: 
+  _jediSO: {fileID: 11400000, guid: b62c1cb1c5638b84c8f75bb83beb93f8, type: 2}
 --- !u!114 &9124463974776895533
 MonoBehaviour:
   m_ObjectHideFlags: 0

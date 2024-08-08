@@ -7,5 +7,6 @@ namespace Units
     {
         Vector3 GetPosition();
         EFaction GetFaction();
+        bool IsDead();
     }
 }

@@ -15,11 +15,11 @@ namespace Units.Villagers
         [SerializeField] private string _actualState; // Para saber el estado en que me encuentro -> borrar después.
         [SerializeField] private VillagerSO _villagerSO;
 
-        private readonly Dictionary<ResourcesManager.ResourceType, int> _inventoryResources = new();
-
         public IStorage ActualStorage { get; private set; }
         public IWork ActualWork { get; private set; }
-        private ResourcesManager.ResourceType _previousResourceType;
+        private ResourcesManager.ResourceType _previousWorkResourceType;
+
+        private readonly Dictionary<ResourcesManager.ResourceType, int> _inventoryResources = new();
 
         private void Start()
         {
@@ -42,7 +42,7 @@ namespace Units.Villagers
         private void FixedUpdate() => fsm.FixedUpdate();
 
         public void SetStateName(string state) => _actualState = state; // Debug.
-
+        
         public void SetStorage(IStorage center) => ActualStorage = center;
 
         public void SetWork(IWork work)
@@ -52,10 +52,10 @@ namespace Units.Villagers
             
             ActualWork = work;
         }
-
+        
         public void SetResourceType(ResourcesManager.ResourceType resourceType)
         {
-            _previousResourceType = resourceType;
+            _previousWorkResourceType = resourceType;
         }
 
         #region Resources Storage Methods
@@ -151,7 +151,7 @@ namespace Units.Villagers
             fsm.AddTransition(workVillager, moving, new FuncPredicate(() => ActualWork == null));
             fsm.AddTransition(workVillager, searchNewResource, new FuncPredicate(() => ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
             fsm.AddTransition(workVillager, moveToStorage, new FuncPredicate(() => ActualStorage != null && IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
-            fsm.AddTransition(workVillager, moveToResource, new FuncPredicate(() => _previousResourceType != ActualWork.GetResourceSO().ResourceType));
+            fsm.AddTransition(workVillager, moveToResource, new FuncPredicate(() => _previousWorkResourceType != ActualWork.GetResourceSO().ResourceType));
         }
 
         private void MoveToStorageTransitions(MoveToStorage moveToStorage, MoveToResource moveToResource, SearchNewResource searchNewResource, Idle idle)

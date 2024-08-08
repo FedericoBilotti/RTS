@@ -12,10 +12,7 @@ namespace Units
         public Action<float> onTakeDamage = delegate { };
         public Action onDeadUnit = delegate { };
 
-        private void Awake()
-        {
-            actualLife = entityLifeSO.MaxLife;
-        }
+        private void Awake() => actualLife = entityLifeSO.MaxLife;
 
         public virtual void TakeDamage(int damage)
         {
@@ -28,9 +25,11 @@ namespace Units
 
         protected virtual void Dead()
         {
-            if (actualLife > 0) return;
+            if (!IsDead()) return;
 
             onDeadUnit.Invoke();
-        }
+        }        
+        
+        public bool IsDead() => actualLife <= 0;
     }
 }

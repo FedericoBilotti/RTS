@@ -9,6 +9,9 @@ namespace Units.Jedi
 
         public override void OnEnter()
         {
+            agent.stoppingDistance = jediSO.StoppingDistanceToIdle;
+            
+            // Reproducir animación de Idle.
             jedi.SetStateName("Idle");
         }
     }

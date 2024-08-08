@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Player.OrderActions
 {
     /// <summary>
-    /// Mueve a las unidades en formación -> Siempre debe permanece como última opción en la lista.
+    /// Mueve a las unidades en formación. -> Siempre debe permanece como última opción en la lista.
     /// </summary>
     public class MoveUnitsInFormation : IOrderStrategy
     {
