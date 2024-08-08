@@ -1,3 +1,4 @@
+using EventSystem.Channel;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +8,7 @@ namespace EventSystem.Listener
     {
         [SerializeField] private EventChannel<T> _eventChannel;
         [SerializeField] private UnityEvent<T> _unityEvent;
-        
+
         private void OnEnable() => _eventChannel.RegisterListener(this);
         private void OnDisable() => _eventChannel.UnregisterListener(this);
 
@@ -15,9 +16,17 @@ namespace EventSystem.Listener
         {
             _unityEvent.Invoke(value);
         }
+
+        public void AddListener(UnityAction<T> value)
+        {
+            _unityEvent.AddListener(value);
+        }
+
+        public void RemoveListener(UnityAction<T> value)
+        {
+            _unityEvent.RemoveListener(value);
+        }
     }
-    
-    public class EventListener : EventListener<Empty>
-    {
-    }
+
+    public class EventListener : EventListener<Empty> { }
 }

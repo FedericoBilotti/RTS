@@ -1,3 +1,4 @@
+using EventSystem.Channel;
 using UnityEngine;
 
 namespace EventSystem

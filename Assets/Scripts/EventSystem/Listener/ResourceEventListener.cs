@@ -1,7 +1,6 @@
 using EventSystem.Channel;
-using EventSystem.Listener;
 
-namespace EventSystem
+namespace EventSystem.Listener
 {
     public class ResourceEventListener : EventListener<ResourceEvent> { }
 }

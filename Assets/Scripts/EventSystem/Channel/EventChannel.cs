@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using EventSystem.Listener;
 using UnityEngine;
 
-namespace EventSystem
+namespace EventSystem.Channel
 {
     public abstract class EventChannel<T> : ScriptableObject
     {

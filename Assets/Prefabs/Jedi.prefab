@@ -215,7 +215,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selector: {fileID: 2360557717262013253}
-  unitSo: {fileID: 11400000, guid: b62c1cb1c5638b84c8f75bb83beb93f8, type: 2}
+  _faction: 0
+  _entityLifeSO: {fileID: 11400000, guid: 144afc9bc46b8af418a5a05c52ad0fd0, type: 2}
+  _onTakeDamage: {fileID: 11400000, guid: 4da618da08d36e641a55b255817f280e, type: 2}
+  _onDeadUnit: {fileID: 11400000, guid: c4c44576d24237b4d9d3ba9114421e05, type: 2}
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

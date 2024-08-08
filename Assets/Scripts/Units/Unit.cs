@@ -1,7 +1,12 @@
+using EventSystem;
+using EventSystem.Channel;
+using EventSystem.Listener;
 using Player;
 using StateMachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 namespace Units
 {
@@ -10,9 +15,12 @@ namespace Units
     {
         [SerializeField] private GameObject _selector;
         [SerializeField] private EFaction _faction = EFaction.Blue;
-        
+
+        [Header("Unit Life")] [SerializeField] private EntityLifeSO _entityLifeSO;
+
         private UnitVisual _unitVisual;
-        
+        private EntityLife _unitLife;
+
         protected FiniteStateMachine fsm;
         protected NavMeshAgent agent;
         protected IDamageable enemyTarget;
@@ -22,6 +30,7 @@ namespace Units
             agent = GetComponent<NavMeshAgent>();
 
             _unitVisual = new UnitVisual(_selector);
+            _unitLife = new UnitLife(_entityLifeSO);
         }
 
         public void StopMovement() => agent.isStopped = true;
@@ -49,12 +58,11 @@ namespace Units
             Debug.Log("Target: " + enemyTarget);
         }
 
-        public Vector3 GetPosition() => transform.position;
-        public void TakeDamage(int damage) => Debug.Log("Damage");
-        
-        public void Interact()
+        public void TakeDamage(int damage)
         {
-            
+            _unitLife.TakeDamage(damage);
         }
+
+        public Vector3 GetPosition() => transform.position;
     }
 }

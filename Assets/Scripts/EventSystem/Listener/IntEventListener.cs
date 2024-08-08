@@ -1,6 +1,4 @@
-using EventSystem.Listener;
-
-namespace EventSystem
+namespace EventSystem.Listener
 {
     public class IntEventListener : EventListener<int>
     {
