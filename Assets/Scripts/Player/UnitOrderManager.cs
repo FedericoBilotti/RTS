@@ -1,5 +1,5 @@
-using Structures.Storages;
-using Units.Resources;
+using System.Collections.Generic;
+using Player.OrderActions;
 using UnityEngine;
 using Utilities;
 
@@ -9,42 +9,30 @@ namespace Player
     {
         private readonly UnitManager _unitManager;
 
-        public UnitOrderManager(UnitManager unitManager) => _unitManager = unitManager;
+        private readonly List<IOrderStrategy> _actions;
+
+        public UnitOrderManager(UnitManager unitManager)
+        {
+            _unitManager = unitManager;
+
+            _actions = new List<IOrderStrategy>
+            {
+                new WorkAction(), 
+                new AttackAction(), 
+                new StorageAction(), 
+                new MoveUnitsInFormation() // Siempre tiene que ser la última
+            };
+        }
 
         public void ControlUnits()
         {
             bool hitSomething = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 100f);
             if (!hitSomething) return;
 
-            Vector3 destination = hit.point;
-
-            if (hit.transform.TryGetComponent(out IWork work))
+            foreach (IOrderStrategy action in _actions)
             {
-                AssignWorkToVillagers(work);
-            }
-            else if (hit.transform.TryGetComponent(out IStorage storage))
-            {
-                if (storage.Faction != _unitManager.Faction) return;
-                
-                AssignStorageToVillagers(storage);
-            }
-            else if (hit.transform.TryGetComponent(out IDamageable damageable))
-            {
-                if (storage.Faction == _unitManager.Faction) return;
-                
-                destination = damageable.Position;
-                MoveUnits(destination);
-            }
-            else
-            {
-                MoveUnitsInFormation(destination);
-                AssignWorkToVillagers(null);
+                if (action.Execute(_unitManager, hit)) break; // Se va a ejecutar cada acción hasta que se cumpla una.
             }
         }
-
-        private void AssignWorkToVillagers(IWork resource) => _unitManager.SetResourceToWorkUnits(resource);
-        private void AssignStorageToVillagers(IStorage storage) => _unitManager.SetStorage(storage);
-        private void MoveUnits(Vector3 destination) => _unitManager.MoveUnits(destination);
-        private void MoveUnitsInFormation(Vector3 destination) => _unitManager.MoveUnitsInFormation(destination);
     }
 }

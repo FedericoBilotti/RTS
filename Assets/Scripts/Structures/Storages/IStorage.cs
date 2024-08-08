@@ -8,7 +8,6 @@ namespace Structures.Storages
     {
         Vector3 Position { get; }
         ResourcesManager.ResourceType GetStorageType { get; }
-
         public EFaction Faction { get; }
         public void SetFaction(EFaction faction);
     }

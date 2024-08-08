@@ -9,7 +9,7 @@ namespace Units.Formations
 
         public CircleFormation(float radius) => _radius = radius;
 
-        public List<Vector3> Shape(Vector3 desiredPosition, List<Unit> indicatorsList)
+        public List<Vector3> FormationShape(Vector3 desiredPosition, List<Unit> indicatorsList)
         {
             List<Vector3> positions = new();
     

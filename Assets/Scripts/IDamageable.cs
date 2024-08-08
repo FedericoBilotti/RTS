@@ -1,7 +1,9 @@
+using Player;
 using UnityEngine;
 
 public interface IDamageable
 {
-    Vector3 Position { get; }
-    void TakeDamage(int damage);        
+    Vector3 GetPosition();
+    EFaction GetFaction();
+    void TakeDamage(int damage);
 }

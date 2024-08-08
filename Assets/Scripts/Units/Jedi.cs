@@ -1,6 +1,4 @@
 namespace Units
 {
-    public class Jedi : Unit
-    {
-    }
+    public class Jedi : Unit { }
 }

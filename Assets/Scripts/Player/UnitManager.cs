@@ -65,7 +65,7 @@ namespace Player
             }
         }
 
-        public void SetResourceToWorkUnits(IWork work)
+        public void AssignWorkToUnits(IWork work)
         {
             if (_selectedVillagers.Count == 0) return;
 
@@ -73,6 +73,14 @@ namespace Player
             {
                 selectedUnit.SetStorage(null);
                 selectedUnit.SetWork(work);
+            }
+        }
+
+        public void SetEnemyTargets(IDamageable target)
+        {
+            foreach (Unit selectedUnit in _selectedUnits)
+            {
+                selectedUnit.SetEnemyTarget(target);
             }
         }
 
@@ -86,14 +94,6 @@ namespace Player
                 Vector3 position = positions[i];
                 selectedUnit.SetDestination(position);
                 i = (i + 1) % positions.Count;
-            }
-        }
-
-        public void MoveUnits(Vector3 desiredPosition)
-        {
-            foreach (Unit selectedUnit in _selectedUnits)
-            {
-                selectedUnit.SetDestination(desiredPosition);
             }
         }
 

@@ -6,15 +6,16 @@ using UnityEngine.AI;
 namespace Units
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public abstract class Unit : MonoBehaviour
+    public abstract class Unit : MonoBehaviour, IDamageable
     {
         [SerializeField] private GameObject _selector;
-        private UnitVisual _unitVisual;
-
-        protected NavMeshAgent agent;
-        protected FiniteStateMachine fsm;
-
         [SerializeField] private EFaction _faction = EFaction.Blue;
+        
+        private UnitVisual _unitVisual;
+        
+        protected FiniteStateMachine fsm;
+        protected NavMeshAgent agent;
+        protected IDamageable enemyTarget;
 
         protected virtual void Awake()
         {
@@ -32,7 +33,8 @@ namespace Units
             // Make sure the position is valid.
             if (!NavMesh.SamplePosition(destination, out NavMeshHit hit, 5f, NavMesh.AllAreas)) return;
 
-            agent.SetDestination(hit.position);
+            destination = hit.position;
+            agent.SetDestination(destination);
         }
 
         public void SelectUnit() => _unitVisual.SelectUnit();
@@ -41,14 +43,18 @@ namespace Units
         public void SetFaction(EFaction faction) => _faction = faction;
         public EFaction GetFaction() => _faction;
 
-        public enum UnitType
+        public void SetEnemyTarget(IDamageable target)
         {
-            None,
-            Villager,
-            Padawan,
-            Jedi,
-            JediMaster,
-            StormTrooper,
+            enemyTarget = target;
+            Debug.Log("Target: " + enemyTarget);
+        }
+
+        public Vector3 GetPosition() => transform.position;
+        public void TakeDamage(int damage) => Debug.Log("Damage");
+        
+        public void Interact()
+        {
+            
         }
     }
 }

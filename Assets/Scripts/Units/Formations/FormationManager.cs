@@ -13,7 +13,7 @@ namespace Units.Formations
         private void OnValidate() => SetActualFormation(_factoryFormation.GetFormation(_actualFormationType));
         private void Awake() => SetActualFormation(_factoryFormation.GetFormation(_actualFormationType));
 
-        public List<Vector3> GetActualFormation(Vector3 desiredPosition, List<Unit> indicatorsList) => _actualFormation.Shape(desiredPosition, indicatorsList);
+        public List<Vector3> GetActualFormation(Vector3 desiredPosition, List<Unit> indicatorsList) => _actualFormation.FormationShape(desiredPosition, indicatorsList);
         private void SetActualFormation(IFormation formation) => _actualFormation = formation;
     }
 }

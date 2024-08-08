@@ -9,7 +9,7 @@ namespace Units.Formations
 
         public HorizontalLineFormation(float length) => _length = length;
 
-        public List<Vector3> Shape(Vector3 desiredPosition, List<Unit> indicatorsList)
+        public List<Vector3> FormationShape(Vector3 desiredPosition, List<Unit> indicatorsList)
         {
             List<Vector3> positions = new();
             if (indicatorsList.Count == 0) return positions;
