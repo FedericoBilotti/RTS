@@ -1,24 +1,36 @@
 using System;
+using UnityEngine;
 
 namespace Units
 {
-    public abstract class EntityLife
+    public abstract class EntityLife : MonoBehaviour, IDamageable
     {
-        protected readonly EntityLifeSO entityEntityLifeSO;
+        [SerializeField] protected EntityLifeSO entityLifeSO;
         protected int actualLife;
 
         // Eventos
         public Action<float> onTakeDamage = delegate { };
         public Action onDeadUnit = delegate { };
 
-        protected EntityLife(EntityLifeSO entityEntityLifeSO)
+        private void Awake()
         {
-            this.entityEntityLifeSO = entityEntityLifeSO;
-
-            actualLife = entityEntityLifeSO.MaxLife;
+            actualLife = entityLifeSO.MaxLife;
         }
 
-        public abstract void TakeDamage(int damage);
-        protected abstract void Dead();
+        public virtual void TakeDamage(int damage)
+        {
+            actualLife = Mathf.Max(actualLife -= damage, 0);
+
+            onTakeDamage.Invoke(entityLifeSO.CalculateLifePercentage(actualLife));
+
+            Dead();
+        }
+
+        protected virtual void Dead()
+        {
+            if (actualLife > 0) return;
+
+            onDeadUnit.Invoke();
+        }
     }
 }

@@ -1,36 +1,31 @@
-using EventSystem;
-using EventSystem.Channel;
-using EventSystem.Listener;
+using System;
 using Player;
 using StateMachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
 
 namespace Units
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public abstract class Unit : MonoBehaviour, IDamageable
+    public abstract class Unit : MonoBehaviour, ITargetable
     {
         [SerializeField] private GameObject _selector;
         [SerializeField] private EFaction _faction = EFaction.Blue;
 
-        [Header("Unit Life")] [SerializeField] private EntityLifeSO _entityLifeSO;
-
         private UnitVisual _unitVisual;
-        private EntityLife _unitLife;
 
         protected FiniteStateMachine fsm;
         protected NavMeshAgent agent;
-        protected IDamageable enemyTarget;
+        protected ITargetable targetable;
+
+        public Action onSelectUnit = delegate { };
+        public Action onDeselectUnit = delegate { };
 
         protected virtual void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
 
-            _unitVisual = new UnitVisual(_selector);
-            _unitLife = new UnitLife(_entityLifeSO);
+            _unitVisual = new UnitVisual(this, _selector);
         }
 
         public void StopMovement() => agent.isStopped = true;
@@ -46,21 +41,16 @@ namespace Units
             agent.SetDestination(destination);
         }
 
-        public void SelectUnit() => _unitVisual.SelectUnit();
-        public void DeselectUnit() => _unitVisual.DeselectUnit();
+        public void SelectUnit() => onSelectUnit.Invoke();
+        public void DeselectUnit() => onDeselectUnit.Invoke();
 
         public void SetFaction(EFaction faction) => _faction = faction;
         public EFaction GetFaction() => _faction;
 
-        public void SetEnemyTarget(IDamageable target)
+        public void SetTarget(ITargetable target)
         {
-            enemyTarget = target;
-            Debug.Log("Target: " + enemyTarget);
-        }
-
-        public void TakeDamage(int damage)
-        {
-            _unitLife.TakeDamage(damage);
+            targetable = target;
+            Debug.Log("Target: " + targetable);
         }
 
         public Vector3 GetPosition() => transform.position;

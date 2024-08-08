@@ -12,7 +12,7 @@ namespace Units.Villagers
 {
     public class Villager : Unit
     {
-        [SerializeField] private string _actualState; // Para saber el estado en que me encuentro
+        [SerializeField] private string _actualState; // Para saber el estado en que me encuentro -> borrar después.
         [SerializeField] private VillagerSO _villagerSO;
 
         private readonly Dictionary<ResourcesManager.ResourceType, int> _inventoryResources = new();
@@ -38,10 +38,10 @@ namespace Units.Villagers
 
         #endregion
 
-        private void Update() => fsm?.Update();
-        private void FixedUpdate() => fsm?.FixedUpdate();
+        private void Update() => fsm.Update();
+        private void FixedUpdate() => fsm.FixedUpdate();
 
-        public void SetStateName(string state) => _actualState = state;
+        public void SetStateName(string state) => _actualState = state; // Debug.
 
         public void SetStorage(IStorage center) => ActualStorage = center;
 

@@ -176,6 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4334694044386129929}
   - component: {fileID: 9092827534324999098}
+  - component: {fileID: 286465302536097301}
   - component: {fileID: 5986717382876716902}
   - component: {fileID: 7026034156228257708}
   m_Layer: 6
@@ -216,11 +217,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selector: {fileID: 2360557717262013253}
   _faction: 0
-  _entityLifeSO: {fileID: 11400000, guid: 47b77988b6ffb7542991692be957c27e, type: 2}
-  _onTakeDamage: {fileID: 11400000, guid: 4da618da08d36e641a55b255817f280e, type: 2}
-  _onDeadUnit: {fileID: 11400000, guid: c4c44576d24237b4d9d3ba9114421e05, type: 2}
   _actualState: 
   _villagerSO: {fileID: 11400000, guid: 8525b432097349344a183cb171c37aeb, type: 2}
+--- !u!114 &286465302536097301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5010087488207582929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a81212dad77fb469db4959a5f54bd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityLifeSO: {fileID: 11400000, guid: 47b77988b6ffb7542991692be957c27e, type: 2}
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

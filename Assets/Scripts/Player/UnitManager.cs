@@ -18,20 +18,20 @@ namespace Player
         [Header("Player")] 
         [SerializeField] private EFaction _faction;
         public EFaction Faction => _faction;
-        
+
         [Header("Events")] 
         [SerializeField] private ResourceChannel _onAddWorkVillager;
         [SerializeField] private ResourceChannel _onRemoveWorkVillager;
-        
+
         private IController _controller;
         private FormationManager _formationManager;
         private UnitOrderManager _unitOrderManager;
         private UnitSelectorManager _unitSelectorManager;
 
-        private readonly HashSet<Unit> _selectedUnits = new();
-        private readonly List<Villager> _totalVillagers = new();    // Cada vez que se crea un villager sea añade acá.
+        private readonly HashSet<Unit> _selectedUnits = new();      // Unidades seleccionadas.
         private readonly List<Villager> _selectedVillagers = new(); // Villagers seleccionados.
-        private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new();
+        private readonly List<Villager> _totalVillagers = new();    // Cada vez que se crea un villager sea añade acá.
+        private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new(); // Villagers agrupados por recurso.
 
         protected override void InitializeSingleton()
         {
@@ -76,11 +76,11 @@ namespace Player
             }
         }
 
-        public void SetEnemyTargets(IDamageable target)
+        public void SetEnemyTargets(ITargetable targetable)
         {
             foreach (Unit selectedUnit in _selectedUnits)
             {
-                selectedUnit.SetEnemyTarget(target);
+                selectedUnit.SetTarget(targetable);
             }
         }
 
@@ -128,14 +128,14 @@ namespace Player
         public void AddVillager(Villager villager)
         {
             if (villager.GetFaction() != Faction) return;
-            
+
             _totalVillagers.Add(villager);
         }
 
         public void RemoveVillager(Villager villager)
         {
             if (villager.GetFaction() != Faction) return;
-            
+
             _totalVillagers.Remove(villager);
         }
 
@@ -147,7 +147,7 @@ namespace Player
         public void AddWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
             if (villager.GetFaction() != Faction) return;
-            
+
             if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
             {
                 Debug.LogWarning("Resource not found: " + resourceType);
@@ -166,7 +166,7 @@ namespace Player
         public void RemoveWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
             if (villager.GetFaction() != Faction) return;
-            
+
             if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
             {
                 Debug.LogWarning("Resource not found: " + resourceType);

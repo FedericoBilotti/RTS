@@ -9,7 +9,12 @@ namespace Units
 
         public int MaxLife => _maxLife;
 
-        public float PercentageLife(float actualLife)
+        /// <summary>
+        /// Obtiene la vida actual y la divide con la vida máxima
+        /// </summary>
+        /// <param name="actualLife">La vida actual de la entidad</param>
+        /// <returns>Devuelve un valor entre 0 y 1</returns>
+        public float CalculateLifePercentage(float actualLife)
         {
             return actualLife / _maxLife;
         }

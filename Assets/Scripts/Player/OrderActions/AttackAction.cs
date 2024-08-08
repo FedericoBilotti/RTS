@@ -1,3 +1,4 @@
+using Units;
 using UnityEngine;
 
 namespace Player.OrderActions
@@ -9,13 +10,13 @@ namespace Player.OrderActions
     {
         public bool Execute(UnitManager unitManager, RaycastHit hit)
         {
-            if (!hit.transform.TryGetComponent(out IDamageable damageable)) return false;
-            if (damageable.GetFaction() == unitManager.Faction) return false;
+            if (!hit.transform.TryGetComponent(out ITargetable targetable)) return false;
+            if (targetable.GetFaction() == unitManager.Faction) return false;
             
-            SetEnemyTargets(unitManager, damageable);
+            SetEnemyTargets(unitManager, targetable);
             return true;
         }
         
-        private static void SetEnemyTargets(UnitManager unitManager, IDamageable damageable) => unitManager.SetEnemyTargets(damageable);
+        private static void SetEnemyTargets(UnitManager unitManager, ITargetable targetable) => unitManager.SetEnemyTargets(targetable);
     }
 }
