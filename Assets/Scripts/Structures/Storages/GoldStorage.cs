@@ -6,7 +6,7 @@ namespace Structures.Storages
      {
          private void Start()
          {
-             GetStorageType = ResourcesManager.ResourceType.Gold;
+             StorageType = ResourcesManager.ResourceType.Gold;
          }
          
          private void OnEnable() => GameManager.Instance.AddStorage(this);

@@ -27,7 +27,11 @@ namespace Units
             agent = GetComponent<NavMeshAgent>();
 
             _unitVisual = new UnitVisual(this, _selector);
+            _entityLife = GetComponent<EntityLife>();
         }
+
+        private void Update() => fsm.Update();
+        private void FixedUpdate() => fsm.FixedUpdate();
 
         public void StopMovement() => agent.isStopped = true;
 
@@ -50,12 +54,16 @@ namespace Units
 
         public void SetTarget(ITargetable target)
         {
+            if (target == null) return;
+            if (target.GetFaction() == _faction) return;
+            
             targetable = target;
             Debug.Log("Target: " + targetable);
         }
 
+        public ITargetable GetTarget() => targetable;
         public Vector3 GetPosition() => transform.position;
-        
+        public void TakeDamage(int damage) => _entityLife.TakeDamage(damage);
         public bool IsDead() => _entityLife.IsDead();
     }
 }

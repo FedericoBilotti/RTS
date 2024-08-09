@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace Units
 {
-    public interface ITargetable
+    public interface ITargetable : IDamageable
     {
         Vector3 GetPosition();
         EFaction GetFaction();
-        bool IsDead();
     }
 }

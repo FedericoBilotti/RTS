@@ -7,7 +7,7 @@ namespace Structures
     {
         private void Start()
         {
-            GetStorageType = ResourcesManager.ResourceType.All;
+            StorageType = ResourcesManager.ResourceType.All;
         }
         
         private void OnEnable()

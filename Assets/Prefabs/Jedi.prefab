@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityLifeSO: {fileID: 11400000, guid: 144afc9bc46b8af418a5a05c52ad0fd0, type: 2}
+  actualLife: 0
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

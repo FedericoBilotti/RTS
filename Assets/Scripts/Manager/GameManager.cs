@@ -51,7 +51,7 @@ namespace Manager
         public IStorage NearStorage(Unit unit, ResourcesManager.ResourceType desiredStorage)
         {
             // Tmb compararia los q son de mi facción
-            return _storages.Where(x => x.GetStorageType == desiredStorage).OrderBy(x => Vector3.Distance(unit.transform.position, x.Position)).FirstOrDefault();
+            return _storages.Where(x => x.StorageType == desiredStorage).OrderBy(x => Vector3.Distance(unit.transform.position, x.Position)).FirstOrDefault();
         }
     }
 }

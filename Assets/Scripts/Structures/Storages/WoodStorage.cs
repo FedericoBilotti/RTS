@@ -6,7 +6,7 @@ namespace Structures.Storages
     {
         private void Start()
         {
-            GetStorageType = ResourcesManager.ResourceType.Wood;
+            StorageType = ResourcesManager.ResourceType.Wood;
         }
 
         private void OnEnable() => GameManager.Instance.AddStorage(this);

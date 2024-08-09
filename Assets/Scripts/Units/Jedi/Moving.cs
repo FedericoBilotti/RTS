@@ -12,5 +12,9 @@ namespace Units.Jedi
             // Reproducir animación de Caminar.
             jedi.SetStateName("Moving");
         }
+
+        public override void OnUpdate()
+        {
+        }
     }
 }

@@ -6,13 +6,19 @@ namespace Units
     public abstract class EntityLife : MonoBehaviour, IDamageable
     {
         [SerializeField] protected EntityLifeSO entityLifeSO;
-        protected int actualLife;
+        [SerializeField] protected int actualLife;
 
         // Eventos
         public Action<float> onTakeDamage = delegate { };
         public Action onDeadUnit = delegate { };
 
         private void Awake() => actualLife = entityLifeSO.MaxLife;
+
+        private void Start()
+        {
+            onTakeDamage += x => Debug.Log($"Recibo daño. Porcentaje de vida: {x} ");
+            onDeadUnit += () => Debug.Log("Mori");
+        }
 
         public virtual void TakeDamage(int damage)
         {

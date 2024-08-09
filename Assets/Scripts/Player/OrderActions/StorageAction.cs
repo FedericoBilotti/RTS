@@ -11,7 +11,6 @@ namespace Player.OrderActions
         public bool Execute(UnitManager unitManager, RaycastHit hit)
         {
             if (!hit.transform.TryGetComponent(out IStorage storage)) return false;
-            if (storage.Faction != unitManager.Faction) return false;
             
             AssignStorageToVillagers(unitManager, storage);
             return true;

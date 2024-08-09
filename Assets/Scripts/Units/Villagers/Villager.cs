@@ -38,21 +38,23 @@ namespace Units.Villagers
 
         #endregion
 
-        private void Update() => fsm.Update();
-        private void FixedUpdate() => fsm.FixedUpdate();
-
         public void SetStateName(string state) => _actualState = state; // Debug.
-        
-        public void SetStorage(IStorage center) => ActualStorage = center;
+
+        public void SetStorage(IStorage storage)
+        {
+            if (storage == null) return;
+            if (storage.Faction != GetFaction()) return;
+
+            ActualStorage = storage;
+        }
 
         public void SetWork(IWork work)
         {
-            if (ActualWork != null) 
-                SetResourceType(ActualWork.GetResourceSO().ResourceType);
-            
+            if (ActualWork != null) SetResourceType(ActualWork.GetResourceSO().ResourceType);
+
             ActualWork = work;
         }
-        
+
         public void SetResourceType(ResourcesManager.ResourceType resourceType)
         {
             _previousWorkResourceType = resourceType;
@@ -74,7 +76,7 @@ namespace Units.Villagers
             ResourcesManager.Instance.AddResourceAmount(resourceType, _inventoryResources[resourceType]);
             RemoveResourceFromInventory(resourceType);
         }
-        
+
         #endregion
 
         #region Villager Inventory Methods
@@ -156,8 +158,10 @@ namespace Units.Villagers
 
         private void MoveToStorageTransitions(MoveToStorage moveToStorage, MoveToResource moveToResource, SearchNewResource searchNewResource, Idle idle)
         {
-            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
-            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => ActualWork != null && ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToStorage, moveToResource,
+                    new FuncPredicate(() => ActualWork != null && !ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToStorage, searchNewResource,
+                    new FuncPredicate(() => ActualWork != null && ResourceIsEmpty() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
             fsm.AddTransition(moveToStorage, idle, new FuncPredicate(() => ActualStorage == null || IsInventoryEmpty()));
         }
 

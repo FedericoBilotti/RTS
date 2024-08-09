@@ -7,7 +7,7 @@ namespace Structures.Storages
     public interface IStorage
     {
         Vector3 Position { get; }
-        ResourcesManager.ResourceType GetStorageType { get; }
+        ResourcesManager.ResourceType StorageType { get; }
         public EFaction Faction { get; }
         public void SetFaction(EFaction faction);
     }

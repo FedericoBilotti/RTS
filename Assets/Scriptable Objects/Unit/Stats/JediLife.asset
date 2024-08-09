@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b89845fe3c6b45478505b4feaf0a0de5, type: 3}
-  m_Name: VillagerLifeSO
+  m_Name: JediLife
   m_EditorClassIdentifier: 
-  _maxLife: 50
+  _maxLife: 100

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Manager;
 using Units.SO;
@@ -13,17 +14,30 @@ namespace Units.Jedi
         public override void OnEnter()
         {
             SearchNearEnemies(jedi, jediSO);
+
+            Debug.Log("Busco");
+
+            jedi.SetStateName("Search Near Enemy");
         }
 
         private static void SearchNearEnemies(Jedi jedi, JediSO jediSO)
         {
             Collider[] enemies = Physics.OverlapSphere(jedi.transform.position, jediSO.SearchNearEnemies, GameManager.Instance.GetUnitAndStructureLayer());
 
-            if (enemies.Length == 0) return;
-            
+            // Busca enemigos vivos.
+            ITargetable[] enemiesAlive = enemies.Select(x => x.GetComponent<ITargetable>()).Where(x =>  !x.IsDead() && x.GetFaction() != jedi.GetFaction()).ToArray();
+
+            if (enemiesAlive.Length == 0)
+            {
+                Debug.Log("No encontró ningun enemigo");
+                jedi.SetTarget(null);
+                return;
+            }
+
+            Debug.Log("Encontré un enemigo");
             // Ordena por distancia y obtiene el componente Targeteable.
-            ITargetable nearTarget = enemies.OrderBy(x => (jedi.GetPosition() - x.transform.position).sqrMagnitude).First().GetComponent<ITargetable>();
-            
+            ITargetable nearTarget = enemiesAlive.OrderBy(x => (jedi.GetPosition() - x.GetPosition()).sqrMagnitude).First();
+
             jedi.SetTarget(nearTarget);
         }
     }

@@ -7,14 +7,19 @@ namespace Structures.Storages
     [RequireComponent(typeof(UnityEngine.AI.NavMeshObstacle))]
     public abstract class Storage : MonoBehaviour, IStorage
     {
-        public Vector3 Position => transform.position;
-        public ResourcesManager.ResourceType GetStorageType { get; protected set; }
+        [SerializeField] private EFaction _faction;
+        
         public EFaction Faction { get; private set; }
+        public Vector3 Position => transform.position;
+        public ResourcesManager.ResourceType StorageType { get; protected set; }
+
         private void Awake()
         {
             var navMeshObstacle = GetComponent<UnityEngine.AI.NavMeshObstacle>();
             navMeshObstacle.carving = true;
             navMeshObstacle.carveOnlyStationary = true;
+
+            Faction = _faction;
         }
         
         public void SetFaction(EFaction faction)

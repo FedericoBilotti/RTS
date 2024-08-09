@@ -37,7 +37,7 @@ namespace Units.Villagers.States
 
         private void AddResourceToStorage(IStorage actualStorage)
         {
-            ResourcesManager.ResourceType resourceStorageType = actualStorage.GetStorageType;
+            ResourcesManager.ResourceType resourceStorageType = actualStorage.StorageType;
 
             if (AddResourcesToCenter(resourceStorageType)) return;
 
