@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Jedi
   m_EditorClassIdentifier: 
   _maxLife: 100
-  _damage: 50
+  _damage: 20
   _unitType: 3
   _searchNearEnemies: 10
   _stoppingDistanceToIdle: 0

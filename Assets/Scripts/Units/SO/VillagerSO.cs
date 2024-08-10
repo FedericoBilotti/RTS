@@ -16,7 +16,7 @@ namespace Units.SO
 
         private void OnValidate()
         {
-            _distanceToWork = Mathf.Max(1.1f, _distanceToWork);
+            _distanceToWork = Mathf.Max(2f, _distanceToWork);
             _stoppingDistanceToWork = Mathf.Clamp01(_stoppingDistanceToWork);
         }
 

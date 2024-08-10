@@ -18,7 +18,7 @@ MonoBehaviour:
   _searchNearEnemies: 10
   _stoppingDistanceToIdle: 0
   _stoppingDistanceToAttack: 2
-  _distanceToWork: 1.1
+  _distanceToWork: 2.5
   _stoppingDistanceToWork: 1
   _inventoryMaxes:
   - _resourceType: 0

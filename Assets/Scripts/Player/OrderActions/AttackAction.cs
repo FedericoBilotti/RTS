@@ -11,6 +11,7 @@ namespace Player.OrderActions
         public bool Execute(UnitManager unitManager, RaycastHit hit)
         {
             if (!hit.transform.TryGetComponent(out ITargetable targetable)) return false;
+            if (targetable.IsDead()) return false;
             if (targetable.GetFaction() == unitManager.Faction) return false;
             
             SetEnemyTargets(unitManager, targetable);
