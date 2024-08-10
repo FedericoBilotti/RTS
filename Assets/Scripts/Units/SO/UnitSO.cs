@@ -14,7 +14,7 @@ namespace Units.SO
         
         [Header("NavMesh")]
         [SerializeField] private int _stoppingDistanceToIdle = 0;
-        [SerializeField] private int _stoppingDistanceToAttack = 1;
+        [SerializeField] private int _stoppingDistanceToAttack = 2;
         
         public int MaxLife => _maxLife;
         public int Damage => _damage;

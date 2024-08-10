@@ -52,10 +52,8 @@ namespace Units.Villagers
             ActualWork = work;
         }
 
-        public void SetResourceType(ResourcesManager.ResourceType resourceType)
-        {
-            _previousWorkResourceType = resourceType;
-        }
+        public void SetResourceType(ResourcesManager.ResourceType resourceType) => _previousWorkResourceType = resourceType;
+        public ResourcesManager.ResourceType GetPreviousResourceType() => _previousWorkResourceType;
 
         #region Resources Storage Methods
 
@@ -108,7 +106,7 @@ namespace Units.Villagers
 
             var idle = new Idle(this, agent, _villagerSO);
             var moving = new Moving(this, agent, _villagerSO);
-            var moveToResource = new MoveToResource(this, agent);
+            var moveToResource = new MoveToResource(this, agent, _villagerSO);
             var workVillager = new WorkVillager(this, agent);
             var moveToStorage = new MoveToStorage(this);
             var searchNewResource = new SearchNewResource(this);
@@ -170,7 +168,7 @@ namespace Units.Villagers
         }
 
         private bool MoveToResource(ResourcesManager.ResourceType resourceType) => ActualWork.GetResourceSO().ResourceType == resourceType && IsNearResource();
-        private bool IsNearResource() => Vector3.Distance(transform.position, ActualWork.Position) < 2.5f;
+        private bool IsNearResource() => Vector3.Distance(transform.position, ActualWork.Position) <= _villagerSO.StoppingDistanceToWork;
         private bool HasResources() => ActualWork.HasResources();
 
         #endregion

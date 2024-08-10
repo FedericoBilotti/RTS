@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Player;
 using Units.Resources;
 using UnityEngine;
 
@@ -14,6 +15,11 @@ namespace Units.Villagers.States
             SearchResource(villager);
 
             villager.SetStateName("Search new resource");
+        }
+
+        public override void OnExit()
+        {
+            UnitManager.Instance.RemoveWorkingVillager(villager, villager.GetPreviousResourceType());
         }
 
         private static void SearchResource(Villager villager)

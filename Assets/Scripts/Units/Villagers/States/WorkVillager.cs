@@ -25,8 +25,6 @@ namespace Units.Villagers.States
         {
             _work = villager.ActualWork;
             _resourceType = _work.GetResourceSO().ResourceType;
-
-            UnitManager.Instance.AddWorkingVillager(villager, _resourceType);
             
             villager.SetStorage(GameManager.Instance.NearStorage(villager, _resourceType));
             villager.SetResourceType(villager.ActualWork.GetResourceSO().ResourceType);
@@ -50,7 +48,6 @@ namespace Units.Villagers.States
 
         public override void OnExit()
         {
-            UnitManager.Instance.RemoveWorkingVillager(villager, _resourceType);
             _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
             
             _timer.onTimerStop -= AddResource;
