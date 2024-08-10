@@ -22,13 +22,9 @@ namespace Units.Villagers.States
             _agent.stoppingDistance = _villagerSO.StoppingDistanceToWork;
             AddToWorkingVillagerList(villager);
             SetObstacleAvoidance(_agent, ObstacleAvoidanceType.NoObstacleAvoidance);
+            ToResource(villager, villager.ActualWork.Position);
 
             villager.SetStateName("Move To Resource");
-        }
-
-        public override void OnUpdate()
-        {
-            ToResource(villager, villager.ActualWork.Position);
         }
 
         private static void ToResource(Villager villager, Vector3 position)

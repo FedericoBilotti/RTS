@@ -6,7 +6,7 @@ namespace Units
     public abstract class EntityLife : MonoBehaviour, IDamageable
     {
         [SerializeField] protected EntityLifeSO entityLifeSO;
-        [SerializeField] protected int actualLife;
+        protected int actualLife;
 
         // Eventos
         public Action<float> onTakeDamage = delegate { };
@@ -16,8 +16,7 @@ namespace Units
 
         private void Start()
         {
-            onTakeDamage += x => Debug.Log($"Recibo daño. Porcentaje de vida: {x} ");
-            onDeadUnit += () => Debug.Log("Mori");
+            onDeadUnit += () => gameObject.SetActive(false); // Regresar a una pool futura.
         }
 
         public virtual void TakeDamage(int damage)

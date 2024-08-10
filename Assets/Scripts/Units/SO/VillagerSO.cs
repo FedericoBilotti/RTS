@@ -21,7 +21,7 @@ namespace Units.SO
         }
 
         /// <summary>
-        /// Check out if the inventory of the specificed resource is full
+        /// Check out if the inventory of the specified resource is full
         /// </summary>
         /// <param name="desiredResourceType"></param>
         /// <param name="actualAmountInInventory"></param>

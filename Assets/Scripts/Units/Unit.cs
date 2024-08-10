@@ -55,7 +55,6 @@ namespace Units
         public void SetTarget(ITargetable target)
         {
             targetable = target;
-            Debug.Log("Target: " + targetable);
         }
 
         public ITargetable GetTarget() => targetable;
