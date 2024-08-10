@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Utilities;
 
-namespace Units.Jedi
+namespace Units.Jedi.States
 {
     public class Attack : BaseStateJedi
     {

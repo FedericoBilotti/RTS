@@ -111,53 +111,64 @@ namespace Units.Villagers
             var moveToStorage = new MoveToStorage(this);
             var searchNewResource = new SearchNewResource(this);
 
-            IdleTransitions(idle, moveToStorage, moveToResource, moving);
-            MovingTransitions(moving, idle, moveToResource, moveToStorage);
-            MoveToResourceTransitions(moveToResource, workVillager, moveToStorage, moving);
-            WorkVillagerTransitions(workVillager, moveToResource, moving, searchNewResource, moveToStorage);
-            MoveToStorageTransitions(moveToStorage, moveToResource, searchNewResource, idle);
+            var moveToAttack = new MoveToAttack(this, agent, _villagerSO);
+            var attack = new Attack(this, _villagerSO);
+            var searchNearEnemy = new SearchNearEnemy(this, _villagerSO);
+
+            IdleTransitions(idle, moveToStorage, moveToResource, moving, moveToAttack);
+            MovingTransitions(moving, idle, moveToResource, moveToStorage, moveToAttack);
+            MoveToResourceTransitions(moveToResource, workVillager, moveToStorage, moving, moveToAttack);
+            WorkVillagerTransitions(workVillager, moveToResource, moving, searchNewResource, moveToStorage, moveToAttack);
+            MoveToStorageTransitions(moveToStorage, moveToResource, searchNewResource, idle, moveToAttack);
             SearchNewResourceTransitions(searchNewResource, moveToStorage, moveToResource, idle);
+            
+            MoveToAttackTransitions(moveToAttack, searchNearEnemy, attack, idle);
+            AttackTransitions(attack, moveToAttack, searchNearEnemy);
+            SearchNearEnemyTransitions(searchNearEnemy, moveToAttack, idle);
 
             fsm.SetState(idle);
         }
 
-        private void IdleTransitions(Idle idle, MoveToStorage moveToStorage, MoveToResource moveToResource, Moving moving)
+        private void IdleTransitions(Idle idle, MoveToStorage moveToStorage, MoveToResource moveToResource, Moving moving, MoveToAttack moveToAttack)
         {
             fsm.AddTransition(idle, moving, new FuncPredicate(() => ActualWork == null && !agent.isStopped));
             fsm.AddTransition(idle, moveToResource, new FuncPredicate(() => ActualWork != null && HasResources()));
             fsm.AddTransition(idle, moveToStorage, new FuncPredicate(() => Storage != null)); // && !IsInventoryEmpty()
+            fsm.AddTransition(idle, moveToAttack, new FuncPredicate(() => targetable != null && !targetable.IsDead()));
         }
 
-        private void MovingTransitions(Moving moving, Idle idle, MoveToResource moveToResource, MoveToStorage moveToStorage)
+        private void MovingTransitions(Moving moving, Idle idle, MoveToResource moveToResource, MoveToStorage moveToStorage, MoveToAttack moveToAttack)
         {
             fsm.AddTransition(moving, idle, new FuncPredicate(() => ActualWork == null && !agent.hasPath));
             fsm.AddTransition(moving, moveToResource, new FuncPredicate(() => ActualWork != null && HasResources()));
             fsm.AddTransition(moving, moveToStorage, new FuncPredicate(() => Storage != null && !IsInventoryEmpty()));
+            fsm.AddTransition(moving, moveToAttack, new FuncPredicate(() => targetable != null && !targetable.IsDead()));
         }
 
-        private void MoveToResourceTransitions(MoveToResource moveToResource, WorkVillager workVillager, MoveToStorage moveToStorage, Moving moving)
+        private void MoveToResourceTransitions(MoveToResource moveToResource, WorkVillager workVillager, MoveToStorage moveToStorage, Moving moving, MoveToAttack moveToAttack)
         {
             fsm.AddTransition(moveToResource, moveToStorage, new FuncPredicate(() => Storage != null && ActualWork == null));
             fsm.AddTransition(moveToResource, moving, new FuncPredicate(() => ActualWork == null));
             fsm.AddTransition(moveToResource, workVillager, new FuncPredicate(() => MoveToResource(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToResource, moveToAttack, new FuncPredicate(() => targetable != null && !targetable.IsDead()));
         }
 
         private void WorkVillagerTransitions(WorkVillager workVillager, MoveToResource moveToResource, Moving moving, SearchNewResource searchNewResource,
-                MoveToStorage moveToStorage)
+                MoveToStorage moveToStorage, MoveToAttack moveToAttack)
         {
             fsm.AddTransition(workVillager, moving, new FuncPredicate(() => ActualWork == null));
             fsm.AddTransition(workVillager, searchNewResource, new FuncPredicate(() => !HasResources() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
             fsm.AddTransition(workVillager, moveToStorage, new FuncPredicate(() => Storage != null && IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
             fsm.AddTransition(workVillager, moveToResource, new FuncPredicate(() => _previousWorkResourceType != ActualWork.GetResourceSO().ResourceType));
+            fsm.AddTransition(workVillager, moveToAttack, new FuncPredicate(() => targetable != null && !targetable.IsDead()));
         }
 
-        private void MoveToStorageTransitions(MoveToStorage moveToStorage, MoveToResource moveToResource, SearchNewResource searchNewResource, Idle idle)
+        private void MoveToStorageTransitions(MoveToStorage moveToStorage, MoveToResource moveToResource, SearchNewResource searchNewResource, Idle idle, MoveToAttack moveToAttack)
         {
-            fsm.AddTransition(moveToStorage, moveToResource,
-                    new FuncPredicate(() => ActualWork != null && HasResources() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
-            fsm.AddTransition(moveToStorage, searchNewResource,
-                    new FuncPredicate(() => ActualWork != null && !HasResources() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToStorage, moveToResource, new FuncPredicate(() => ActualWork != null && HasResources() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
+            fsm.AddTransition(moveToStorage, searchNewResource, new FuncPredicate(() => ActualWork != null && !HasResources() && !IsInventoryFull(ActualWork.GetResourceSO().ResourceType)));
             fsm.AddTransition(moveToStorage, idle, new FuncPredicate(() => Storage == null || IsInventoryEmpty()));
+            fsm.AddTransition(moveToStorage, moveToAttack, new FuncPredicate(() => targetable != null && !targetable.IsDead()));
         }
 
         private void SearchNewResourceTransitions(SearchNewResource searchNewResource, MoveToStorage moveToStorage, MoveToResource moveToResource, Idle idle)
@@ -167,9 +178,31 @@ namespace Units.Villagers
             fsm.AddTransition(searchNewResource, idle, new FuncPredicate(() => ActualWork == null));
         }
 
+        private void MoveToAttackTransitions(MoveToAttack moveToAttack, SearchNearEnemy searchNearEnemy, Attack attack, Idle idle)
+        {
+            fsm.AddTransition(moveToAttack, attack, new FuncPredicate(CanAttack));
+            fsm.AddTransition(moveToAttack, searchNearEnemy, new FuncPredicate(() => targetable.IsDead()));
+            fsm.AddTransition(moveToAttack, idle, new FuncPredicate(() => targetable == null));
+        }
+
+        private void AttackTransitions(Attack attack, MoveToAttack moveToAttack, SearchNearEnemy searchNearEnemy)
+        {
+            fsm.AddTransition(attack, moveToAttack, new FuncPredicate(() => !CanAttack()));
+            fsm.AddTransition(attack, searchNearEnemy, new FuncPredicate(() => targetable.IsDead()));
+        }
+
+        private void SearchNearEnemyTransitions(SearchNearEnemy searchNearEnemy, MoveToAttack moveToAttack, Idle idle)
+        {
+            fsm.AddTransition(searchNearEnemy, moveToAttack, new FuncPredicate(() => targetable != null));
+            fsm.AddTransition(searchNearEnemy, idle, new FuncPredicate(() => targetable == null));
+        }
+
         private bool MoveToResource(ResourcesManager.ResourceType resourceType) => ActualWork.GetResourceSO().ResourceType == resourceType && IsNearResource();
         private bool IsNearResource() => Vector3.Distance(transform.position, ActualWork.Position) <= _villagerSO.StoppingDistanceToWork;
         private bool HasResources() => ActualWork.HasResources();
+
+        private bool CanAttack() => targetable != null && !targetable.IsDead() &&
+                                    Vector3.Distance(transform.position, targetable.GetPosition()) < _villagerSO.StoppingDistanceToAttack;
 
         #endregion
     }

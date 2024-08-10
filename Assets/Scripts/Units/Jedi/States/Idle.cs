@@ -1,7 +1,7 @@
 using Units.SO;
 using UnityEngine.AI;
 
-namespace Units.Jedi
+namespace Units.Jedi.States
 {
     public class Idle : BaseStateJedi
     {

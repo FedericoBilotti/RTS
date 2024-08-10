@@ -2,7 +2,7 @@ using Units.SO;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Units.Jedi
+namespace Units.Jedi.States
 {
     public class MoveToAttack : BaseStateJedi
     {

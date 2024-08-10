@@ -12,7 +12,7 @@ namespace Units.Villagers.States
         {
             // If my storage is null, set it to the nearest center
             IStorage storage = villager.Storage ?? GameManager.Instance.NearCenter(villager);
-            
+
             villager.SetStorage(storage);
             villager.SetDestination(storage.Position);
             villager.SetStateName("Move To Storage");

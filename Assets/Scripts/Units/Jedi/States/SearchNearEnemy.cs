@@ -1,11 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
 using Manager;
 using Units.SO;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Units.Jedi
+namespace Units.Jedi.States
 {
     public class SearchNearEnemy : BaseStateJedi
     {

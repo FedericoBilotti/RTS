@@ -1,4 +1,5 @@
 using StateMachine;
+using Units.Jedi.States;
 using Units.SO;
 using UnityEngine;
 
@@ -28,9 +29,9 @@ namespace Units.Jedi
 
             IdleTransitions(idle, moving, moveToAttack);
             MovingTransitions(moving, idle, moveToAttack);
-            MoveToAttack(moveToAttack, searchNearEnemy, attack);
+            MoveToAttackTransitions(moveToAttack, searchNearEnemy, attack, idle);
             AttackTransition(searchNearEnemy, attack, moveToAttack);
-            SearchNearEnemy(searchNearEnemy, moveToAttack, idle);
+            SearchNearEnemyTransitions(searchNearEnemy, moveToAttack, idle);
 
             fsm.SetState(idle);
         }
@@ -47,10 +48,11 @@ namespace Units.Jedi
             fsm.AddTransition(moving, moveToAttack, new FuncPredicate(() => targetable != null && !targetable.IsDead()));
         }
 
-        private void MoveToAttack(MoveToAttack moveToAttack, SearchNearEnemy searchNearEnemy, Attack attack)
+        private void MoveToAttackTransitions(MoveToAttack moveToAttack, SearchNearEnemy searchNearEnemy, Attack attack, Idle idle)
         {
             fsm.AddTransition(moveToAttack, attack, new FuncPredicate(CanAttack));
             fsm.AddTransition(moveToAttack, searchNearEnemy, new FuncPredicate(() => targetable.IsDead()));
+            fsm.AddTransition(moveToAttack, idle, new FuncPredicate(() => targetable == null));
         }
 
         private void AttackTransition(SearchNearEnemy searchNearEnemy, Attack attack, MoveToAttack moveToAttack)
@@ -59,7 +61,7 @@ namespace Units.Jedi
             fsm.AddTransition(attack, searchNearEnemy, new FuncPredicate(() => targetable.IsDead()));
         }
 
-        private void SearchNearEnemy(SearchNearEnemy searchNearEnemy, MoveToAttack moveToAttack, Idle idle)
+        private void SearchNearEnemyTransitions(SearchNearEnemy searchNearEnemy, MoveToAttack moveToAttack, Idle idle)
         {
             fsm.AddTransition(searchNearEnemy, idle, new FuncPredicate(() => targetable == null));
             fsm.AddTransition(searchNearEnemy, moveToAttack, new FuncPredicate(() => targetable != null));
