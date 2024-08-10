@@ -54,9 +54,6 @@ namespace Units
 
         public void SetTarget(ITargetable target)
         {
-            if (target == null) return;
-            if (target.GetFaction() == _faction) return;
-            
             targetable = target;
             Debug.Log("Target: " + targetable);
         }

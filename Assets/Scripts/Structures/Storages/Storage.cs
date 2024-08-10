@@ -9,7 +9,6 @@ namespace Structures.Storages
     {
         [SerializeField] private EFaction _faction;
         
-        public EFaction Faction { get; private set; }
         public Vector3 Position => transform.position;
         public ResourcesManager.ResourceType StorageType { get; protected set; }
 
@@ -18,13 +17,9 @@ namespace Structures.Storages
             var navMeshObstacle = GetComponent<UnityEngine.AI.NavMeshObstacle>();
             navMeshObstacle.carving = true;
             navMeshObstacle.carveOnlyStationary = true;
-
-            Faction = _faction;
         }
         
-        public void SetFaction(EFaction faction)
-        {
-            Faction = faction;
-        }
+        public void SetFaction(EFaction faction) => _faction = faction;
+        public EFaction GetFaction() => _faction;
     }
 }

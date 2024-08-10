@@ -6,7 +6,7 @@ namespace Units.Resources
     public interface IWork
     {
         Vector3 Position { get; }
-        int GetActualAmount();
+        bool HasResources();
         int ProvideResource();
         void PlayAnimation(Unit unit);
         ResourceSO GetResourceSO();

@@ -49,7 +49,7 @@ namespace Units.Villagers.States
         {
             if (!col.transform.TryGetComponent(out IWork resource)) return (false, resource);
             if (resource.GetResourceSO().ResourceType != villager.ActualWork.GetResourceSO().ResourceType) return (false, resource);
-            return resource.GetActualAmount() <= 0 ? (false, resource) : (true, resource);
+            return !resource.HasResources() ? (false, resource) : (true, resource);
         }
     }
 }

@@ -1,14 +1,20 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Units.Villagers.States
 {
     public class MoveToResource : BaseStateVillager
     {
-        public MoveToResource(Villager villager) : base(villager) { }
+        private readonly NavMeshAgent _agent;
+        public MoveToResource(Villager villager, NavMeshAgent agent) : base(villager)
+        {
+            _agent = agent;
+        }
 
         public override void OnEnter()
         {
             villager.SetStateName("Move To Resource");
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
 
         public override void OnUpdate()

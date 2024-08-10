@@ -31,7 +31,7 @@ namespace Player
         private readonly HashSet<Unit> _selectedUnits = new();      // Unidades seleccionadas.
         private readonly List<Villager> _selectedVillagers = new(); // Villagers seleccionados.
         private readonly List<Villager> _totalVillagers = new();    // Cada vez que se crea un villager sea añade acá.
-        private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new(); // Villagers agrupados por recurso.
+        private readonly Dictionary<ResourcesManager.ResourceType, List<Villager>> _villagersByResource = new(); // Villagers agrupados por recurso. -> Puede ser un hashset en vez de lista.
 
         protected override void InitializeSingleton()
         {
@@ -165,14 +165,15 @@ namespace Player
         /// <param name="resourceType"></param>
         public void RemoveWorkingVillager(Villager villager, ResourcesManager.ResourceType resourceType)
         {
-            if (villager.GetFaction() != Faction) return;
+            // Reviso que sea de mi facción, sino no hago nada.
+            if (villager.GetFaction() != Faction) return; 
 
-            if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers))
-            {
-                Debug.LogWarning("Resource not found: " + resourceType);
-                return;
-            }
+            // Intento obtener el listado de workingVillagers.
+            if (!_villagersByResource.TryGetValue(resourceType, out List<Villager> workingVillagers)) return; 
 
+            // Reviso que el villager exista en la lista de workingVillagers, sino no hago nada
+            if (!workingVillagers.Contains(villager)) return;  
+            
             workingVillagers.Remove(villager);
             _onRemoveWorkVillager.Invoke(new ResourceEvent(workingVillagers.Count, resourceType));
         }

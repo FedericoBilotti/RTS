@@ -2,6 +2,7 @@ using Manager;
 using Player;
 using Units.Resources;
 using UnityEngine;
+using UnityEngine.AI;
 using Utilities;
 
 namespace Units.Villagers.States
@@ -11,10 +12,14 @@ namespace Units.Villagers.States
         private IWork _work;
 
         private readonly CountdownTimer _timer = new(2f);
+        private readonly NavMeshAgent _agent;
 
         private ResourcesManager.ResourceType _resourceType;
 
-        public WorkVillager(Villager villager) : base(villager) { }
+        public WorkVillager(Villager villager, NavMeshAgent agent) : base(villager)
+        {
+            _agent = agent;
+        }
 
         public override void OnEnter()
         {
@@ -46,6 +51,7 @@ namespace Units.Villagers.States
         public override void OnExit()
         {
             UnitManager.Instance.RemoveWorkingVillager(villager, _resourceType);
+            _agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
             
             _timer.onTimerStop -= AddResource;
             _timer.onTimerStop -= StartTimer;

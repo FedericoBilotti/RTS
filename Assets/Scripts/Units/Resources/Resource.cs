@@ -30,7 +30,7 @@ namespace Units.Resources
         public ResourceSO GetResourceSO() => _resourceSO;
 
         public Vector3 Position => transform.position;
-        public int GetActualAmount() => _actualAmountOfResource;
+        public bool HasResources() => _actualAmountOfResource > 0;
         
         public abstract void PlayAnimation(Unit unit);
     }

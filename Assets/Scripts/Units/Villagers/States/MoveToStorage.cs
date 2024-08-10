@@ -11,7 +11,7 @@ namespace Units.Villagers.States
         public override void OnEnter()
         {
             // If my storage is null, set it to the nearest center
-            IStorage storage = villager.ActualStorage ?? GameManager.Instance.NearCenter(villager);
+            IStorage storage = villager.Storage ?? GameManager.Instance.NearCenter(villager);
             
             villager.SetStorage(storage);
             villager.SetDestination(storage.Position);
@@ -20,7 +20,7 @@ namespace Units.Villagers.States
 
         public override void OnUpdate()
         {
-            IStorage actualStorage = villager.ActualStorage;
+            IStorage actualStorage = villager.Storage;
 
             if (!IsNearStorage(actualStorage)) return;
 
