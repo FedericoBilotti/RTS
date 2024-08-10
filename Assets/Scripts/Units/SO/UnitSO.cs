@@ -13,8 +13,8 @@ namespace Units.SO
         [SerializeField] private float _searchNearEnemies = 10f;
         
         [Header("NavMesh")]
-        [SerializeField] private int _stoppingDistanceToIdle = 0;
-        [SerializeField] private int _stoppingDistanceToAttack = 2;
+        [SerializeField] private float _stoppingDistanceToIdle = 0;
+        [SerializeField] private float _stoppingDistanceToAttack = 2;
         
         public int MaxLife => _maxLife;
         public int Damage => _damage;
@@ -22,7 +22,7 @@ namespace Units.SO
         
         public float SearchNearEnemies => _searchNearEnemies;
         
-        public int StoppingDistanceToIdle => _stoppingDistanceToIdle;
-        public int StoppingDistanceToAttack => _stoppingDistanceToAttack;
+        public float StoppingDistanceToIdle => _stoppingDistanceToIdle;
+        public float StoppingDistanceToAttack => _stoppingDistanceToAttack;
     }
 }

@@ -7,10 +7,18 @@ namespace Units.SO
     [CreateAssetMenu(menuName = "Units/Stats/Villager", fileName = "VillagerSO", order = 0)]
     public class VillagerSO : UnitSO
     {
-        [SerializeField] private int _stoppingDistanceToWork = 1;
+        [SerializeField] private float _distanceToWork = 1.1f;
+        [SerializeField] private float _stoppingDistanceToWork = 1f;
         [SerializeField] private InventoryMax[] _inventoryMaxes;
         
-        public int StoppingDistanceToWork => _stoppingDistanceToWork;
+        public float StoppingDistanceToWork => _stoppingDistanceToWork;
+        public float DistanceToWork => _distanceToWork;
+
+        private void OnValidate()
+        {
+            _distanceToWork = Mathf.Max(1.1f, _distanceToWork);
+            _stoppingDistanceToWork = Mathf.Clamp01(_stoppingDistanceToWork);
+        }
 
         /// <summary>
         /// Check out if the inventory of the specificed resource is full

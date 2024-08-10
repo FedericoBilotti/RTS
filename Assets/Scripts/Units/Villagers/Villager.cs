@@ -109,7 +109,7 @@ namespace Units.Villagers
             var moveToResource = new MoveToResource(this, agent, _villagerSO);
             var workVillager = new WorkVillager(this, agent);
             var moveToStorage = new MoveToStorage(this);
-            var searchNewResource = new SearchNewResource(this);
+            var searchNewResource = new SearchNewResource(this, agent);
 
             var moveToAttack = new MoveToAttack(this, agent, _villagerSO);
             var attack = new Attack(this, _villagerSO);
@@ -198,7 +198,7 @@ namespace Units.Villagers
         }
 
         private bool MoveToResource(ResourcesManager.ResourceType resourceType) => ActualWork.GetResourceSO().ResourceType == resourceType && IsNearResource();
-        private bool IsNearResource() => Vector3.Distance(transform.position, ActualWork.Position) <= _villagerSO.StoppingDistanceToWork;
+        private bool IsNearResource() => Vector3.Distance(transform.position, ActualWork.Position) <= _villagerSO.DistanceToWork;
         private bool HasResources() => ActualWork.HasResources();
 
         private bool CanAttack() => targetable != null && !targetable.IsDead() &&

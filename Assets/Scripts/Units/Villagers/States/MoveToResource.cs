@@ -19,9 +19,9 @@ namespace Units.Villagers.States
 
         public override void OnEnter()
         {
+            _agent.stoppingDistance = _villagerSO.StoppingDistanceToWork;
             AddToWorkingVillagerList(villager);
             SetObstacleAvoidance(_agent, ObstacleAvoidanceType.NoObstacleAvoidance);
-            _agent.stoppingDistance = _villagerSO.StoppingDistanceToWork;
 
             villager.SetStateName("Move To Resource");
         }

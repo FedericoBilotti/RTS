@@ -3,12 +3,17 @@ using System.Linq;
 using Player;
 using Units.Resources;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Units.Villagers.States
 {
     public class SearchNewResource : BaseStateVillager
     {
-        public SearchNewResource(Villager villager) : base(villager) { }
+        private readonly NavMeshAgent _agent;
+        public SearchNewResource(Villager villager, NavMeshAgent agent) : base(villager)
+        {
+            _agent = agent;
+        }
 
         public override void OnEnter()
         {
@@ -20,6 +25,7 @@ namespace Units.Villagers.States
         public override void OnExit()
         {
             UnitManager.Instance.RemoveWorkingVillager(villager, villager.GetPreviousResourceType());
+            SetObstacleAvoidance(_agent, ObstacleAvoidanceType.LowQualityObstacleAvoidance);
         }
 
         private static void SearchResource(Villager villager)
@@ -56,6 +62,11 @@ namespace Units.Villagers.States
             if (!col.transform.TryGetComponent(out IWork resource)) return (false, resource);
             if (resource.GetResourceSO().ResourceType != villager.ActualWork.GetResourceSO().ResourceType) return (false, resource);
             return !resource.HasResources() ? (false, resource) : (true, resource);
+        }
+
+        private static void SetObstacleAvoidance(NavMeshAgent agent, ObstacleAvoidanceType type)
+        {
+            agent.obstacleAvoidanceType = type;
         }
     }
 }
