@@ -2,24 +2,25 @@ using UnityEngine;
 
 namespace Units
 {
-    public class UnitVisual
+    public class UnitVisual : MonoBehaviour
     {
-        private readonly Unit _unit;
-        private readonly GameObject _selector;
+        [SerializeField] private GameObject _selector;
+        private Unit _unit;
 
-        public UnitVisual(Unit unit, GameObject selector)
+        private void Awake() => _unit = GetComponent<Unit>();
+
+        private void OnEnable()
         {
-            _selector = selector;
             _selector.SetActive(false);
             
-            _unit = unit;
             _unit.onSelectUnit += SelectUnit;
             _unit.onDeselectUnit += DeselectUnit;
         }
         
-        ~UnitVisual()
+        private void OnDisable()
         {
             _selector.SetActive(false);
+            
             _unit.onSelectUnit -= SelectUnit;
             _unit.onDeselectUnit -= DeselectUnit;
         }

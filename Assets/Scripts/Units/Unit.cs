@@ -6,13 +6,11 @@ using UnityEngine.AI;
 
 namespace Units
 {
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(NavMeshAgent), typeof(UnitLife), typeof(UnitVisual))]
     public abstract class Unit : MonoBehaviour, ITargetable
     {
-        [SerializeField] private GameObject _selector;
         [SerializeField] private EFaction _faction = EFaction.Blue;
 
-        private UnitVisual _unitVisual;
         private EntityLife _entityLife;
 
         public Action onSelectUnit = delegate { };
@@ -26,7 +24,6 @@ namespace Units
         {
             agent = GetComponent<NavMeshAgent>();
 
-            _unitVisual = new UnitVisual(this, _selector);
             _entityLife = GetComponent<EntityLife>();
         }
 

@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 4334694044386129929}
   - component: {fileID: 9092827534324999098}
   - component: {fileID: 286465302536097301}
+  - component: {fileID: 5007612492263657142}
   - component: {fileID: 5986717382876716902}
   - component: {fileID: 7026034156228257708}
   m_Layer: 6
@@ -215,7 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff35063017817884a98cb40c0ae9da65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selector: {fileID: 2360557717262013253}
   _faction: 0
   _actualState: 
   _villagerSO: {fileID: 11400000, guid: 8525b432097349344a183cb171c37aeb, type: 2}
@@ -232,6 +232,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityLifeSO: {fileID: 11400000, guid: 47b77988b6ffb7542991692be957c27e, type: 2}
+--- !u!114 &5007612492263657142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5010087488207582929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ce8462c1074ddaba6769ee5e0a9b4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _selector: {fileID: 2360557717262013253}
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

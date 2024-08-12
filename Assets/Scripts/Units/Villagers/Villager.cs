@@ -30,7 +30,7 @@ namespace Units.Villagers
 
             CreateFSM();
         }
-
+        
         #region OnEnable & OnDisable
 
         private void OnEnable() => UnitManager.Instance.AddVillager(this);
