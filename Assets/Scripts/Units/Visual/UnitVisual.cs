@@ -13,16 +13,16 @@ namespace Units
         {
             _selector.SetActive(false);
             
-            _unit.onSelectUnit += SelectUnit;
-            _unit.onDeselectUnit += DeselectUnit;
+            _unit.OnSelectUnit += SelectUnit;
+            _unit.OnDeselectUnit += DeselectUnit;
         }
         
         private void OnDisable()
         {
             _selector.SetActive(false);
             
-            _unit.onSelectUnit -= SelectUnit;
-            _unit.onDeselectUnit -= DeselectUnit;
+            _unit.OnSelectUnit -= SelectUnit;
+            _unit.OnDeselectUnit -= DeselectUnit;
         }
 
         private void SelectUnit() => _selector.SetActive(true);

@@ -9,21 +9,21 @@ namespace Units
         protected int actualLife;
 
         // Eventos
-        public Action<float> onTakeDamage = delegate { };
-        public Action onDeadUnit = delegate { };
+        public event Action<float> OnTakeDamage = delegate { };
+        public event Action OnDeadUnit = delegate { };
 
         private void Awake() => actualLife = entityLifeSO.MaxLife;
 
         private void Start()
         {
-            onDeadUnit += () => gameObject.SetActive(false); // Regresar a una pool futura.
+            OnDeadUnit += () => gameObject.SetActive(false); // Regresar a una pool futura.
         }
 
         public virtual void TakeDamage(int damage)
         {
             actualLife = Mathf.Max(actualLife -= damage, 0);
 
-            onTakeDamage.Invoke(entityLifeSO.CalculateLifePercentage(actualLife));
+            OnTakeDamage.Invoke(entityLifeSO.CalculateLifePercentage(actualLife));
 
             Dead();
         }
@@ -32,7 +32,7 @@ namespace Units
         {
             if (!IsDead()) return;
 
-            onDeadUnit.Invoke();
+            OnDeadUnit.Invoke();
         }        
         
         public bool IsDead() => actualLife <= 0;
