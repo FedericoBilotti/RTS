@@ -62,11 +62,11 @@ namespace Player
 
         public void ArtificialFixedUpdate() { }
 
-        private bool RightMouseButtonDown() => Input.GetMouseButtonDown(1);
-        private bool LeftMouseButtonDown() => Input.GetMouseButtonDown(0);
-        private bool LeftMouseButton() => Input.GetMouseButton(0);
-        private bool LeftMouseButtonUp() => Input.GetMouseButtonUp(0);
-        private bool LeftShiftButton() => Input.GetKey(KeyCode.LeftShift);
+        private static bool RightMouseButtonDown() => Input.GetMouseButtonDown(1);
+        private static bool LeftMouseButtonDown() => Input.GetMouseButtonDown(0);
+        private static bool LeftMouseButton() => Input.GetMouseButton(0);
+        private static bool LeftMouseButtonUp() => Input.GetMouseButtonUp(0);
+        private static bool LeftShiftButton() => Input.GetKey(KeyCode.LeftShift);
 
         public void DrawGizmo()
         {

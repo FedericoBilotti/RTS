@@ -1,7 +1,7 @@
 using Manager;
-using Structures.Storages;
+using Units.Structures.Storages;
 
-namespace Structures
+namespace Units.Structures
 {
     public class Center : Storage
     {

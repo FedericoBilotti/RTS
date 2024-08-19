@@ -1,28 +1,28 @@
 using UnityEngine;
 
-namespace Units
+namespace Units.Visual
 {
-    public class UnitVisual : MonoBehaviour
+    public class ModelVisual : MonoBehaviour
     {
         [SerializeField] private GameObject _selector;
-        private Unit _unit;
+        private ISelectable _selectable;
 
-        private void Awake() => _unit = GetComponent<Unit>();
+        private void Awake() => _selectable = GetComponent<ISelectable>();
 
         private void OnEnable()
         {
             _selector.SetActive(false);
             
-            _unit.OnSelectUnit += SelectUnit;
-            _unit.OnDeselectUnit += DeselectUnit;
+            _selectable.OnSelectUnit += SelectUnit;
+            _selectable.OnDeselectUnit += DeselectUnit;
         }
         
         private void OnDisable()
         {
             _selector.SetActive(false);
             
-            _unit.OnSelectUnit -= SelectUnit;
-            _unit.OnDeselectUnit -= DeselectUnit;
+            _selectable.OnSelectUnit -= SelectUnit;
+            _selectable.OnDeselectUnit -= DeselectUnit;
         }
 
         private void SelectUnit() => _selector.SetActive(true);

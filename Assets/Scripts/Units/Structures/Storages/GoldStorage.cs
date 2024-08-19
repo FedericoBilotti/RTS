@@ -1,6 +1,6 @@
 using Manager;
 
-namespace Structures.Storages
+namespace Units.Structures.Storages
 {
     public class GoldStorage : Storage
      {

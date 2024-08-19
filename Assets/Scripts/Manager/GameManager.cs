@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Structures;
-using Structures.Storages;
 using Units;
+using Units.Structures;
+using Units.Structures.Storages;
 using UnityEngine;
 using Utilities;
 

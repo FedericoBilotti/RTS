@@ -1,8 +1,5 @@
 using Manager;
-using Structures;
-using Structures.Storages;
 using Units.Resources;
-using UnityEngine;
 using Utilities;
 
 namespace Units.Villagers.States

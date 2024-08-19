@@ -31,7 +31,8 @@ namespace Units.Visual
 
         private void Update()
         {
-            ChildTransform.position = _damageable.GetEntity().transform.position + Vector3.back;
+            Vector3 entityPosition = _damageable.GetEntity().transform.position;
+            ChildTransform.position = entityPosition + Vector3.back;
         }
 
         public BarLife SetDamageable(IDamageable damageable)

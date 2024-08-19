@@ -1,9 +1,7 @@
 using Manager;
-using Player;
-using Units;
 using UnityEngine;
 
-namespace Structures.Storages
+namespace Units.Structures.Storages
 {
     public interface IStorage : IFaction
     {

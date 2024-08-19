@@ -1,13 +1,14 @@
 using System;
 using Player;
 using StateMachine;
+using Units.Visual;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Units
 {
-    [RequireComponent(typeof(NavMeshAgent), typeof(UnitLife), typeof(UnitVisual))]
-    public abstract class Unit : MonoBehaviour, ITargetable
+    [RequireComponent(typeof(NavMeshAgent), typeof(UnitLife), typeof(ModelVisual))]
+    public abstract class Unit : MonoBehaviour, ITargetable, ISelectable
     {
         [SerializeField] private EFaction _faction = EFaction.Blue;
 

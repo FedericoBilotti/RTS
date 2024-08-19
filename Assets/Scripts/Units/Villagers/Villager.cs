@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using Manager;
 using Player;
 using StateMachine;
-using Structures.Storages;
 using Units.Resources;
 using Units.SO;
+using Units.Structures.Storages;
 using Units.Villagers.States;
 using UnityEngine;
 

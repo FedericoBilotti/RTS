@@ -1,4 +1,4 @@
-using Structures.Storages;
+using Units.Structures.Storages;
 using UnityEngine;
 
 namespace Player.OrderActions
