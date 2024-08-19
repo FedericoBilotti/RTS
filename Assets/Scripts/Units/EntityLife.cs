@@ -36,5 +36,8 @@ namespace Units
         }        
         
         public bool IsDead() => actualLife <= 0;
+        
+        public EntityLife GetEntity() => this;
+        public Vector3 GetPosition() => transform.position;
     }
 }

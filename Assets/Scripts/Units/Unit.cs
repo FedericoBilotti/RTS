@@ -11,20 +11,19 @@ namespace Units
     {
         [SerializeField] private EFaction _faction = EFaction.Blue;
 
-        public EntityLife EntityLife { get; private set; }
-
-        public event Action OnSelectUnit = delegate { };
-        public event Action OnDeselectUnit = delegate { };
-
         protected FiniteStateMachine fsm;
         protected NavMeshAgent agent;
         protected ITargetable targetable;
+        protected EntityLife entityLife;
+
+        public event Action OnSelectUnit = delegate { };
+        public event Action OnDeselectUnit = delegate { };
 
         protected virtual void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
 
-            EntityLife = GetComponent<EntityLife>();
+            entityLife = GetComponent<EntityLife>();
         }
 
         private void Update() => fsm.Update();
@@ -56,7 +55,9 @@ namespace Units
 
         public ITargetable GetTarget() => targetable;
         public Vector3 GetPosition() => transform.position;
-        public void TakeDamage(int damage) => EntityLife.TakeDamage(damage);
-        public bool IsDead() => EntityLife.IsDead();
+        public EntityLife GetEntity() => entityLife;
+
+        public void TakeDamage(int damage) => entityLife.TakeDamage(damage);
+        public bool IsDead() => entityLife.IsDead();
     }
 }

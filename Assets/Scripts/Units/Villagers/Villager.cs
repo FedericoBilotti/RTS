@@ -29,15 +29,11 @@ namespace Units.Villagers
             }
 
             CreateFSM();
+
+            UnitManager.Instance.AddVillager(this);
+            entityLife.OnDeadUnit += () => UnitManager.Instance.RemoveVillager(this);
         }
         
-        #region OnEnable & OnDisable
-
-        private void OnEnable() => UnitManager.Instance.AddVillager(this);
-        private void OnDisable() => UnitManager.Instance.RemoveVillager(this);
-
-        #endregion
-
         public void SetStateName(string state) => _actualState = state; // Debug.
 
         public void SetStorage(IStorage storage)

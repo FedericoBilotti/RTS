@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 9092827534324999098}
   - component: {fileID: 286465302536097301}
   - component: {fileID: 5007612492263657142}
+  - component: {fileID: 4307365295127710095}
   - component: {fileID: 5986717382876716902}
   - component: {fileID: 7026034156228257708}
   m_Layer: 6
@@ -245,6 +246,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selector: {fileID: 2360557717262013253}
+--- !u!114 &4307365295127710095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5010087488207582929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34cb0dcd3dd44921a176cfa4097eee0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unit: {fileID: 9092827534324999098}
+  _barLifePrefab: {fileID: 1404576230441295679, guid: 88c12b0b0d883524aa7058cb2e6c70b7,
+    type: 3}
 --- !u!195 &5986717382876716902
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8093304851208377241}
   - component: {fileID: 8698098792058061549}
   - component: {fileID: 8692688928753312439}
+  - component: {fileID: 5341534964278448143}
   m_Layer: 5
   m_Name: World Bar Life Canvas
   m_TagString: Untagged
@@ -78,6 +79,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5341534964278448143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404576230441295679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0823308f96fb4d3287f2eccb337a4d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _imageFill: {fileID: 3812697942365193319}
+  _moveChild: {fileID: 2108096015117567370}
 --- !u!1 &5941081009115269275
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +128,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3, y: 0.75}
+  m_SizeDelta: {x: 3, y: 0.375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1116940879604399123
 CanvasRenderer:
@@ -225,7 +240,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3, y: 0.75}
+  m_SizeDelta: {x: 3, y: 0.375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8428767713629533154
 CanvasRenderer:

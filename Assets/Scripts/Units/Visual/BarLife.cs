@@ -4,38 +4,40 @@ using UnityEngine.UI;
 
 namespace Units.Visual
 {
-    [ExecuteInEditMode]
     public class BarLife : MonoBehaviour
-    {        
+    {
         [SerializeField] private Image _imageFill;
-        [SerializeField] private Color _color;
+        public Transform ChildTransform { get; private set; }
 
-        private Unit _unit;
+        private IDamageable _damageable;
 
-        private void Awake() => _imageFill.color = _color;
+        private void Awake()
+        {
+            ChildTransform = transform.GetChild(0);
+        }
 
-        private void OnEnable() => _unit.EntityLife.OnTakeDamage += SetValue;
-        private void OnDisable() => _unit.EntityLife.OnTakeDamage -= SetValue;
+        private void Start()
+        {
+            _damageable.GetEntity().OnTakeDamage += SetValue;
+            ChildTransform.gameObject.SetActive(false);
+        }
+
+        private void OnDestroy() => _damageable.GetEntity().OnTakeDamage -= SetValue;
 
         private void SetValue(float value)
         {
             _imageFill.fillAmount = value;
         }
-        
-        #region Builder
 
-        public BarLife SetUnit(Unit unit)
+        private void Update()
         {
-            _unit = unit;
-            return this;
+            ChildTransform.position = _damageable.GetEntity().transform.position + Vector3.back;
         }
 
-        public BarLife SetColor(Color color)
+        public BarLife SetDamageable(IDamageable damageable)
         {
-            _imageFill.color = color;
+            _damageable = damageable;
             return this;
         }
-        
-        #endregion
     }
 }
