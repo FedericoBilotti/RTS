@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Player;
 using Units;
 using Units.Structures;
 using Units.Structures.Storages;
@@ -10,7 +11,7 @@ namespace Manager
 {
     public class GameManager : Singleton<GameManager>
     {
-        private readonly List<Center> _centers = new();
+        private readonly List<Center> _centers = new(); // Podria hacerse una optimización creando dos listas para cada facción y cuando se añaden chequear que facción es.
         private readonly List<IStorage> _storages = new();
 
         [SerializeField] private LayerMask _unitLayer;
@@ -34,24 +35,35 @@ namespace Manager
         /// <summary>
         /// Returns the nearest center from the unit if it exists.
         /// </summary>
-        /// <param name="unit"></param>
-        /// <returns></returns>
-        public Center NearCenter(Unit unit)
+        /// <param name="unit">Unidad para la que se quiere encontrar el centro más cercano.</param>
+        /// <param name="faction">Facción de la unidad para la que se quiere encontrar el centro más cercano.</param>
+        /// <returns>Devuelve el centro más cercano a la unidad.</returns>
+        public Center NearCenter(Unit unit, EFaction faction)
         {
-            // Tmb compararia los q son de mi facción con un .Where
-            return _centers.OrderBy(center => (center.transform.position - unit.transform.position).sqrMagnitude).FirstOrDefault();
+            Center center = _centers
+                    .Where(x => x.GetFaction() == faction)
+                    .OrderBy(center => (center.transform.position - unit.transform.position).sqrMagnitude).FirstOrDefault();
+            
+            Debug.Log($"¿Center encontrado? { center }");
+
+            return center;
         }
 
         /// <summary>
-        /// Returns the nearest storage of the desired type from the unit if it exists, otherwise returns null.
+        /// Returns the nearest storage of the desired type from the unit if it exists. If it doesn´t existe will search the near Center, otherwise will return null.
         /// </summary>
-        /// <param name="unit"></param>
-        /// <param name="desiredStorage"></param>
-        /// <returns></returns>
-        public IStorage NearStorage(Unit unit, ResourcesManager.ResourceType desiredStorage)
+        /// <param name="unit">Unidad para la que se quiere encontrar el centro más cercano.</param>
+        /// <param name="faction">Facción de la unidad para la que se quiere encontrar el centro más cercano.</param>
+        /// <param name="desiredStorage">Deposito de recursos que se quiere encontrar.</param>
+        /// <returns>Devuelve el storage más cercano a la unidad.</returns>
+        public IStorage NearStorage(Unit unit, EFaction faction, ResourcesManager.ResourceType desiredStorage)
         {
-            // Tmb compararia los q son de mi facción
-            return _storages.Where(x => x.StorageType == desiredStorage).OrderBy(x => Vector3.Distance(unit.transform.position, x.Position)).FirstOrDefault();
+            IStorage storage = _storages
+                    .Where(x => x.GetFaction() == faction && x.StorageType == desiredStorage)
+                    .OrderBy(x => Vector3.Distance(unit.transform.position, x.Position))
+                    .FirstOrDefault();
+
+            return storage;
         }
     }
 }

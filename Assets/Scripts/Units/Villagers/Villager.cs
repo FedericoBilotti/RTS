@@ -30,16 +30,13 @@ namespace Units.Villagers
 
             CreateFSM();
 
-            UnitManager.Instance.AddVillager(this);
-            entityLife.OnDeadUnit += () => UnitManager.Instance.RemoveVillager(this);
+            UnitManager.Instance.AddVillager(this);                                   // Mover a OnEnable & OnDisable.
+            entityLife.OnDeadUnit += () => UnitManager.Instance.RemoveVillager(this); // Mover a OnEnable & OnDisable.
         }
         
         public void SetStateName(string state) => _actualState = state; // Debug.
 
-        public void SetStorage(IStorage storage)
-        {
-            Storage = storage;
-        }
+        public void SetStorage(IStorage storage) => Storage = storage;
 
         public void SetWork(IWork work)
         {
@@ -196,9 +193,7 @@ namespace Units.Villagers
         private bool MoveToResource(ResourcesManager.ResourceType resourceType) => ActualWork.GetResourceSO().ResourceType == resourceType && IsNearResource();
         private bool IsNearResource() => Vector3.Distance(transform.position, ActualWork.Position) <= _villagerSO.DistanceToWork;
         private bool HasResources() => ActualWork.HasResources();
-
-        private bool CanAttack() => targetable != null && !targetable.IsDead() &&
-                                    Vector3.Distance(transform.position, targetable.GetPosition()) < _villagerSO.StoppingDistanceToAttack;
+        private bool CanAttack() => targetable != null && !targetable.IsDead() && Vector3.Distance(transform.position, targetable.GetPosition()) < _villagerSO.StoppingDistanceToAttack;
 
         #endregion
     }

@@ -26,7 +26,7 @@ namespace Units.Villagers.States
             _work = villager.ActualWork;
             _resourceType = _work.GetResourceSO().ResourceType;
             
-            villager.SetStorage(GameManager.Instance.NearStorage(villager, _resourceType));
+            villager.SetStorage(GameManager.Instance.NearStorage(villager, villager.GetFaction(), _resourceType));
             villager.SetResourceType(villager.ActualWork.GetResourceSO().ResourceType);
             villager.StopMovement();
             

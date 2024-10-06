@@ -11,11 +11,16 @@ namespace Units.Villagers.States
         public override void OnEnter()
         {
             // If my storage is null, set it to the nearest center
-            IStorage storage = villager.Storage ?? GameManager.Instance.NearCenter(villager);
+            IStorage storage = villager.Storage ?? GameManager.Instance.NearCenter(villager, villager.GetFaction());
+            
+            Debug.Log($"storage: {storage}");
 
             villager.SetStorage(storage);
             villager.SetDestination(storage.Position);
             villager.SetStateName("Move To Storage");
+            
+            Debug.Log($"storage: {storage}");
+            Debug.Log($"storage: {storage.Position}");
         }
 
         public override void OnUpdate()
@@ -54,7 +59,6 @@ namespace Units.Villagers.States
 
         private void AddResource(ResourcesManager.ResourceType resourceStorageType)
         {
-            // -> Automaticamente detecta el tipo de recurso que estaba recogiendo antes, ya que va al storage que recogia recursos
             if (!villager.HasResourceInInventory(resourceStorageType))
             {
                 Debug.Log($"El tipo de recurso que se quiere añadir no se tiene actualmente en el inventario: {resourceStorageType}");
