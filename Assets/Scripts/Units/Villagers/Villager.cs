@@ -54,6 +54,9 @@ namespace Units.Villagers
         {
             foreach (ResourcesManager.ResourceType resourceType in System.Enum.GetValues(typeof(ResourcesManager.ResourceType)))
             {
+                // Ignore All cause it´s not a resource, it´s a storage type for the center.
+                if (resourceType == ResourcesManager.ResourceType.All) continue;
+                
                 ResourcesManager.Instance.AddResourceAmount(resourceType, _inventoryResources[resourceType]);
                 RemoveResourceFromInventory(resourceType);
             }
