@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 6433214770786195048}
   - component: {fileID: 5667141612465941983}
   - component: {fileID: 3246233442998309186}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Selectable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 7845918096386442445}
   - component: {fileID: 6534286062764620805}
   - component: {fileID: 7092403212375591859}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gold Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

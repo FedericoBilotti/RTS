@@ -35,9 +35,9 @@ namespace Manager
         /// <summary>
         /// Returns the nearest center from the unit if it exists.
         /// </summary>
-        /// <param name="unit">Unidad para la que se quiere encontrar el centro más cercano.</param>
-        /// <param name="faction">Facción de la unidad para la que se quiere encontrar el centro más cercano.</param>
-        /// <returns>Devuelve el centro más cercano a la unidad.</returns>
+        /// <param name="unit">Unit for which the nearest center is searched.</param>
+        /// <param name="faction">Faction of the unit for which the nearest center is searched.</param>
+        /// <returns>Returns the nearest cente.</returns>
         public Center NearCenter(Unit unit, EFaction faction)
         {
             Center center = _centers
@@ -50,16 +50,16 @@ namespace Manager
         }
 
         /// <summary>
-        /// Returns the nearest storage of the desired type from the unit if it exists. If it doesn´t existe will search the near Center, otherwise will return null.
+        /// Returns the nearest storage of the desired type (centers too) from the unit if it exists.
         /// </summary>
-        /// <param name="unit">Unidad para la que se quiere encontrar el centro más cercano.</param>
-        /// <param name="faction">Facción de la unidad para la que se quiere encontrar el centro más cercano.</param>
-        /// <param name="desiredStorage">Deposito de recursos que se quiere encontrar.</param>
-        /// <returns>Devuelve el storage más cercano a la unidad.</returns>
+        /// <param name="unit">Unit for which the nearest center is searched.</param>
+        /// <param name="faction">Faction of the unit for which the nearest center is searched.</param>
+        /// <param name="desiredStorage">Resource type that is searched.</param>
+        /// <returns>Returns the nearest storage to the unit.</returns>
         public IStorage NearStorage(Unit unit, EFaction faction, ResourcesManager.ResourceType desiredStorage)
         {
             IStorage storage = _storages
-                    .Where(x => x.GetFaction() == faction && x.StorageType == desiredStorage)
+                    .Where(x => x.GetFaction() == faction && x.StorageType == desiredStorage || x.StorageType == ResourcesManager.ResourceType.All)
                     .OrderBy(x => Vector3.Distance(unit.transform.position, x.Position))
                     .FirstOrDefault();
 

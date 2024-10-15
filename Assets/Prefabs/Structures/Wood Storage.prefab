@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5116077358990077847}
   - component: {fileID: 3143550061926538198}
   - component: {fileID: 9161856262475547358}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Selectable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 808061368327277635}
   - component: {fileID: 3023805335200564354}
   - component: {fileID: 977826498419641903}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wood Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cacec3f669cf44f9887b056259bfaf18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _faction: 0
+  _faction: 1
 --- !u!114 &808061368327277635
 MonoBehaviour:
   m_ObjectHideFlags: 0
