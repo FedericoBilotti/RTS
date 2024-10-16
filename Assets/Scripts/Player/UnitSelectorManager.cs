@@ -1,5 +1,6 @@
 using Manager;
 using Units;
+using Units.Structures;
 using Units.Villagers;
 using UnityEngine;
 using Utilities;
@@ -9,13 +10,13 @@ namespace Player
     public class UnitSelectorManager
     {
         private readonly UnitVisualManager _unitVisualManager;
-        private readonly UnitManager _unitManager;
+        private readonly PlayerManager playerManager;
 
         private const float DELAY_TO_SELECT_UNITS = .1f;
 
-        public UnitSelectorManager(UnitManager unitManager)
+        public UnitSelectorManager(PlayerManager playerManager)
         {
-            _unitManager = unitManager;
+            this.playerManager = playerManager;
         }
 
         public void GetUnitInArea(Vector3 center, Vector3 size, bool isShiftPressed)
@@ -25,37 +26,50 @@ namespace Player
 
             if (!isShiftPressed)
             {
-                _unitManager.ClearUnits();
+                playerManager.ClearUnits();
             }
 
             foreach (Collider hit in collisions)
             {
                 if (!hit.transform.TryGetComponent(out Unit unit)) continue;
-                if (unit.GetFaction() != _unitManager.Faction) continue;
+                if (unit.GetFaction() != playerManager.Faction) continue;
 
-                if (unit is Villager villager)
-                {
-                    _unitManager.AddSelectedVillager(villager);
-                }
-
-                _unitManager.AddUnit(unit);
+                playerManager.AddUnit(unit);
             }
         }
 
-        public void AddSingleUnit(float mouseDownTime, bool isShiftPressed)
+        public void AddUnitOrStructure(float mouseDownTime, bool isShiftPressed)
         {
             bool unitOrStructure = Physics.Raycast(MouseExtension.GetMouseRay(), out RaycastHit hit, 500f, GameManager.Instance.GetUnitAndStructureLayer());
 
             if (!unitOrStructure)
             {
-                if (mouseDownTime + DELAY_TO_SELECT_UNITS < Time.time)
-                    return;                                     // This is to prevent the player from deselecting at the moment to select multiples unit without the shift
-                if (!isShiftPressed) _unitManager.ClearUnits(); // This is to clear the selected units if the player touches something, like the ground
+                ClearUnitsAndStructureLists(mouseDownTime, isShiftPressed);
                 return;
             }
 
-            if (!hit.transform.TryGetComponent(out Unit unitComponent)) return;
+            if (hit.transform.TryGetComponent(out Unit unitComponent))
+            {
+                HandleUnits(isShiftPressed, unitComponent);
+            }
+            else if (!hit.transform.TryGetComponent(out Structure structure))
+            {
+                HandleStructure(isShiftPressed, structure);
+            }
+        }
 
+        private void ClearUnitsAndStructureLists(float mouseDownTime, bool isShiftPressed)
+        {
+            // This is to prevent the player from deselecting at the moment to select multiples unit without the shift
+            if (mouseDownTime + DELAY_TO_SELECT_UNITS < Time.time) return;
+            if (isShiftPressed) return;
+
+            playerManager.ClearUnits();      // This is to clear the selected units if the player touches something, like the ground
+            playerManager.ClearStructures(); // This is to clear the selected structures if the player touches something, like the ground
+        }
+
+        private void HandleUnits(bool isShiftPressed, Unit unitComponent)
+        {
             // Add more than one unit
             if (isShiftPressed)
             {
@@ -66,24 +80,33 @@ namespace Player
             }
 
             // Add only one unit
-            _unitManager.ClearUnits();
+            playerManager.ClearUnits();
             AddUnit(unitComponent);
+        }
+
+        private void HandleStructure(bool isShiftPressed, Structure structure)
+        {
+            if (!isShiftPressed) playerManager.ClearStructures();
+            if (playerManager.IsStructureSelected(structure)) return;
+
+            playerManager.AddStructure(structure);
+            Debug.Log($"¿Esta estructura esta seleccionada? {playerManager.IsStructureSelected(structure)}");
         }
 
         private void AddUnit(Unit unitComponent)
         {
-            if (unitComponent is Villager villager) _unitManager.AddSelectedVillager(villager);
+            if (unitComponent is Villager villager) playerManager.AddSelectedVillager(villager);
 
-            _unitManager.AddUnit(unitComponent);
+            playerManager.AddUnit(unitComponent);
         }
 
         private bool RemoveUnitSelected(Unit unitComponent)
         {
-            if (!_unitManager.IsUnitSelected(unitComponent)) return false;
+            if (!playerManager.IsUnitSelected(unitComponent)) return false;
 
-            if (unitComponent is Villager villager) _unitManager.RemoveSelectedVillager(villager);
+            if (unitComponent is Villager villager) playerManager.RemoveSelectedVillager(villager);
 
-            _unitManager.RemoveUnity(unitComponent);
+            playerManager.RemoveUnity(unitComponent);
             return true;
         }
     }

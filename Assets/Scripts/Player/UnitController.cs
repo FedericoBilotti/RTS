@@ -55,7 +55,7 @@ namespace Player
             else if (LeftMouseButtonUp())
             {
                 _unitVisualManager.SetActiveBox(false);
-                _unitSelectorManager.AddSingleUnit(_mouseDownTime, LeftShiftButton());
+                _unitSelectorManager.AddUnitOrStructure(_mouseDownTime, LeftShiftButton());
                 _mouseDownTime = 0;
             }
         }

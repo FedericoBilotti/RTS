@@ -30,8 +30,8 @@ namespace Units.Villagers
 
             CreateFSM();
 
-            UnitManager.Instance.AddVillager(this);                                   // Mover a OnEnable & OnDisable.
-            entityLife.OnDeadUnit += () => UnitManager.Instance.RemoveVillager(this); // Mover a OnEnable & OnDisable.
+            PlayerManager.Instance.AddVillager(this);                                   // Mover a OnEnable & OnDisable.
+            entityLife.OnDeadUnit += () => PlayerManager.Instance.RemoveVillager(this); // Mover a OnEnable & OnDisable.
         }
         
         public void SetStateName(string state) => _actualState = state; // Debug.

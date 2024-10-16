@@ -7,13 +7,13 @@ namespace Player
 {
     public class UnitOrderManager
     {
-        private readonly UnitManager _unitManager;
+        private readonly PlayerManager playerManager;
 
         private readonly List<IOrderStrategy> _actions;
 
-        public UnitOrderManager(UnitManager unitManager)
+        public UnitOrderManager(PlayerManager playerManager)
         {
-            _unitManager = unitManager;
+            this.playerManager = playerManager;
 
             _actions = new List<IOrderStrategy>
             {
@@ -31,7 +31,7 @@ namespace Player
 
             foreach (IOrderStrategy action in _actions)
             {
-                if (action.Execute(_unitManager, hit)) break; // Se va a ejecutar cada acción hasta que se cumpla una.
+                if (action.Execute(playerManager, hit)) break; // Se va a ejecutar cada acción hasta que se cumpla una.
             }
         }
     }

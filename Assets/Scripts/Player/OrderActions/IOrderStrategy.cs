@@ -4,6 +4,6 @@ namespace Player.OrderActions
 {
     public interface IOrderStrategy
     {
-        bool Execute(UnitManager unitManager, RaycastHit hit);
+        bool Execute(PlayerManager playerManager, RaycastHit hit);
     }
 }

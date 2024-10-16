@@ -24,7 +24,7 @@ namespace Units.Villagers.States
 
         public override void OnExit()
         {
-            UnitManager.Instance.RemoveWorkingVillager(villager, villager.GetPreviousResourceType());
+            PlayerManager.Instance.RemoveWorkingVillager(villager, villager.GetPreviousResourceType());
             SetObstacleAvoidance(_agent, ObstacleAvoidanceType.LowQualityObstacleAvoidance);
         }
 

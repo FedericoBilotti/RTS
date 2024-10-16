@@ -8,14 +8,14 @@ namespace Player.OrderActions
     /// </summary>
     public class WorkAction : IOrderStrategy
     {
-        public bool Execute(UnitManager unitManager, RaycastHit hit)
+        public bool Execute(PlayerManager playerManager, RaycastHit hit)
         {
             if (!hit.transform.TryGetComponent(out IWork work)) return false;
             
-            AssignWorkToUnits(unitManager, work);
+            AssignWorkToUnits(playerManager, work);
             return true;
         }
 
-        private static void AssignWorkToUnits(UnitManager unitManager, IWork work) => unitManager.AssignWorkToUnits(work);
+        private static void AssignWorkToUnits(PlayerManager playerManager, IWork work) => playerManager.AssignWorkToUnits(work);
     }
 }

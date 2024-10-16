@@ -35,7 +35,7 @@ namespace Units.Villagers.States
         private static void AddToWorkingVillagerList(Villager villager)
         {
             ResourcesManager.ResourceType resourceType = villager.ActualWork.GetResourceSO().ResourceType;
-            UnitManager.Instance.AddWorkingVillager(villager, resourceType);
+            PlayerManager.Instance.AddWorkingVillager(villager, resourceType);
         }
 
         private static void SetObstacleAvoidance(NavMeshAgent agent, ObstacleAvoidanceType type)

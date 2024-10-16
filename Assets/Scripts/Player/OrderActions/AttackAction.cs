@@ -8,16 +8,16 @@ namespace Player.OrderActions
     /// </summary>
     public class AttackAction : IOrderStrategy
     {
-        public bool Execute(UnitManager unitManager, RaycastHit hit)
+        public bool Execute(PlayerManager playerManager, RaycastHit hit)
         {
             if (!hit.transform.TryGetComponent(out ITargetable targetable)) return false;
             if (targetable.IsDead()) return false;
-            if (targetable.GetFaction() == unitManager.Faction) return false;
+            if (targetable.GetFaction() == playerManager.Faction) return false;
             
-            SetEnemyTargets(unitManager, targetable);
+            SetEnemyTargets(playerManager, targetable);
             return true;
         }
         
-        private static void SetEnemyTargets(UnitManager unitManager, ITargetable targetable) => unitManager.SetEnemyTargets(targetable);
+        private static void SetEnemyTargets(PlayerManager playerManager, ITargetable targetable) => playerManager.SetEnemyTargets(targetable);
     }
 }

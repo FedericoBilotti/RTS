@@ -8,15 +8,15 @@ namespace Player.OrderActions
     /// </summary>
     public class MoveUnitsInFormation : IOrderStrategy
     {
-        public bool Execute(UnitManager unitManager, RaycastHit hit)
+        public bool Execute(PlayerManager playerManager, RaycastHit hit)
         {
             Vector3 desiredPosition = hit.point;
-            MoveUnits(unitManager, desiredPosition);
-            AssignWorkToVillagers(unitManager, null);
+            MoveUnits(playerManager, desiredPosition);
+            AssignWorkToVillagers(playerManager, null);
             return true;
         }
 
-        private static void MoveUnits(UnitManager unitManager, Vector3 destination) => unitManager.MoveUnitsInFormation(destination);
-        private static void AssignWorkToVillagers(UnitManager unitManager, IWork work) => unitManager.AssignWorkToUnits(work);
+        private static void MoveUnits(PlayerManager playerManager, Vector3 destination) => playerManager.MoveUnitsInFormation(destination);
+        private static void AssignWorkToVillagers(PlayerManager playerManager, IWork work) => playerManager.AssignWorkToUnits(work);
     }
 }

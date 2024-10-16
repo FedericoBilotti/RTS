@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Units.Structures.Storages
 {
     [RequireComponent(typeof(UnityEngine.AI.NavMeshObstacle))]
-    public abstract class Storage : MonoBehaviour, IStorage, ISelectable
+    public abstract class Storage : Structure, IStorage, ISelectable
     {
         [SerializeField] private EFaction _faction;
 
